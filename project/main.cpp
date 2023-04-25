@@ -162,13 +162,13 @@ int main()
 
 
 // Création d'un  VBO:
-    GLuint vboSphere;
-    glGenBuffers(1, &vboSphere);
-    glBindBuffer(GL_ARRAY_BUFFER, vboSphere);
+    // GLuint vboSphere;
+    // glGenBuffers(1, &vboSphere);
+    // glBindBuffer(GL_ARRAY_BUFFER, vboSphere);
 
-    const std::vector<glimac::ShapeVertex> sphere = glimac::sphere_vertices(1, 32, 16);  
+    // const std::vector<glimac::ShapeVertex> sphere = glimac::sphere_vertices(1, 32, 16);  
 
-    glBufferData(GL_ARRAY_BUFFER, sphere.size()*sizeof(glimac::ShapeVertex), sphere.data(), GL_STATIC_DRAW);
+    // glBufferData(GL_ARRAY_BUFFER, sphere.size()*sizeof(glimac::ShapeVertex), sphere.data(), GL_STATIC_DRAW);
 
 // Création d'un  VBO:
     GLuint vboSquare;
@@ -189,18 +189,18 @@ int main()
 
     const GLuint VERTEX_ATTR_POSITION = 0;
     const GLuint VERTEX_ATTR_NORMAL = 1;
-    // const GLuint VERTEX_ATTR_TEXTURE = 2;
+    const GLuint VERTEX_ATTR_TEXCOORDS = 2;
 
     glEnableVertexAttribArray(VERTEX_ATTR_POSITION) ; 
     glEnableVertexAttribArray(VERTEX_ATTR_NORMAL) ; 
-    // glEnableVertexAttribArray(VERTEX_ATTR_TEXTURE) ; 
+    glEnableVertexAttribArray(VERTEX_ATTR_TEXCOORDS) ; 
 
-    glBindBuffer(GL_ARRAY_BUFFER, vboSphere);
+    // glBindBuffer(GL_ARRAY_BUFFER, vboSphere);
     glBindBuffer(GL_ARRAY_BUFFER, vboSquare);
 
     glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(glimac::ShapeVertex), (const GLvoid*)offsetof(glimac::ShapeVertex, position));
     glVertexAttribPointer(VERTEX_ATTR_NORMAL, 3, GL_FLOAT, GL_FALSE, sizeof(glimac::ShapeVertex), (const GLvoid*)offsetof(glimac::ShapeVertex, normal));
-    // glVertexAttribPointer(VERTEX_ATTR_TEXCOORDS, 2, GL_FLOAT, GL_FALSE, sizeof(glimac::ShapeVertex), (const GLvoid*)offsetof(glimac::ShapeVertex, texCoords));
+    glVertexAttribPointer(VERTEX_ATTR_TEXCOORDS, 2, GL_FLOAT, GL_FALSE, sizeof(glimac::ShapeVertex), (const GLvoid*)offsetof(glimac::ShapeVertex, texCoords));
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glBindVertexArray(0) ; 
@@ -270,8 +270,8 @@ int main()
             glUniform3fv(boidsProgram.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.2))); 
 
 
-            glDrawArrays(GL_TRIANGLES, 0, sphere.size());
-
+            // glDrawArrays(GL_TRIANGLES, 0, sphere.size());
+            glDrawArrays(GL_TRIANGLES, 0, vertexCount);
         };
 
         obstaclesProgram.m_Program.use();
@@ -296,12 +296,9 @@ int main()
             glUniform3fv(obstaclesProgram.uLightDir_vs, 1, glm::value_ptr(lightDir)); 
             glUniform3fv(obstaclesProgram.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.2))); 
 
-
-            glDrawArrays(GL_TRIANGLES, 0, sphere.size());
+            glDrawArrays(GL_TRIANGLES, 0, vertexCount);
 
         };
-
-        glDrawArrays(GL_TRIANGLES, 0, vertexCount);
 
         
         glBindVertexArray(0) ; 
@@ -327,7 +324,7 @@ int main()
 
     ctx.start();
     glDeleteBuffers(0, &vboSquare); 
-    glDeleteBuffers(0, &vboSphere); 
+    // glDeleteBuffers(0, &vboSphere); 
     glDeleteVertexArrays(0, &vao); 
     glfwTerminate();
 }
