@@ -12,20 +12,20 @@
 #include "ObjModel.hpp"
 
 
-std::vector<Boid> boids; 
-std::vector<Obstacle> obstacles; 
+std::vector<Boid> boids;
+std::vector<Obstacle> obstacles;
 
 
 void add_or_remove_boids(IHM &ihm)
 {
-    int nb_boids = boids.size(); 
-     if (nb_boids<ihm.get_nb_boids()){ 
+    int nb_boids = boids.size();
+     if (nb_boids<ihm.get_nb_boids()){
         for(int i=0 ; i< ihm.get_nb_boids()-nb_boids ; i++){
-            Boid b ; 
+            Boid b ;
             boids.push_back(b);
         }
-        nb_boids = ihm.get_nb_boids(); 
-    } 
+        nb_boids = ihm.get_nb_boids();
+    }
     else if (nb_boids>ihm.get_nb_boids()){
         for(int i=0 ; i< nb_boids-ihm.get_nb_boids() ; i++){
             boids.pop_back();
@@ -37,14 +37,14 @@ void add_or_remove_boids(IHM &ihm)
 
 void add_or_remove_obstacles(IHM &ihm)
 {
-    int nb_obstacles = obstacles.size(); 
+    int nb_obstacles = obstacles.size();
     if (nb_obstacles<ihm.get_nb_obstacles()){
         for(int i=0 ; i< ihm.get_nb_obstacles()-nb_obstacles ; i++){
-            Obstacle o ; 
+            Obstacle o ;
             obstacles.push_back(o);
         }
-        nb_obstacles = ihm.get_nb_obstacles(); 
-    } 
+        nb_obstacles = ihm.get_nb_obstacles();
+    }
     else if (nb_obstacles>ihm.get_nb_obstacles()){
         for(int i=0 ; i< nb_obstacles-ihm.get_nb_obstacles() ; i++){
             obstacles.pop_back();
@@ -54,7 +54,7 @@ void add_or_remove_obstacles(IHM &ihm)
 }
 
 
-struct ObstaclesProgram 
+struct ObstaclesProgram
 {
     p6::Shader m_Program;
 
@@ -88,7 +88,7 @@ struct ObstaclesProgram
 };
 
 
-struct BoidsProgram 
+struct BoidsProgram
 {
     p6::Shader m_Program;
 
@@ -130,82 +130,118 @@ struct BoidsProgram
 /* ---------------------------------------------------------------------------- */
 int main()
 {
-    int  window_width  = 1920;
-    int  window_height = 1080;
+    int  window_width  = 1280;
+    int  window_height = 720;
     auto ctx = p6::Context{{window_width, window_height, "Project qui se passe super bien"}};
     ctx.maximize_window();
-    
+
     ObstaclesProgram obstaclesProgram;
     BoidsProgram boidsProgram;
-    FreeflyCamera ViewMatrix; 
-    ObjModel objModel; 
+    FreeflyCamera ViewMatrix;
+    ObjModel pumpkin;
+    ObjModel teapot;
 
     bool Z = false;
     bool S = false;
     bool Q = false;
     bool D = false;
 
-    IHM ihm ; 
+    IHM ihm ;
 
      for(int i=0 ; i<ihm.get_nb_boids() ; i++){
-         Boid b ; 
+         Boid b ;
          boids.push_back(b);
      }
 
      for(int i=0 ; i<ihm.get_nb_obstacles() ; i++){
-         Obstacle o ; 
+         Obstacle o ;
          obstacles.push_back(o);
      }
 
-     objModel.LoadFromFile("./assets/models/cube.obj"); 
-    
+     pumpkin.LoadFromFile("./assets/models/pumpkin_tall_10k_out.obj");
+     teapot.LoadFromFile("./assets/models/teapot2_out.obj");
 
 
-// Création d'un  VBO:
-    // GLuint vboSphere;
-    // glGenBuffers(1, &vboSphere);
-    // glBindBuffer(GL_ARRAY_BUFFER, vboSphere);
-
-    // const std::vector<glimac::ShapeVertex> sphere = glimac::sphere_vertices(1, 32, 16);  
-
-    // glBufferData(GL_ARRAY_BUFFER, sphere.size()*sizeof(glimac::ShapeVertex), sphere.data(), GL_STATIC_DRAW);
 
 // Création d'un  VBO:
-    GLuint vboSquare;
-    glGenBuffers(1, &vboSquare);
-    glBindBuffer(GL_ARRAY_BUFFER, vboSquare);
+    GLuint vboSphere;
+    glGenBuffers(1, &vboSphere);
+    glBindBuffer(GL_ARRAY_BUFFER, vboSphere);
 
-    // const std::vector<glimac::ShapeVertex> vertices = glimac::square_vertices(1, 32, 16);  
-    std::vector<float> vertices = objModel.getVertextData(); 
-    int vertexCount = objModel.getVertextCount(); 
+    const std::vector<glimac::ShapeVertex> sphere = glimac::sphere_vertices(1, 32, 16);
 
-    glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof(float), &vertices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sphere.size()*sizeof(glimac::ShapeVertex), sphere.data(), GL_STATIC_DRAW);
+
+// Création d'un  VBO:
+    GLuint vboPumpkin;
+    glGenBuffers(1, &vboPumpkin);
+    glBindBuffer(GL_ARRAY_BUFFER, vboPumpkin);
+
+    std::vector<float> verticesPumpkin = pumpkin.getVertextData();
+    int vertexPumpkinCount = pumpkin.getVertextCount();
+
+    glBufferData(GL_ARRAY_BUFFER, verticesPumpkin.size()*sizeof(float), &verticesPumpkin[0], GL_STATIC_DRAW);
+
+// Création d'un  VBO:
+    GLuint vboTeapot;
+    glGenBuffers(1, &vboTeapot);
+    glBindBuffer(GL_ARRAY_BUFFER, vboTeapot);
+
+    std::vector<float> verticesTeapot = teapot.getVertextData();
+    int vertexTeapotCount = teapot.getVertextCount();
+
+    glBufferData(GL_ARRAY_BUFFER, verticesTeapot.size()*sizeof(float), &verticesTeapot[0], GL_STATIC_DRAW);
 
 
-// Création d'un VAO:
+
+// Création VAO1:
     GLuint vao;
-    glGenVertexArrays(1, &vao) ; 
-    glBindVertexArray(vao) ; 
+    glGenVertexArrays(1, &vao) ;
+    glBindVertexArray(vao) ;
 
     const GLuint VERTEX_ATTR_POSITION = 0;
     const GLuint VERTEX_ATTR_NORMAL = 1;
     const GLuint VERTEX_ATTR_TEXCOORDS = 2;
 
-    glEnableVertexAttribArray(VERTEX_ATTR_POSITION) ; 
-    glEnableVertexAttribArray(VERTEX_ATTR_NORMAL) ; 
-    glEnableVertexAttribArray(VERTEX_ATTR_TEXCOORDS) ; 
+    glEnableVertexAttribArray(VERTEX_ATTR_POSITION) ;
+    glEnableVertexAttribArray(VERTEX_ATTR_NORMAL) ;
+    glEnableVertexAttribArray(VERTEX_ATTR_TEXCOORDS) ;
 
-    // glBindBuffer(GL_ARRAY_BUFFER, vboSphere);
-    glBindBuffer(GL_ARRAY_BUFFER, vboSquare);
+    glBindBuffer(GL_ARRAY_BUFFER, vboPumpkin);
 
-    glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(glimac::ShapeVertex), (const GLvoid*)offsetof(glimac::ShapeVertex, position));
-    glVertexAttribPointer(VERTEX_ATTR_NORMAL, 3, GL_FLOAT, GL_FALSE, sizeof(glimac::ShapeVertex), (const GLvoid*)offsetof(glimac::ShapeVertex, normal));
-    glVertexAttribPointer(VERTEX_ATTR_TEXCOORDS, 2, GL_FLOAT, GL_FALSE, sizeof(glimac::ShapeVertex), (const GLvoid*)offsetof(glimac::ShapeVertex, texCoords));
+    glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, 9*sizeof(float), 0); //(const GLvoid*)offsetof(glimac::ShapeVertex, position));
+    glVertexAttribPointer(VERTEX_ATTR_NORMAL, 3, GL_FLOAT, GL_FALSE, 9*sizeof(float), (void*)(6*sizeof(float))); //(const GLvoid*)offsetof(glimac::ShapeVertex, normal));
+    glVertexAttribPointer(VERTEX_ATTR_TEXCOORDS, 2, GL_FLOAT, GL_FALSE, 9*sizeof(float), (void*)(6*sizeof(float))); //(const GLvoid*)offsetof(glimac::ShapeVertex, texCoords));
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    glBindVertexArray(0) ; 
+    glBindVertexArray(0) ;
 
-    glEnable(GL_DEPTH_TEST) ; 
+    glEnable(GL_DEPTH_TEST) ;
+
+
+// Création VAO2:
+    GLuint vao2;
+    glGenVertexArrays(1, &vao2) ;
+    glBindVertexArray(vao2) ;
+
+    // const GLuint VERTEX_ATTR_POSITION = 0;
+    // const GLuint VERTEX_ATTR_NORMAL = 1;
+    // const GLuint VERTEX_ATTR_TEXCOORDS = 2;
+
+    glEnableVertexAttribArray(VERTEX_ATTR_POSITION) ;
+    glEnableVertexAttribArray(VERTEX_ATTR_NORMAL) ;
+    glEnableVertexAttribArray(VERTEX_ATTR_TEXCOORDS) ;
+
+    glBindBuffer(GL_ARRAY_BUFFER, vboTeapot);
+
+    glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, 9*sizeof(float), 0); //(const GLvoid*)offsetof(glimac::ShapeVertex, position));
+    glVertexAttribPointer(VERTEX_ATTR_NORMAL, 3, GL_FLOAT, GL_FALSE, 9*sizeof(float), (void*)(6*sizeof(float))); //(const GLvoid*)offsetof(glimac::ShapeVertex, normal));
+    glVertexAttribPointer(VERTEX_ATTR_TEXCOORDS, 2, GL_FLOAT, GL_FALSE, 9*sizeof(float), (void*)(6*sizeof(float))); //(const GLvoid*)offsetof(glimac::ShapeVertex, texCoords));
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    glBindVertexArray(0) ;
+
+    glEnable(GL_DEPTH_TEST) ;
 
 
 
@@ -215,7 +251,7 @@ int main()
 /* ---------------------------------------------------------------------------- */
     ctx.update = [&]() {
         glClearColor(0.7f, 0.6f, 0.6f, 1.f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 //gestion event
         if (Z) ViewMatrix.moveFront(0.1);
@@ -237,94 +273,100 @@ int main()
             if (key.physical == GLFW_KEY_D) D = false;
         };
 
-        glBindVertexArray(vao) ;
 
-//dessin des boids    
+//dessin des boids
         boidsProgram.m_Program.use();
-        
-        glm::mat4 MVMatrix = ViewMatrix.getViewMatrix();  
-        MVMatrix = glm::scale(MVMatrix, glm::vec3(0.05));     
+
+        glm::mat4 MVMatrix = ViewMatrix.getViewMatrix();
+        MVMatrix = glm::scale(MVMatrix, glm::vec3(0.05));
         glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), (float)window_width / (float)window_height, 0.1f, 100.f);
 
-        glm::mat4 VLightMatrix = ViewMatrix.getViewMatrix() ; 
-        //glm::mat4 MLightMatrix = glm::rotate(glm::mat4(1), ctx.time(), glm::vec3(0,1,0)); 
+        glm::mat4 VLightMatrix = ViewMatrix.getViewMatrix() ;
+        //glm::mat4 MLightMatrix = glm::rotate(glm::mat4(1), ctx.time(), glm::vec3(0,1,0));
     // glm::vec3 lightPos = glm::vec3( (MLightMatrix*VLightMatrix)*glm::vec4(1,1,0,1) );
         //glm::vec3 lightDir = glm::vec3( (MLightMatrix*VLightMatrix)*glm::vec4(1,1,1,0) );
         glm::vec3 lightDir = glm::vec3( (VLightMatrix)*glm::vec4(1,1,1,0) );
-        
+
+		glBindVertexArray(vao) ;
 
         for(size_t i=0 ; i<boids.size() ; i++)
-        { 
-       
+        {
+
             glUniformMatrix4fv(boidsProgram.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(MVMatrix))));
-            glUniformMatrix4fv(boidsProgram.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));        
-            
-            MVMatrix = glm::translate(MVMatrix, glm::vec3(boids[i].get_position())); 
+            glUniformMatrix4fv(boidsProgram.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
+
+            MVMatrix = glm::translate(MVMatrix, glm::vec3(boids[i].get_position()));
             glUniformMatrix4fv(boidsProgram.uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
-            
-            glUniform1f(boidsProgram.uShininess, 0.5); 
-            glUniform3fv(boidsProgram.uKd, 1, glm::value_ptr(glm::vec3(0.2,0.5,0.5))); 
-            glUniform3fv(boidsProgram.uKs, 1, glm::value_ptr(glm::vec3(0.1,0.2,0.2))); 
-            // glUniform3fv(moonProgram.uLightPos_vs, 1, glm::value_ptr(lightPos)); 
-            glUniform3fv(boidsProgram.uLightDir_vs, 1, glm::value_ptr(lightDir)); 
-            glUniform3fv(boidsProgram.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.2))); 
+
+            glUniform1f(boidsProgram.uShininess, 0.5);
+            glUniform3fv(boidsProgram.uKd, 1, glm::value_ptr(glm::vec3(0.2,0.5,0.5)));
+            glUniform3fv(boidsProgram.uKs, 1, glm::value_ptr(glm::vec3(0.1,0.2,0.2)));
+            // glUniform3fv(moonProgram.uLightPos_vs, 1, glm::value_ptr(lightPos));
+            glUniform3fv(boidsProgram.uLightDir_vs, 1, glm::value_ptr(lightDir));
+            glUniform3fv(boidsProgram.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.2)));
 
 
-            // glDrawArrays(GL_TRIANGLES, 0, sphere.size());
-            glDrawArrays(GL_TRIANGLES, 0, vertexCount);
+            glDrawArrays(GL_TRIANGLES, 0, vertexPumpkinCount);
+
         };
+
+		glBindVertexArray(0) ;
 
         obstaclesProgram.m_Program.use();
-      
-// dessins des obstacles 
-        glm::mat4 oMVMatrix = ViewMatrix.getViewMatrix();  
-        oMVMatrix = glm::scale(oMVMatrix, glm::vec3(0.1));     
+
+// dessins des obstacles
+        glm::mat4 oMVMatrix = ViewMatrix.getViewMatrix();
+        oMVMatrix = glm::scale(oMVMatrix, glm::vec3(0.1));
         glm::mat4 oProjMatrix = glm::perspective(glm::radians(70.f), (float)window_width / (float)window_height, 0.1f, 100.f);
 
-        for(size_t i=0 ; i<obstacles.size() ; i++)
-        { 
-            glUniformMatrix4fv(obstaclesProgram.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(oMVMatrix))));
-            glUniformMatrix4fv(obstaclesProgram.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(oProjMatrix * oMVMatrix));        
-            
-            oMVMatrix = glm::translate(oMVMatrix, glm::vec3(obstacles[i].get_position())); 
-            glUniformMatrix4fv(obstaclesProgram.uMVMatrix, 1, GL_FALSE, glm::value_ptr(oMVMatrix));
-            
-            glUniform1f(obstaclesProgram.uShininess, 0.5); 
-            glUniform3fv(obstaclesProgram.uKd, 1, glm::value_ptr(glm::vec3(0.2,0.5,0.5))); 
-            glUniform3fv(obstaclesProgram.uKs, 1, glm::value_ptr(glm::vec3(0.1,0.2,0.2))); 
-            // glUniform3fv(moonProgram.uLightPos_vs, 1, glm::value_ptr(lightPos)); 
-            glUniform3fv(obstaclesProgram.uLightDir_vs, 1, glm::value_ptr(lightDir)); 
-            glUniform3fv(obstaclesProgram.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.2))); 
+		glBindVertexArray(vao2) ;
 
-            glDrawArrays(GL_TRIANGLES, 0, vertexCount);
+        for(size_t i=0 ; i<obstacles.size() ; i++)
+        {
+            glUniformMatrix4fv(obstaclesProgram.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(oMVMatrix))));
+            glUniformMatrix4fv(obstaclesProgram.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(oProjMatrix * oMVMatrix));
+
+            oMVMatrix = glm::translate(oMVMatrix, glm::vec3(obstacles[i].get_position()));
+            glUniformMatrix4fv(obstaclesProgram.uMVMatrix, 1, GL_FALSE, glm::value_ptr(oMVMatrix));
+
+            glUniform1f(obstaclesProgram.uShininess, 0.5);
+            glUniform3fv(obstaclesProgram.uKd, 1, glm::value_ptr(glm::vec3(0.2,0.5,0.5)));
+            glUniform3fv(obstaclesProgram.uKs, 1, glm::value_ptr(glm::vec3(0.1,0.2,0.2)));
+            // glUniform3fv(moonProgram.uLightPos_vs, 1, glm::value_ptr(lightPos));
+            glUniform3fv(obstaclesProgram.uLightDir_vs, 1, glm::value_ptr(lightDir));
+            glUniform3fv(obstaclesProgram.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.2)));
+
+
+            glDrawArrays(GL_TRIANGLES, 0, vertexTeapotCount);
 
         };
 
-        
-        glBindVertexArray(0) ; 
+        glBindVertexArray(0) ;
 
-        ihm.draw(); 
+        ihm.draw();
 
         for(size_t i=0 ; i<boids.size() ; i++)
-        {   
+        {
            // boids[i].draw(ctx) ;
             boids[i].collision(boids, obstacles, ihm, ctx) ;
-           boids[i].update_position() ; 
-        } ;  
+           boids[i].update_position() ;
+        } ;
 
         for(size_t j=0 ; j<obstacles.size() ; j++)
-        {   
+        {
             //obstacles[j].draw(ctx) ;
-        } ; 
+        } ;
 
-       add_or_remove_boids(ihm) ; 
-       add_or_remove_obstacles(ihm) ; 
+       add_or_remove_boids(ihm) ;
+       add_or_remove_obstacles(ihm) ;
 
     };
 
     ctx.start();
-    glDeleteBuffers(0, &vboSquare); 
-    // glDeleteBuffers(0, &vboSphere); 
-    glDeleteVertexArrays(0, &vao); 
+    glDeleteBuffers(0, &vboPumpkin);
+    glDeleteBuffers(0, &vboSphere);
+    glDeleteBuffers(0, &vboTeapot);
+    glDeleteVertexArrays(0, &vao);
+    glDeleteVertexArrays(0, &vao2);
     glfwTerminate();
 }
