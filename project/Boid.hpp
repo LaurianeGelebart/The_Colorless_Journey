@@ -4,23 +4,21 @@
 #include <vector>
 #include "Obstacle.hpp"
 
+#include "Object.hpp"
 #include "p6/p6.h"
 
-using Vec = glm::vec3 ; 
-
-class Boid {
+class Boid : public Object
+{
 
     private : 
-        Vec _position ; 
         Vec _velocity ; 
         float _borne_velocity ;  
         p6::Color _color;
 
         
     public : 
-        Boid(); 
+        Boid(const ObjModel& model, const ObjectProgram& program); 
 
-        Vec get_position() const; 
         Vec get_velocity() const; 
 
         void update_position();
@@ -34,7 +32,6 @@ class Boid {
 
         void limit_speed(IHM ihm) ;
         double distance(Vec pos) ;
-        void draw(p6::Context & ctx); 
         void move(p6::Context& ctx); 
 
 }; 

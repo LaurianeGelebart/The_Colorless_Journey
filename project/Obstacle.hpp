@@ -4,20 +4,20 @@
 #include <vector>
 
 #include "p6/p6.h"
+#include "ObjModel.hpp"
+#include "ObjectProgram.hpp"
+#include "Object.hpp"
 
 using Vec = glm::vec3 ; 
 
-class Obstacle { // TODO name that makes it clear that it is a circle
-
+class Obstacle : public Object 
+{ 
     private : 
-        Vec _position ; 
+        // Vec _position ; 
         float _radius ; 
         
     public : 
-        Obstacle(); 
+        Obstacle(const ObjModel& model, const ObjectProgram& program); 
 
-        void draw(p6::Context & ctx); 
-        Vec get_position() const; 
         float get_radius() const; 
-
 }; 

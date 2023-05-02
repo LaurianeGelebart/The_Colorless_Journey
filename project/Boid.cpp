@@ -5,7 +5,8 @@
 #include <math.h>
 
 
-Boid::Boid()
+Boid::Boid(const ObjModel& model, const ObjectProgram& program)
+:Object(model, program) 
 {
     this->_position = Vec(glm::ballRand(2.0)) ;
     this->_borne_velocity = 0.003;  // TODO
@@ -13,26 +14,6 @@ Boid::Boid()
     float angleZ = (float)(p6::random::integer(0, 360))*M_PI/180.0; // TODO change 
     this->_velocity = Vec(cos(angle), sin(angle) ,cos(angleZ)) ;  // TODO
     this->_color = {0.5f, 0.2f, 0.2f} ; 
-}
-
-void Boid::draw(p6::Context& ctx)
-{  
-    float angle = atan(this->_velocity.y/this->_velocity.x);
-    if(this->_velocity.x < 0) angle+=M_PI;
-
-    ctx.use_fill   = true;
-    ctx.use_stroke = false; 
-    ctx.fill = this->_color;
-    ctx.equilateral_triangle(
-        p6::Center{this->_position},   
-        p6::Radius{0.03},
-        p6::Angle{p6::Radians{angle}}
-    ); 
-}
-
-Vec Boid::get_position() const
-{
-    return this->_position ; 
 }
 
 Vec Boid::get_velocity() const
