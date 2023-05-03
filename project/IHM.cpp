@@ -10,11 +10,11 @@ void IHM::draw()
     ImGui::Begin("Set params");
 
     float f = this->_detection_radius ; 
-    ImGui::SliderFloat("Close", &f, 0.1f, 1.0f);
+    ImGui::SliderFloat("Detection radius", &f, 0.0f, 3.0f);
     this->_detection_radius = f ; 
 
     float f2 = this->_collision_radius ; 
-    ImGui::SliderFloat("Too close", &f2, 0.01f, 0.5f);
+    ImGui::SliderFloat("Collision radius", &f2, 0.0f, 1.0f);
     this->_collision_radius = f2 ; 
 
     float f3 = this->_turn_factor*1000 ; 

@@ -12,11 +12,11 @@ class IHM {
         float _matching_factor = 0.03 ;
         float _avoid_factor = 0.005 ; 
         float _centering_factor = 0.0005 ; 
-        float _collision_radius = 0.08 ; 
-        float _detection_radius = 0.25 ; 
+        float _collision_radius = 0.5 ; 
+        float _detection_radius = 1.0 ; 
         float _speed = 0.1 ; 
-        int _nb_obstacles = 1 ; 
-        int _nb_boids = 1 ; 
+        int _nb_obstacles = 3 ; 
+        int _nb_boids = 20 ; 
         
     public : 
         IHM(); 

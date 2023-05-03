@@ -28,7 +28,7 @@ class ObjModel {
         ObjModel();
         ~ObjModel();
 
-        void LoadFromFile(const std::string name); 
+        void LoadFromFile(const std::string name, const std::vector<Material>& Material); 
         std::vector<float> getVertextData() const; 
         int getVertextCount() const; 
 }; 

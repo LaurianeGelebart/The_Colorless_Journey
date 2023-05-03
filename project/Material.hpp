@@ -1,4 +1,3 @@
-
 #pragma once
 using Vec = glm::vec3 ; 
 

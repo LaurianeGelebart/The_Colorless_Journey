@@ -19,12 +19,12 @@ std::vector<Obstacle> obstacles;
 
 
 
-void add_or_remove_boids(IHM &ihm, ObjectProgram &magicProgram, ObjModel &magic)
+void add_or_remove_boids(IHM &ihm, ObjectProgram &puitProgram, ObjModel &puit)
 {
     int nb_boids = boids.size();
      if (nb_boids<ihm.get_nb_boids()){
         for(int i=0 ; i< ihm.get_nb_boids()-nb_boids ; i++){
-            Boid b(magic, magicProgram) ;
+            Boid b(puit, puitProgram) ;
             boids.push_back(b);
         }
         nb_boids = ihm.get_nb_boids();
@@ -67,11 +67,13 @@ int main()
     auto ctx = p6::Context{{window_width, window_height, "Project qui se passe super bien"}};
     ctx.maximize_window();
 
-ObjModel magic ;
-ObjModel puit ;
+        ObjModel magic ;
+        ObjModel puit ;
 
-ObjectProgram magicProgram ; 
-ObjectProgram puitProgram ; 
+        ObjectProgram magicProgram ; 
+        ObjectProgram puitProgram ; 
+
+    std::vector<Material> materials ; 
 
     FreeflyCamera ViewMatrix;
 
@@ -82,9 +84,8 @@ ObjectProgram puitProgram ;
 
     IHM ihm ;
 
-    std::cout << "en vie " ;
-    puit.LoadFromFile("./assets/models/puit.obj");
-    magic.LoadFromFile("./assets/models/magique.obj");
+    puit.LoadFromFile("./assets/models/puit.obj", materials);
+    magic.LoadFromFile("./assets/models/magique.obj", materials);
 
 
      for(int i=0 ; i<ihm.get_nb_boids() ; i++){
@@ -96,64 +97,6 @@ ObjectProgram puitProgram ;
          Obstacle o(magic, magicProgram) ;
          obstacles.push_back(o);
      }
-
-
-// Load texture 
-    // std::unique_ptr<glimac::Image> terre_texture = glimac::loadImage("/home/lauriane/Documents/OpenGL/GLImac-Template/TP5/index/EarthMap.jpg") ;  
-    // std::unique_ptr<glimac::Image> lune_texture = glimac::loadImage("/home/lauriane/Documents/OpenGL/GLImac-Template/TP5/index/MoonMap.jpg") ;  
-    // std::unique_ptr<glimac::Image> nuage_texture = glimac::loadImage("/home/lauriane/Documents/OpenGL/GLImac-Template/TP5/index/CloudMap.jpg") ;  
-    
-    // GLuint earthTexture;
-    // GLuint cloudTexture;
-    // glGenTextures(1,&earthTexture); 
-    // glGenTextures(1,&cloudTexture); 
-
-    // glActiveTexture(GL_TEXTURE0);
-    // glBindTexture(GL_TEXTURE_2D, earthTexture);
-    // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, terre_texture->getWidth(), terre_texture->getHeight(), 0, GL_RGBA, GL_FLOAT, terre_texture->getPixels()  ) ;
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    // glActiveTexture(GL_TEXTURE1);
-    // glBindTexture(GL_TEXTURE_2D, cloudTexture);
-    // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, nuage_texture->getWidth(), nuage_texture->getHeight(), 0, GL_RGBA, GL_FLOAT, nuage_texture->getPixels()  ) ;
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    // glActiveTexture(GL_TEXTURE0);
-    // glBindTexture(GL_TEXTURE_2D, 0); 
-    // glActiveTexture(GL_TEXTURE1);
-    // glBindTexture(GL_TEXTURE_2D, 0); 
-
-
-// Création d'un  VBO:
-    // GLuint vboSphere;
-    // glGenBuffers(1, &vboSphere);
-    // glBindBuffer(GL_ARRAY_BUFFER, vboSphere);
-
-    // const std::vector<glimac::ShapeVertex> sphere = glimac::sphere_vertices(1, 32, 16);
-
-    // glBufferData(GL_ARRAY_BUFFER, sphere.size()*sizeof(glimac::ShapeVertex), sphere.data(), GL_STATIC_DRAW);
-
-// // Création d'un  VBO:
-//     GLuint vboPumpkin;
-//     glGenBuffers(1, &vboPumpkin);
-//     glBindBuffer(GL_ARRAY_BUFFER, vboPumpkin);
-
-//     std::vector<float> verticesPumpkin = pumpkin.getVertextData();
-//     int vertexPumpkinCount = pumpkin.getVertextCount();
-
-//     glBufferData(GL_ARRAY_BUFFER, verticesPumpkin.size()*sizeof(float), &verticesPumpkin[0], GL_STATIC_DRAW);
-
-// Création d'un  VBO:
-    // GLuint vboTeapot;
-    // glGenBuffers(1, &vboTeapot);
-    // glBindBuffer(GL_ARRAY_BUFFER, vboTeapot);
-
-    // std::vector<float> verticesTeapot = teapot.getVertextData();
-    // int vertexTeapotCount = teapot.getVertextCount();
-
-    // glBufferData(GL_ARRAY_BUFFER, verticesTeapot.size()*sizeof(float), &verticesTeapot[0], GL_STATIC_DRAW);
 
 
 
@@ -238,31 +181,24 @@ ObjectProgram puitProgram ;
 
 //Dessin
 		glBindVertexArray(vao) ;
-
-        for(size_t i=0 ; i<boids.size() ; i++)
-        {
+        for(size_t i=0 ; i<boids.size() ; i++){
 
             boids[i].draw(ViewMatrix, window_width, window_height) ;
             boids[i].collision(boids, obstacles, ihm, ctx) ;
             boids[i].update_position() ;
 
         };
-
 		glBindVertexArray(0) ;
 
 		glBindVertexArray(vao2) ;
-
-        for(size_t i=0 ; i<obstacles.size() ; i++)
-        {
-        // std:: cout << obstacles.size() <<"\n" ; 
+        for(size_t i=0 ; i<obstacles.size() ; i++){
             // obstacles[i].draw(ViewMatrix, window_width, window_height) ;
         };
-
         glBindVertexArray(0) ;
 
         ihm.draw();
 
-       add_or_remove_boids(ihm, magicProgram, magic) ;
+       add_or_remove_boids(ihm, puitProgram, puit) ;
        add_or_remove_obstacles(ihm, magicProgram, magic) ;
 
     };

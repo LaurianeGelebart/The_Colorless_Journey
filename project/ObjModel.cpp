@@ -15,7 +15,7 @@ ObjModel::~ObjModel(){
 
 }
 
-void ObjModel::LoadFromFile(const std::string name)
+void ObjModel::LoadFromFile(const std::string name, const std::vector<Material>& Material)
 {
     std::vector<Position> vertices; 
     std::vector<Normal> normals; 
@@ -67,16 +67,6 @@ void ObjModel::LoadFromFile(const std::string name)
     }
 }
 
-std::vector<float> ObjModel::getVertextData() const
-{
-    return this->_VertexData ; 
-}
-
-int ObjModel::getVertextCount() const
-{
-    return this->_VertexData.size() / 9; 
-} 
-
 
 void ObjModel::LoadMaterialFile(const std::string name)
 {
@@ -117,6 +107,18 @@ void ObjModel::LoadMaterialFile(const std::string name)
     }
     else std::cerr << "Material file loading failed \n" ; 
 }
+
+std::vector<float> ObjModel::getVertextData() const
+{
+    return this->_VertexData ; 
+}
+
+int ObjModel::getVertextCount() const
+{
+    return this->_VertexData.size() / 9; 
+} 
+
+
 
 bool ObjModel::StartWith(std::string line, const char* text)
 {

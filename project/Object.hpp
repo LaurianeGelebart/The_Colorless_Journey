@@ -35,4 +35,11 @@ class Object {
         const ObjModel& _model; 
         const ObjectProgram& _program; 
         GLuint _vbo;
+
+    //     img::Image wood;  
+    // img::Image rock ;  
+    // img::Image stele ;  
+    // img::Image brick ;
+    // GLuint     brick_texture;
+    // GLuint     wood_texture;
 }; 
