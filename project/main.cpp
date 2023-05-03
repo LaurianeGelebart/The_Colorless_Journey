@@ -17,13 +17,9 @@
 std::vector<Boid> boids;
 std::vector<Obstacle> obstacles;
 
-ObjModel magic ;
-ObjModel puit ;
 
-ObjectProgram magicProgram ; 
-ObjectProgram puitProgram ; 
 
-void add_or_remove_boids(IHM &ihm)
+void add_or_remove_boids(IHM &ihm, ObjectProgram &magicProgram, ObjModel &magic)
 {
     int nb_boids = boids.size();
      if (nb_boids<ihm.get_nb_boids()){
@@ -40,7 +36,7 @@ void add_or_remove_boids(IHM &ihm)
         nb_boids = ihm.get_nb_boids();
     }
 }
-void add_or_remove_obstacles(IHM &ihm)
+void add_or_remove_obstacles(IHM &ihm, ObjectProgram &magicProgram, ObjModel &magic)
 {
     int nb_obstacles = obstacles.size();
     if (nb_obstacles<ihm.get_nb_obstacles()){
@@ -70,6 +66,12 @@ int main()
     int  window_height = 720;
     auto ctx = p6::Context{{window_width, window_height, "Project qui se passe super bien"}};
     ctx.maximize_window();
+
+ObjModel magic ;
+ObjModel puit ;
+
+ObjectProgram magicProgram ; 
+ObjectProgram puitProgram ; 
 
     FreeflyCamera ViewMatrix;
 
@@ -217,8 +219,8 @@ int main()
 //gestion event
         if (Z) ViewMatrix.moveFront(0.1);
         if (S) ViewMatrix.moveFront(-0.1);
-        if (Q) ViewMatrix.rotateLeft(0.1);
-        if (D) ViewMatrix.rotateLeft(-0.1);
+        if (Q) ViewMatrix.rotateLeft(0.5);
+        if (D) ViewMatrix.rotateLeft(-0.5);
 
         ctx.key_pressed = [&Z, &S, &Q, &D](const p6::Key& key) {
             if (key.physical == GLFW_KEY_W) Z = true;
@@ -234,86 +236,34 @@ int main()
             if (key.physical == GLFW_KEY_D) D = false;
         };
 
-
-//dessin des boids
-        // boids[0]._program.m_Program.use();
-
-        // glm::mat4 MVMatrix = ViewMatrix.getViewMatrix();
-        // MVMatrix = glm::scale(MVMatrix, glm::vec3(0.05));
-        // glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), (float)window_width / (float)window_height, 0.1f, 100.f);
-
-        // glm::mat4 VLightMatrix = ViewMatrix.getViewMatrix() ;
-        //glm::mat4 MLightMatrix = glm::rotate(glm::mat4(1), ctx.time(), glm::vec3(0,1,0));
-    // glm::vec3 lightPos = glm::vec3( (MLightMatrix*VLightMatrix)*glm::vec4(1,1,0,1) );
-        //glm::vec3 lightDir = glm::vec3( (MLightMatrix*VLightMatrix)*glm::vec4(1,1,1,0) );
-        // glm::vec3 lightDir = glm::vec3( (VLightMatrix)*glm::vec4(1,1,1,0) );
-
+//Dessin
 		glBindVertexArray(vao) ;
 
         for(size_t i=0 ; i<boids.size() ; i++)
         {
 
-            // boids[i].draw(ViewMatrix, window_width, window_height) ;
+            boids[i].draw(ViewMatrix, window_width, window_height) ;
             boids[i].collision(boids, obstacles, ihm, ctx) ;
             boids[i].update_position() ;
-
-
-            // glUniformMatrix4fv(boidsProgram.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(MVMatrix))));
-            // glUniformMatrix4fv(boidsProgram.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
-
-            // MVMatrix = glm::translate(MVMatrix, glm::vec3(boids[i].get_position()));
-            // glUniformMatrix4fv(boidsProgram.uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
-
-            // glUniform1f(boidsProgram.uShininess, 0.5);
-            // glUniform3fv(boidsProgram.uKd, 1, glm::value_ptr(glm::vec3(0.2,0.5,0.5)));
-            // glUniform3fv(boidsProgram.uKs, 1, glm::value_ptr(glm::vec3(0.1,0.2,0.2)));
-            // // glUniform3fv(moonProgram.uLightPos_vs, 1, glm::value_ptr(lightPos));
-            // glUniform3fv(boidsProgram.uLightDir_vs, 1, glm::value_ptr(lightDir));
-            // glUniform3fv(boidsProgram.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.2)));
-
-
-            // glDrawArrays(GL_TRIANGLES, 0, vertexPumpkinCount);
 
         };
 
 		glBindVertexArray(0) ;
 
-        // obstacles[0]._program.m_Program.use();
-
-// dessins des obstacles
-        // glm::mat4 oMVMatrix = ViewMatrix.getViewMatrix();
-        // oMVMatrix = glm::scale(oMVMatrix, glm::vec3(0.1));
-        // glm::mat4 oProjMatrix = glm::perspective(glm::radians(70.f), (float)window_width / (float)window_height, 0.1f, 100.f);
-
 		glBindVertexArray(vao2) ;
 
         for(size_t i=0 ; i<obstacles.size() ; i++)
         {
+        // std:: cout << obstacles.size() <<"\n" ; 
             // obstacles[i].draw(ViewMatrix, window_width, window_height) ;
-
-            // glUniformMatrix4fv(obstaclesProgram.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(oMVMatrix))));
-            // glUniformMatrix4fv(obstaclesProgram.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(oProjMatrix * oMVMatrix));
-
-            // oMVMatrix = glm::translate(oMVMatrix, glm::vec3(obstacles[i].get_position()));
-            // glUniformMatrix4fv(obstaclesProgram.uMVMatrix, 1, GL_FALSE, glm::value_ptr(oMVMatrix));
-
-            // glUniform1f(obstaclesProgram.uShininess, 0.5);
-            // glUniform3fv(obstaclesProgram.uKd, 1, glm::value_ptr(glm::vec3(0.2,0.5,0.5)));
-            // glUniform3fv(obstaclesProgram.uKs, 1, glm::value_ptr(glm::vec3(0.1,0.2,0.2)));
-            // // glUniform3fv(moonProgram.uLightPos_vs, 1, glm::value_ptr(lightPos));
-            // glUniform3fv(obstaclesProgram.uLightDir_vs, 1, glm::value_ptr(lightDir));
-            // glUniform3fv(obstaclesProgram.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.2)));
-
-            // glDrawArrays(GL_TRIANGLES, 0, vertexTeapotCount);
-
         };
 
         glBindVertexArray(0) ;
 
         ihm.draw();
 
-       add_or_remove_boids(ihm) ;
-       add_or_remove_obstacles(ihm) ;
+       add_or_remove_boids(ihm, magicProgram, magic) ;
+       add_or_remove_obstacles(ihm, magicProgram, magic) ;
 
     };
 

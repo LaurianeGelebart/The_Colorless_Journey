@@ -15,8 +15,8 @@ class IHM {
         float _collision_radius = 0.08 ; 
         float _detection_radius = 0.25 ; 
         float _speed = 0.1 ; 
-        int _nb_obstacles = 3 ; 
-        int _nb_boids = 20 ; 
+        int _nb_obstacles = 1 ; 
+        int _nb_boids = 1 ; 
         
     public : 
         IHM(); 

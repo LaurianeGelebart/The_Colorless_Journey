@@ -10,6 +10,9 @@ uniform float uShininess;
 uniform vec3 uLightDir_vs; 
 uniform vec3 uLightIntensity;
 
+uniform vec3 uTexture1; 
+uniform vec3 uTexture2;
+
 
 out vec3 fFragColor;
 

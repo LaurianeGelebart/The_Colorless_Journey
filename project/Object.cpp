@@ -22,9 +22,15 @@ Object::~Object(){
 
 void Object::draw(const FreeflyCamera &ViewMatrix, const int window_width, const int window_height)
 {  
-    this->MVMatrix = ViewMatrix.getViewMatrix();
-    this->MVMatrix = glm::scale(this->MVMatrix, glm::vec3(0.05));
-    this->ProjMatrix = glm::perspective(glm::radians(70.f), (float)window_width / (float)window_height, 0.1f, 100.f);
+    this->_program.m_Program.use() ; 
+
+    std::cout << this->_position.x << "\n" ; 
+
+    this->_position.x += 0.9 ; 
+    
+    this->_MVMatrix = ViewMatrix.getViewMatrix();
+    this->_MVMatrix = glm::scale(this->_MVMatrix, glm::vec3(0.05));
+    this->_ProjMatrix = glm::perspective(glm::radians(70.f), (float)window_width / (float)window_height, 0.1f, 100.f);
 
     glm::mat4 VLightMatrix = ViewMatrix.getViewMatrix() ;
     //glm::mat4 MLightMatrix = glm::rotate(glm::mat4(1), ctx.time(), glm::vec3(0,1,0));
@@ -32,11 +38,11 @@ void Object::draw(const FreeflyCamera &ViewMatrix, const int window_width, const
     //glm::vec3 lightDir = glm::vec3( (MLightMatrix*VLightMatrix)*glm::vec4(1,1,1,0) );
     glm::vec3 lightDir = glm::vec3( (VLightMatrix)*glm::vec4(1,1,1,0) );
 
-    glUniformMatrix4fv(this->_program.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(MVMatrix))));
-    glUniformMatrix4fv(this->_program.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(this->ProjMatrix * this->MVMatrix));
+    glUniformMatrix4fv(this->_program.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(this->_MVMatrix))));
+    glUniformMatrix4fv(this->_program.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(this->_ProjMatrix * this->_MVMatrix));
 
-    this->MVMatrix = glm::translate(this->MVMatrix, glm::vec3(this->_position));
-    glUniformMatrix4fv(this->_program.uMVMatrix, 1, GL_FALSE, glm::value_ptr(this->MVMatrix));
+    this->_MVMatrix = glm::translate(this->_MVMatrix, glm::vec3(this->_position));
+    glUniformMatrix4fv(this->_program.uMVMatrix, 1, GL_FALSE, glm::value_ptr(this->_MVMatrix));
 
     glUniform1f(this->_program.uShininess, 0.5);
     glUniform3fv(this->_program.uKd, 1, glm::value_ptr(glm::vec3(0.2,0.5,0.5)));

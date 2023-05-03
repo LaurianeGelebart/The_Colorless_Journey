@@ -16,8 +16,8 @@ class Object {
 
     private : 
 
-        glm::mat4 MVMatrix;
-        glm::mat4 ProjMatrix;
+        glm::mat4 _MVMatrix;
+        glm::mat4 _ProjMatrix;
 
         void createVBO();
 
