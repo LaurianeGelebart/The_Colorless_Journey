@@ -5,14 +5,14 @@
 #include <math.h>
 
 
-Boid::Boid(const ObjModel& model, const ObjectProgram& program)
-:Object(model, program) 
+Boid::Boid(std::vector<FacesGroup> facesGroup, ObjectProgram& program)
+:Object(facesGroup, program) 
 {
     this->_position = Vec(glm::ballRand(2.0)) ;
-    this->_borne_velocity = 0.003;  // TODO
-    float angle = (float)(p6::random::integer(0, 360))*M_PI/180.0; // TODO change 
-    float angleZ = (float)(p6::random::integer(0, 360))*M_PI/180.0; // TODO change 
-    this->_velocity = Vec(cos(angle), sin(angle) ,cos(angleZ)) ;  // TODO
+    this->_borne_velocity = 0.003;  
+    float angle = (float)(p6::random::integer(0, 360))*M_PI/180.0; 
+    float angleZ = (float)(p6::random::integer(0, 360))*M_PI/180.0; 
+    this->_velocity = Vec(cos(angle), sin(angle) ,cos(angleZ)) ;
     this->_color = {0.5f, 0.2f, 0.2f} ; 
 }
 
@@ -21,7 +21,7 @@ Vec Boid::get_velocity() const
     return this->_velocity ; 
 }
 
-void Boid::update_position() // TODO ezn   rename update_position
+void Boid::update_position() 
 {
     this->_position =  this->_position + this->_velocity ;
 }
@@ -41,16 +41,16 @@ void Boid::collision(const std::vector<Boid>& boids, const std::vector<Obstacle>
 
 void Boid::collision_boids(const std::vector<Boid>& boids, IHM ihm)
 {
-    Vec close=Vec(0.f, 0.f, 0.f), pos_avg=Vec(0.f, 0.f, 0.f), dir_avg=Vec(0.f, 0.f, 0.f) ; // TODO use glm::vec2 instead of separate x and y
+    Vec close=Vec(0.f, 0.f, 0.f), pos_avg=Vec(0.f, 0.f, 0.f), dir_avg=Vec(0.f, 0.f, 0.f) ; 
     int neighboring_boids = 0 ; 
 
-   for (auto boid : boids){ // TODO range for
+   for (auto boid : boids){ 
         double distance = glm::distance(boid.get_position(),this->_position);     
-        if(&boid != this){ // TODO use ddresses to know if we are checking ourselves
-            if (distance < ihm.get_collision_radius() ){  // TODO rename as collision_radius?
+        if(&boid != this){ 
+            if (distance < ihm.get_collision_radius() ){ 
                 close += this->_position - boid.get_position();
             }  
-            else if(distance < ihm.get_detection_radius() ) { // TODO rename as detection_radius?
+            else if(distance < ihm.get_detection_radius() ) {
                 neighboring_boids += 1 ;
                 pos_avg += boid.get_position() ;
                 dir_avg += boid.get_velocity() ;
@@ -94,9 +94,9 @@ void Boid::collision_bords(IHM ihm, p6::Context& ctx)
 
 void Boid::collision_obstacles(const std::vector<Obstacle>& obstacles, IHM ihm)
 {
-    for (size_t i=0 ; i<sizeof(obstacles); i++){
-        double distance = glm::distance(obstacles[i].get_position(), this->_position);
-          //  std::cout << " x : " << obstacles[i].get_position().x << " y : " << obstacles[i].get_position().y << " z : " << obstacles[i].get_position().z << " Distance : " << distance <<"\n"; 
+    for(auto obstacle : obstacles){
+        double distance = glm::distance(obstacle.get_position(), this->_position);
+        //    std::cout << " x : " << obstacles[i].get_position().x << " y : " << obstacles[i].get_position().y << " z : " << obstacles[i].get_position().z << " Distance : " << distance <<"\n"; 
         
         if(distance < 2){
         // if(distance < obstacles[i].get_radius()){
@@ -112,7 +112,7 @@ void Boid::collision_obstacles(const std::vector<Obstacle>& obstacles, IHM ihm)
             // if (this->_position.y < obstacles[i].get_position().y){
             //     this->_velocity.y = this->_velocity.y -  ihm.get_turn_factor()*10; 
             // }
-            this->bounce(obstacles[i]); 
+            this->bounce(obstacle); 
         }
     }
     limit_speed(ihm); 

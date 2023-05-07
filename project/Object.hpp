@@ -1,11 +1,12 @@
 #pragma once
 
 #include <cstdlib>
+#include <map>
 
 #include "p6/p6.h"
 
 #include "glimac/FreeflyCamera.hpp"
-#include "ObjModel.hpp"
+#include "FacesGroup.hpp"
 #include "ObjectProgram.hpp"
 #include "Material.hpp"
 
@@ -16,30 +17,22 @@ class Object {
 
     private : 
 
-        glm::mat4 _MVMatrix;
-        glm::mat4 _ProjMatrix;
-
-        void createVBO();
 
     protected : 
         Vec _position ; 
+        std::vector<FacesGroup> _facesGroup; 
+        ObjectProgram& _program; 
 
     public : 
-        Object(const ObjModel& model, const ObjectProgram& program);
+        Object(std::vector<FacesGroup> facesGroup, ObjectProgram& program);
         ~Object();
+        
+        void deleteVAO_VBO();
 
         Vec get_position() const; 
-        void draw(const FreeflyCamera &ViewMatrix, const int window_width, const int window_height); 
+        void draw(const FreeflyCamera &ViewMatrix, const int window_width, const int window_height, std::map<std::string, Material>& materialMap); 
 
 
-        const ObjModel& _model; 
-        const ObjectProgram& _program; 
-        GLuint _vbo;
-
-    //     img::Image wood;  
-    // img::Image rock ;  
-    // img::Image stele ;  
-    // img::Image brick ;
-    // GLuint     brick_texture;
-    // GLuint     wood_texture;
-}; 
+        // GLuint     brick_texture;
+        // GLuint     wood_texture;
+    }; 

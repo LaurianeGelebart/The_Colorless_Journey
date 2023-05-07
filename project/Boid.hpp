@@ -17,7 +17,7 @@ class Boid : public Object
 
         
     public : 
-        Boid(const ObjModel& model, const ObjectProgram& program); 
+        Boid(std::vector<FacesGroup> facesGroup, ObjectProgram& program);
 
         Vec get_velocity() const; 
 

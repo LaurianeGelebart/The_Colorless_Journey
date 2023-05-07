@@ -1,5 +1,4 @@
 #include "Obstacle.hpp"
-#include "ObjModel.hpp"
 #include "ObjectProgram.hpp"
 #include "Object.hpp"
 
@@ -7,8 +6,8 @@
 #include "glm/gtc/random.hpp"
     
 
-Obstacle::Obstacle(const ObjModel& model, const ObjectProgram& program)
-:Object(model, program) 
+Obstacle::Obstacle(std::vector<FacesGroup> facesGroup, ObjectProgram& program)
+:Object(facesGroup, program) 
 {
     this->_position = Vec(glm::ballRand(7.0)); 
     this->_radius = p6::random::number(0.1, 0.2) ; 
