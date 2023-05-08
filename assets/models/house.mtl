@@ -1,0 +1,63 @@
+# Blender 3.3.1 MTL File: 'opengl.blend'
+# www.blender.org
+
+newmtl dessous
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl devant
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:/Users/lauri/Documents/IMAC/Blender/Assets/Textures/door_brick_draw.png
+
+newmtl fenetre
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:/Users/lauri/Documents/IMAC/Blender/Assets/Textures/window_brick_draw.png
+
+newmtl mur
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:/Users/lauri/Documents/IMAC/Blender/Assets/Textures/red_brick_draw.png
+map_Ns C:/Users/lauri/Documents/IMAC/Blender/Assets/Textures/red_bricks/red_brick_03_rough_4k.jpg
+map_Bump -bm 1.000000 C:/Users/lauri/Documents/IMAC/Blender/Assets/Textures/red_bricks/red_brick_03_nor_gl_4k.exr
+
+newmtl toit
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:/Users/lauri/Documents/IMAC/Blender/Assets/Textures/roof/rough_draw.png
+
+newmtl toit_devant
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:/Users/lauri/Documents/IMAC/Blender/Assets/Textures/window_brick_draw2.png

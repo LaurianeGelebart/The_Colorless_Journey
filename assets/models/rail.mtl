@@ -1,0 +1,12 @@
+# Blender 3.3.1 MTL File: 'opengl.blend'
+# www.blender.org
+
+newmtl wood
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd C:/Users/lauri/Documents/IMAC/Blender/Assets/Textures/rough_wood/rough_wood_diff_4k_draw.png
