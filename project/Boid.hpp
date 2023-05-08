@@ -13,7 +13,6 @@ class Boid : public Object
     private : 
         Vec _velocity ; 
         float _borne_velocity ;  
-        p6::Color _color;
 
         
     public : 
@@ -22,7 +21,6 @@ class Boid : public Object
         Vec get_velocity() const; 
 
         void update_position();
-        void set_color(p6::Color color);
 
         void collision(const std::vector<Boid>& boids, const std::vector<Obstacle>& obstacles, IHM ihm, p6::Context& ctx);  
         void collision_bords(IHM ihm, p6::Context& ctx); 
@@ -33,5 +31,4 @@ class Boid : public Object
         void limit_speed(IHM ihm) ;
         double distance(Vec pos) ;
         void move(p6::Context& ctx); 
-
 }; 

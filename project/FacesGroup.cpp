@@ -8,7 +8,7 @@
 #include "Material.hpp"
 
 FacesGroup::FacesGroup(std::string name)
-: _name(name) { this->createVBO(); }
+: _name(name) {}
 
 FacesGroup::FacesGroup(){}
 
@@ -70,19 +70,19 @@ void FacesGroup::setVertexData(int vIdx, int tIdx, int nIdx,
 
 void FacesGroup::createVBO()
 {
-    glGenBuffers(1, &this->_vbo);
+    glGenBuffers(1, &(this->_vbo));
     glBindBuffer(GL_ARRAY_BUFFER, this->_vbo);
     
     std::vector<float> vertices = this->_VertexData;
 
-    glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof(float), &vertices[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, this->_VertexData.size()*sizeof(float), &(this->_VertexData[0]), GL_STATIC_DRAW);
     
     this->createVAO();
 }
 
 void FacesGroup::createVAO()
 {
-    glGenVertexArrays(1, &this->_vao) ;
+    glGenVertexArrays(1, &(this->_vao)) ;
     glBindVertexArray(this->_vao) ;
 
     const GLuint VERTEX_ATTR_POSITION = 0;

@@ -73,7 +73,8 @@ int main()
         img::Image wood = p6::load_image_buffer("./assets/textures/wood.png") ;   
         img::Image brick = p6::load_image_buffer("./assets/textures/red_brick_draw.png") ;   
         // std::vector<img::Image> textures ; 
-        GLuint     wood_texture;
+        
+        GLuint wood_texture;
         glGenTextures(1, &wood_texture);
         glBindTexture(GL_TEXTURE_2D, wood_texture);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, wood.width(), wood.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, wood.data());
@@ -129,32 +130,6 @@ int main()
 
 
 
-// // Création VAO2:
-//     GLuint vao2;
-//     glGenVertexArrays(1, &vao2) ;
-//     glBindVertexArray(vao2) ;
-
-//     // const GLuint VERTEX_ATTR_POSITION = 0;
-//     // const GLuint VERTEX_ATTR_NORMAL = 1;
-//     // const GLuint VERTEX_ATTR_TEXCOORDS = 2;
-
-//     glEnableVertexAttribArray(VERTEX_ATTR_POSITION) ;
-//     glEnableVertexAttribArray(VERTEX_ATTR_NORMAL) ;
-//     glEnableVertexAttribArray(VERTEX_ATTR_TEXCOORDS) ;
-
-//     glBindBuffer(GL_ARRAY_BUFFER, obstacles[0]._vbo);
-
-//     glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, 9*sizeof(float), 0); //(const GLvoid*)offsetof(glimac::ShapeVertex, position));
-//     glVertexAttribPointer(VERTEX_ATTR_NORMAL, 3, GL_FLOAT, GL_FALSE, 9*sizeof(float), (void*)(6*sizeof(float))); //(const GLvoid*)offsetof(glimac::ShapeVertex, normal));
-//     glVertexAttribPointer(VERTEX_ATTR_TEXCOORDS, 2, GL_FLOAT, GL_FALSE, 9*sizeof(float), (void*)(6*sizeof(float))); //(const GLvoid*)offsetof(glimac::ShapeVertex, texCoords));
-//     glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-//     glBindVertexArray(0) ;
-
-//     glEnable(GL_DEPTH_TEST) ;
-
-
-
 
 /* ---------------------------------------------------------------------------- */
 /* ------------------ Declare your infinite update loop ----------------------- */
@@ -184,27 +159,17 @@ int main()
         };
 
 //Dessin
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, wood_texture);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, brick_texture);
-
-        for(auto boid : boids){
-            boid.draw(ViewMatrix, window_width, window_height, materialMap) ;
+        for(auto& boid : boids){
+            boid.draw(ViewMatrix, window_width, window_height, materialMap, wood_texture) ;
             boid.collision(boids, obstacles, ihm, ctx) ;
             boid.update_position() ;
         };
-        
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, 0);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, 0);
 
 
-        for(auto obstacle : obstacles){
-            obstacle.draw(ViewMatrix, window_width, window_height, materialMap) ;
+        for(auto& obstacle : obstacles){
+            obstacle.draw(ViewMatrix, window_width, window_height, materialMap, wood_texture) ;
         };
+
 
         ihm.draw();
 

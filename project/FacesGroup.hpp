@@ -8,10 +8,10 @@ class FacesGroup{
         GLuint _vbo;
         GLuint _vao;
 
-        void createVBO();
         void createVAO();
-
     public :
+        void createVBO();
+
         FacesGroup(std::string name);
         FacesGroup();
         ~FacesGroup();

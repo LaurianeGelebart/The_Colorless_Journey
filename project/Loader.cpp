@@ -23,7 +23,7 @@ std::vector<FacesGroup> Loader::LoadFromFile(const std::string name, std::map<st
 
     std::ifstream file(name); 
     if (file) {
-        std::cout << "name : " << name << "\n" ;
+        std::cout << "object : " << name << "\n" ;
         char currentmtlName[100]; 
         // FacesGroup currentGroup;
         std::string line ; 
@@ -65,6 +65,9 @@ std::vector<FacesGroup> Loader::LoadFromFile(const std::string name, std::map<st
                 objPart[currentGroup].setVertexData(v3, t3, n3, vertices, textures, normals); 
             }
         }
+        for (int i=0; i<=currentGroup; i++){
+            objPart[i].createVBO();
+        }
         return objPart ; 
     }
     else {
@@ -86,27 +89,28 @@ void Loader::LoadMaterialFile(const std::string name, std::map<std::string, Mate
             if (StartWith(line, "newmtl")){
                 (void)sscanf(line.c_str(), "newmtl %s", mtlName);
                 if (materialMap.find(mtlName) == materialMap.end()){
-                    materialMap[mtlName] = Material(); 
+                    std::string st = std::string(mtlName);
+                    materialMap[st] = Material(); 
                 }
             }
             if (StartWith(line, "Kd")){
-                Material& material = materialMap[mtlName]; 
+                Material& material = materialMap[std::string(mtlName)]; 
                 sscanf(line.c_str(), "Kd %f %f %f", &material.Kd.x, &material.Kd.y, &material.Kd.z);
             }
             if (StartWith(line, "Ns")){
-                Material& material = materialMap[mtlName]; 
+                Material& material = materialMap[std::string(mtlName)]; 
                 sscanf(line.c_str(), "Ns %f", &material.shininess);
             }
             if (StartWith(line, "Ka")){
-                Material& material = materialMap[mtlName]; 
+                Material& material = materialMap[std::string(mtlName)]; 
                 sscanf(line.c_str(), "Ka %f %f %f", &material.Ka.x, &material.Ka.y, &material.Ka.z);
             }
             if (StartWith(line, "Ks")){
-                Material& material = materialMap[mtlName]; 
+                Material& material = materialMap[std::string(mtlName)]; 
                 sscanf(line.c_str(), "Ks %f %f %f", &material.Ks.x, &material.Ks.y, &material.Ks.z);
             }
             if (StartWith(line, "map_Kd")){
-                Material& material = materialMap[mtlName]; 
+                Material& material = materialMap[std::string(mtlName)]; 
                 char path[100]; 
                 sscanf(line.c_str(), "map_Kd %s", path);
                 material.path = path ; 

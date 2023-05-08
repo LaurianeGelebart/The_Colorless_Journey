@@ -30,8 +30,7 @@ class Object {
         void deleteVAO_VBO();
 
         Vec get_position() const; 
-        void draw(const FreeflyCamera &ViewMatrix, const int window_width, const int window_height, std::map<std::string, Material>& materialMap); 
-
+        void draw(const FreeflyCamera &ViewMatrix, const int window_width, const int window_height, std::map<std::string, Material>& materialMap, GLuint& texture); 
 
         // GLuint     brick_texture;
         // GLuint     wood_texture;

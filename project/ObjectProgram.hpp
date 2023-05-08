@@ -10,8 +10,7 @@ struct ObjectProgram
     GLint      uMVMatrix;
     GLint      uNormalMatrix;
 
-    GLint uTexture1;
-    GLint uTexture2;
+    GLint uTexture;
 
     GLint uKd;
     GLint uKs;
@@ -28,8 +27,7 @@ struct ObjectProgram
         uMVMatrix     = glGetUniformLocation(m_Program.id(), "uMVMatrix");
         uNormalMatrix = glGetUniformLocation(m_Program.id(), "uNormalMatrix");
         
-        uTexture1 = glGetUniformLocation(m_Program.id(), "uTexture1");
-        uTexture2 = glGetUniformLocation(m_Program.id(), "uTexture2");
+        uTexture = glGetUniformLocation(m_Program.id(), "uTexture");
 
         uKd        = glGetUniformLocation(m_Program.id(), "uKd");
         uKs        = glGetUniformLocation(m_Program.id(), "uKs");

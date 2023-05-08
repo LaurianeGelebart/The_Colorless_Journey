@@ -13,7 +13,6 @@ Boid::Boid(std::vector<FacesGroup> facesGroup, ObjectProgram& program)
     float angle = (float)(p6::random::integer(0, 360))*M_PI/180.0; 
     float angleZ = (float)(p6::random::integer(0, 360))*M_PI/180.0; 
     this->_velocity = Vec(cos(angle), sin(angle) ,cos(angleZ)) ;
-    this->_color = {0.5f, 0.2f, 0.2f} ; 
 }
 
 Vec Boid::get_velocity() const
@@ -24,11 +23,6 @@ Vec Boid::get_velocity() const
 void Boid::update_position() 
 {
     this->_position =  this->_position + this->_velocity ;
-}
-
-void Boid::set_color(p6::Color color)
-{
-    this->_color = color ; 
 }
 
 
@@ -96,8 +90,7 @@ void Boid::collision_obstacles(const std::vector<Obstacle>& obstacles, IHM ihm)
 {
     for(auto obstacle : obstacles){
         double distance = glm::distance(obstacle.get_position(), this->_position);
-        //    std::cout << " x : " << obstacles[i].get_position().x << " y : " << obstacles[i].get_position().y << " z : " << obstacles[i].get_position().z << " Distance : " << distance <<"\n"; 
-        
+
         if(distance < 2){
         // if(distance < obstacles[i].get_radius()){
             // if (this->_position.x > obstacles[i].get_position().x){

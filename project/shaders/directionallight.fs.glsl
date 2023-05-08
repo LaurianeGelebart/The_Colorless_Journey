@@ -11,8 +11,7 @@ uniform float uShininess;
 uniform vec3 uLightDir_vs; 
 uniform vec3 uLightIntensity;
 
-uniform sampler3D uTexture1; 
-uniform sampler3D uTexture2;
+uniform sampler3D uTexture; 
 
 
 out vec3 fFragColor;
@@ -33,9 +32,9 @@ vec3 blinnPhong()
 
 void main()
 {
-  fFragColor = vec3(0.2,0.5,0.5); 
-    fFragColor =  blinnPhong();
-    // fFragColor = vec3(vFragTexture); 
-  //fFragColor = vec3(texture(uTexture1, vFragTexture).xyz) + vec3(texture(uTexture2, vFragTexture).xyz) ;
+//  fFragColor = vec3(vFragTexture); 
+    //fFragColor =  blinnPhong();
+    fFragColor = uKd; 
+    //fFragColor = vec3(texture(uTexture, vFragTexture).xyz) ;
 
 }
