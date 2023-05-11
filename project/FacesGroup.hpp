@@ -22,7 +22,7 @@ class FacesGroup{
         GLuint getVBO() const; 
         std::vector<float> getVertextData() const; 
 
-        void setVertexData(int vIdx, int tIdx, int nIdx, std::vector<Position>& vertices, std::vector<Texture>& textures, std::vector<Normal>& normals); 
+        void setVertexData(int vIdx, int tIdx, int nIdx, std::vector<CordPosition>& vertices, std::vector<CordTexture>& textures, std::vector<CordNormal>& normals); 
        
     };
 

@@ -1,9 +1,9 @@
-#include "glimac/FreeflyCamera.hpp"
+#include "FreeflyCamera.hpp"
 
 #include <glm/gtc/constants.hpp>
 
 FreeflyCamera::FreeflyCamera() :
-    m_Position(0.f, 0.f, 2.f),
+    m_Position(0.f, 0.1, 2.f),
     m_fPhi(glm::pi<float>()),
     m_fTheta(0.f)
 {
@@ -37,6 +37,11 @@ glm::mat4 FreeflyCamera::getViewMatrix() const
     return glm::lookAt(m_Position, m_Position + m_FrontVector, m_UpVector);
 }
 
+glm::vec3 FreeflyCamera::getPosition() const
+{
+    return this->m_Position;
+}
+
 void FreeflyCamera::computeDirectionVectors()
 {
     m_FrontVector = glm::vec3(
@@ -51,4 +56,17 @@ void FreeflyCamera::computeDirectionVectors()
     );
 
     m_UpVector = glm::cross(m_FrontVector, m_LeftVector);
+}
+
+glm::vec3 FreeflyCamera::getFront() const {
+    // Calculer la direction vers laquelle la caméra est orientée en utilisant la formule de la sphère
+    // https://en.wikipedia.org/wiki/Spherical_coordinate_system#Cartesian_coordinates
+    float sinPhi = sin(m_fPhi);
+    float cosPhi = cos(m_fPhi);
+    float sinTheta = sin(m_fTheta);
+    float cosTheta = cos(m_fTheta);
+    glm::vec3 dir(cosTheta * sinPhi, sinTheta, cosTheta * cosPhi);
+
+    // Normaliser le vecteur de direction
+    return glm::normalize(dir);
 }

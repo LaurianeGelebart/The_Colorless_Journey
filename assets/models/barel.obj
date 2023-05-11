@@ -1,6 +1,6 @@
 # Blender 3.3.1
 # www.blender.org
-mtllib barel.mtl
+mtllib  ./assets/models/barel.mtl
 o Cylinder.013
 v -8.895785 0.098574 -2.668392
 v -8.895785 0.875114 -2.668792

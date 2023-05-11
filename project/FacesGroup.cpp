@@ -30,7 +30,7 @@ std::string FacesGroup::getName() const
 } 
 
 void FacesGroup::setVertexData(int vIdx, int tIdx, int nIdx,
-    std::vector<Position>& vertices, std::vector<Texture>& textures, std::vector<Normal>& normals)
+    std::vector<CordPosition>& vertices, std::vector<CordTexture>& textures, std::vector<CordNormal>& normals)
 {
 
     if (vIdx < 1 || vIdx > vertices.size()) {
@@ -43,13 +43,13 @@ void FacesGroup::setVertexData(int vIdx, int tIdx, int nIdx,
         return;
     }
 
-    Position p = vertices[vIdx-1]; 
+    CordPosition p = vertices[vIdx-1]; 
     // std::cout << "tab vertices : " << vertices[vIdx-1].x << "\n";
 
-    Texture t = textures[tIdx-1]; 
+    CordTexture t = textures[tIdx-1]; 
     // std::cout << "tab textures : " << textures[tIdx-1].x << "\n";
 
-    Normal n = normals[nIdx-1]; 
+    CordNormal n = normals[nIdx-1]; 
     // std::cout << "tab normals : " << normals[nIdx-1].x << "\n\n";
 
 

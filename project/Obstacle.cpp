@@ -9,7 +9,16 @@
 Obstacle::Obstacle(std::vector<FacesGroup> facesGroup, ObjectProgram& program)
 :Object(facesGroup, program) 
 {
-    this->_position = Vec(glm::ballRand(7.0)); 
+    this->_position = Vec(glm::ballRand(20.0)); 
+    this->_position.y = 0.0; 
+    this->_radius = p6::random::number(0.1, 0.2) ; 
+}
+
+Obstacle::Obstacle(std::vector<FacesGroup> facesGroup, ObjectProgram& program, Vec position)
+:Object(facesGroup, program)
+{
+    this->_position = position; 
+    this->_position.y = 0.0; 
     this->_radius = p6::random::number(0.1, 0.2) ; 
 }
 

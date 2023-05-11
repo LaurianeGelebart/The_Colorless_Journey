@@ -10,7 +10,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd ./assets/textures/red_brick_draw.png
+map_Kd ./assets/textures/brick.png
 
 newmtl bois
 Ns 250.000000
@@ -21,7 +21,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd ./assets/textures/rough_wood_diff_4k_draw.png
+map_Kd  ./assets/textures/wood.png
 
 newmtl tour
 Ns 250.000000

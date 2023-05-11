@@ -1,6 +1,6 @@
 # Blender 3.3.1
 # www.blender.org
-mtllib house.mtl
+mtllib ./assets/models/house.mtl
 o Cube
 v -11.858105 -0.007945 0.405551
 v -7.221321 -0.007945 0.462350

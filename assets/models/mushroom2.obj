@@ -1,6 +1,6 @@
 # Blender 3.3.1
 # www.blender.org
-mtllib mushroom2.mtl
+mtllib ./assets/models/mushroom2.mtl
 o Cylinder.005
 v -5.860295 0.013055 5.419236
 v -5.860295 0.309306 5.469553

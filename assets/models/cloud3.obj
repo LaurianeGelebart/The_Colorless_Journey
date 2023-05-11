@@ -1,6 +1,6 @@
 # Blender 3.3.1
 # www.blender.org
-mtllib cloud3.mtl
+mtllib ./assets/models/cloud3.mtl
 o Cylinder.008
 v 5.481912 7.863350 -4.619111
 v 5.481912 8.048595 -4.619111
@@ -2237,7 +2237,7 @@ vt 0.724913 0.488685
 vt -0.020102 1.467004
 vt 0.016667 1.000000
 s 1
-usemtl cloud.002
+usemtl cloud
 f 2/4/1 3/7/2 1/1/1
 f 4/9/2 5/11/3 3/7/2
 f 6/13/3 7/15/4 5/11/3

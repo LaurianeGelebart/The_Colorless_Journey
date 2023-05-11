@@ -19,7 +19,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:/Users/lauri/Documents/IMAC/Blender/Assets/Textures/door_brick_draw.png
+map_Kd ./assets/textures/door_brick.png
 
 newmtl fenetre
 Ns 250.000000
@@ -29,7 +29,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:/Users/lauri/Documents/IMAC/Blender/Assets/Textures/window_brick_draw.png
+map_Kd ./assets/textures/window_brick.png
 
 newmtl mur
 Ka 1.000000 1.000000 1.000000
@@ -38,9 +38,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:/Users/lauri/Documents/IMAC/Blender/Assets/Textures/red_brick_draw.png
-map_Ns C:/Users/lauri/Documents/IMAC/Blender/Assets/Textures/red_bricks/red_brick_03_rough_4k.jpg
-map_Bump -bm 1.000000 C:/Users/lauri/Documents/IMAC/Blender/Assets/Textures/red_bricks/red_brick_03_nor_gl_4k.exr
+map_Kd ./assets/textures/brick.png
 
 newmtl toit
 Ns 250.000000
@@ -50,7 +48,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:/Users/lauri/Documents/IMAC/Blender/Assets/Textures/roof/rough_draw.png
+map_Kd ./assets/textures/rough.png
 
 newmtl toit_devant
 Ns 250.000000
@@ -60,4 +58,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd C:/Users/lauri/Documents/IMAC/Blender/Assets/Textures/window_brick_draw2.png
+map_Kd ./assets/textures/window_brick2.png

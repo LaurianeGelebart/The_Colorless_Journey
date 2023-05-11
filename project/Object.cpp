@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "glimac/FreeflyCamera.hpp"
+#include "FreeflyCamera.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
 #include "p6/p6.h"
@@ -15,23 +15,7 @@
 
 Object::Object(std::vector<FacesGroup> facesGroup, ObjectProgram& program)
  :  _facesGroup(facesGroup), _program(program)
-{      
-    // GLuint     wood_texture;
-    // glGenTextures(1, &wood_texture);
-    // glBindTexture(GL_TEXTURE_2D, wood_texture);
-    // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, wood.width(), wood.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, wood.data());
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    // glBindTexture(GL_TEXTURE_2D, 0);
-
-    // GLuint     brick_texture;
-    // glGenTextures(1, &brick_texture);
-    // glBindTexture(GL_TEXTURE_2D, brick_texture);
-    // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, brick.width(), brick.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, brick.data());
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    // glBindTexture(GL_TEXTURE_2D, 0)    
-}
+{}
 
 Object::~Object(){}
 
@@ -41,15 +25,15 @@ Vec Object::get_position() const
     return this->_position ; 
 }
 
-void Object::draw(const FreeflyCamera &ViewMatrix, const int window_width, const int window_height, std::map<std::string, Material>& materialMap, GLuint& texture)
+void Object::draw(const FreeflyCamera &ViewMatrix, const int window_width, const int window_height, std::map<std::string, Material>& materialMap)
 {  
     this->_program.m_Program.use() ; 
 
     glm::mat4 MVMatrix = ViewMatrix.getViewMatrix();
-    MVMatrix = glm::scale(MVMatrix, glm::vec3(0.05));
+    MVMatrix = glm::scale(MVMatrix, glm::vec3(this->_scale));
     MVMatrix = glm::translate(MVMatrix, glm::vec3(this->_position));
 
-    // std::cout<< this->_position.x << "-"<<this->_position.y << "-" << this->_position.z << "\n"; 
+    // std::cout<< this->texture << "\n"; 
     
     glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), (float)window_width / (float)window_height, 0.1f, 100.f);
     glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
@@ -78,15 +62,14 @@ void Object::draw(const FreeflyCamera &ViewMatrix, const int window_width, const
         glUniform3fv(this->_program.uLightDir_vs, 1, glm::value_ptr(lightDir));
         glUniform3fv(this->_program.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.2)));
 
+// std::cout << face.getName() << " - " << materialMap[face.getName()].texture._slot << "\n";
 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture);
-
+        materialMap[face.getName()].texture.Bind();
 
         glDrawArrays(GL_TRIANGLES, 0, face.getVertextCount());
 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, 0);
+        materialMap[face.getName()].texture.UnBind();
+
 
 		glBindVertexArray(0) ;
     }

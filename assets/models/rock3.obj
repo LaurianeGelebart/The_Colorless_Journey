@@ -1,6 +1,6 @@
 # Blender 3.3.1
 # www.blender.org
-mtllib rock3.mtl
+mtllib ./assets/models/rock3.mtl
 o Sphere.002
 v -1.390540 0.239991 2.880789
 v -1.403263 0.190309 2.843241
@@ -1526,7 +1526,7 @@ vt 0.563796 0.552822
 vt 0.563796 0.529515
 vt 0.563796 0.506208
 s 1
-usemtl rock.002
+usemtl rock
 f 478/555/1 15/15/2 16/16/3
 f 475/552/4 9/9/5 1/1/6
 f 6/6/7 16/16/3 17/17/8

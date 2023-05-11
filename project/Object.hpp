@@ -5,7 +5,7 @@
 
 #include "p6/p6.h"
 
-#include "glimac/FreeflyCamera.hpp"
+#include "FreeflyCamera.hpp"
 #include "FacesGroup.hpp"
 #include "ObjectProgram.hpp"
 #include "Material.hpp"
@@ -20,6 +20,7 @@ class Object {
 
     protected : 
         Vec _position ; 
+        float _scale  = 0.1 ; 
         std::vector<FacesGroup> _facesGroup; 
         ObjectProgram& _program; 
 
@@ -30,7 +31,7 @@ class Object {
         void deleteVAO_VBO();
 
         Vec get_position() const; 
-        void draw(const FreeflyCamera &ViewMatrix, const int window_width, const int window_height, std::map<std::string, Material>& materialMap, GLuint& texture); 
+        void draw(const FreeflyCamera &ViewMatrix, const int window_width, const int window_height, std::map<std::string, Material>& materialMap); 
 
         // GLuint     brick_texture;
         // GLuint     wood_texture;

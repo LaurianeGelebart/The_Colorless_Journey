@@ -16,6 +16,7 @@ class Obstacle : public Object
         
     public : 
         Obstacle(std::vector<FacesGroup> facesGroup, ObjectProgram& program);
+        Obstacle(std::vector<FacesGroup> facesGroup, ObjectProgram& program, Vec position);
 
         float get_radius() const; 
 }; 

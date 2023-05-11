@@ -71,3 +71,4 @@ int IHM::get_nb_obstacles() {
 int IHM::get_nb_boids() {
   return this->_nb_boids ; 
 }
+
