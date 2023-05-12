@@ -53,7 +53,11 @@ void Object::draw(const FreeflyCamera &ViewMatrix, const int window_width, const
         glUniformMatrix4fv(this->_program.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
         glUniformMatrix4fv(this->_program.uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
        
-        glUniform1i(this->_program.uTexture, 0);
+       if(materialMap[face.getName()].texture._slot >= 0){
+            glUniform1i(this->_program.uTexture, materialMap[face.getName()].texture._slot);
+       }else{
+            glUniform1i(this->_program.uTexture, 0);
+       }
 
         glUniform1f(this->_program.uShininess, materialMap[face.getName()].shininess);
         glUniform3fv(this->_program.uKd, 1, glm::value_ptr(materialMap[face.getName()].Kd));
@@ -80,8 +84,10 @@ void Object::deleteVAO_VBO()
 {
     for(auto face : this->_facesGroup ){
         GLuint vbo = face.getVBO(); 
+        GLuint ibo = face.getIBO(); 
         GLuint vao = face.getVAO(); 
         glDeleteBuffers(0, &vbo);
+        glDeleteBuffers(0, &ibo); 
         glDeleteVertexArrays(0, &vao);
     }
 }

@@ -16,4 +16,4 @@ struct Material{
 
 struct CordPosition {float x, y, z ;} ; 
 struct CordNormal {float x, y, z ;} ;
-struct CordTexture {float x, y, z ;} ;
+struct CordTexture {float x, y ;} ;

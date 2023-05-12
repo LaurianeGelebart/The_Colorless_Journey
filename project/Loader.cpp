@@ -45,7 +45,7 @@ std::vector<FacesGroup> Loader::LoadFromFile(const std::string name, std::map<st
             }
             if (StartWith(line, "vt ")){
                 CordTexture t ; 
-                sscanf(line.c_str(), "vt %f %f %f", &t.x, &t.y, &t.z);
+                sscanf(line.c_str(), "vt %f %f", &t.x, &t.y);
                 textures.push_back(t); 
             }
             if (StartWith(line, "usemtl")){
@@ -63,7 +63,7 @@ std::vector<FacesGroup> Loader::LoadFromFile(const std::string name, std::map<st
             }
         }
         for (int i=0; i<=currentGroup; i++){
-            objPart[i].createVBO();
+            objPart[i].createVBO_IBO_VAO();
         }
         return objPart ; 
     }

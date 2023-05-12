@@ -182,7 +182,7 @@ int nb_slot = 0;
     Content box(content, magicProgram) ;
     Arpenteur Gaspard(barel, puitProgram) ; 
 
-
+glDisable(GL_CULL_FACE) ; 
 
 
 /* ---------------------------------------------------------------------------- */

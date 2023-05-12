@@ -54,19 +54,23 @@ void FacesGroup::setVertexData(int vIdx, int tIdx, int nIdx,
 
 
    this->_VertexData.push_back(p.x); 
-
-    // std::cout << "Data ? " << this << " From " << this->_name << "\n" ;
-//0x7fff67a2e560 
    this->_VertexData.push_back(p.y); 
    this->_VertexData.push_back(p.z); 
    this->_VertexData.push_back(t.x); 
    this->_VertexData.push_back(t.y); 
-   this->_VertexData.push_back(t.z); 
    this->_VertexData.push_back(n.x); 
    this->_VertexData.push_back(n.y); 
-   this->_VertexData.push_back(n.z); 
+   this->_VertexData.push_back(n.z);
+
+   this->_VertexIndices.push_back(vIdx);
 }
 
+void FacesGroup::createVBO_IBO_VAO()
+{
+    this->createVBO(); 
+    this->createIBO();
+    this->createVAO();
+}
 
 void FacesGroup::createVBO()
 {
@@ -75,15 +79,24 @@ void FacesGroup::createVBO()
     
     std::vector<float> vertices = this->_VertexData;
 
-    glBufferData(GL_ARRAY_BUFFER, this->_VertexData.size()*sizeof(float), &(this->_VertexData[0]), GL_STATIC_DRAW);
-    
-    this->createVAO();
+    glBufferData(GL_ARRAY_BUFFER, this->_VertexData.size()*sizeof(GLfloat), &(this->_VertexData[0]), GL_STATIC_DRAW);
+}
+
+void FacesGroup::createIBO()
+{
+    glGenBuffers(1, &(this->_ibo));
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->_ibo);
+
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->_VertexIndices.size()*sizeof(int), this->_VertexIndices.data(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void FacesGroup::createVAO()
 {
     glGenVertexArrays(1, &(this->_vao)) ;
     glBindVertexArray(this->_vao) ;
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->_ibo);
 
     const GLuint VERTEX_ATTR_POSITION = 0;
     const GLuint VERTEX_ATTR_NORMAL = 1;
@@ -95,13 +108,12 @@ void FacesGroup::createVAO()
 
     glBindBuffer(GL_ARRAY_BUFFER, this->_vbo);
 
-    glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, 9*sizeof(float), 0); //(const GLvoid*)offsetof(glimac::ShapeVertex, position));
-    glVertexAttribPointer(VERTEX_ATTR_NORMAL, 3, GL_FLOAT, GL_FALSE, 9*sizeof(float), (void*)(6*sizeof(float))); //(const GLvoid*)offsetof(glimac::ShapeVertex, normal));
-    glVertexAttribPointer(VERTEX_ATTR_TEXCOORDS, 3, GL_FLOAT, GL_FALSE, 9*sizeof(float), (void*)(3*sizeof(float))); //(const GLvoid*)offsetof(glimac::ShapeVertex, texCoords));
+    glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), 0); //(const GLvoid*)offsetof(glimac::ShapeVertex, position));
+    glVertexAttribPointer(VERTEX_ATTR_NORMAL, 3, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void*)(5*sizeof(float))); //(const GLvoid*)offsetof(glimac::ShapeVertex, normal));
+    glVertexAttribPointer(VERTEX_ATTR_TEXCOORDS, 2, GL_FLOAT, GL_FALSE, 8*sizeof(float), (void*)(3*sizeof(float))); //(const GLvoid*)offsetof(glimac::ShapeVertex, texCoords));
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glBindVertexArray(0) ;
-
 }
 
 GLuint FacesGroup::getVAO() const
@@ -112,4 +124,9 @@ GLuint FacesGroup::getVAO() const
 GLuint FacesGroup::getVBO() const
 {
     return this->_vbo ; 
+}
+
+GLuint FacesGroup::getIBO() const
+{
+    return this->_ibo ; 
 }
