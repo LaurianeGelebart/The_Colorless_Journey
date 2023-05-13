@@ -2,10 +2,13 @@
 
 #include <cstdlib>
 #include <vector>
-#include "Obstacle.hpp"
+
+#include "p6/p6.h"
 
 #include "Object.hpp"
-#include "p6/p6.h"
+#include "Obstacle.hpp"
+
+#include "IHM.hpp"
 
 class Boid : public Object
 {
@@ -16,7 +19,7 @@ class Boid : public Object
 
         
     public : 
-        Boid(std::vector<FacesGroup> facesGroup, ObjectProgram& program);
+        Boid(std::vector<FacesGroup> facesGroup, ObjectProgram& program, Vec magicPos);
 
         Vec get_velocity() const; 
 
@@ -24,7 +27,7 @@ class Boid : public Object
 
         void collision(const std::vector<Boid>& boids, const std::vector<Obstacle>& obstacles, IHM ihm, p6::Context& ctx);  
         void collision_bords(IHM ihm, p6::Context& ctx); 
-        void bounce(Obstacle obstacle); 
+        void bounce(Obstacle& obstacle); 
         void collision_obstacles(const std::vector<Obstacle>& obstacles, IHM ihm); 
         void collision_boids(const std::vector<Boid>& boids, IHM ihm);
 

@@ -21,13 +21,28 @@ std::vector<float> FacesGroup::getVertextData() const
 
 int FacesGroup::getVertextCount() const
 {
-    return this->_VertexData.size() / 9; 
+    return this->_VertexData.size() / 8; 
 } 
 
 std::string FacesGroup::getName() const
 {
     return this->_name; 
 } 
+
+GLuint FacesGroup::getVAO() const
+{
+    return this->_vao ; 
+}
+
+GLuint FacesGroup::getVBO() const
+{
+    return this->_vbo ; 
+}
+
+GLuint FacesGroup::getIBO() const
+{
+    return this->_ibo ; 
+}
 
 void FacesGroup::setVertexData(int vIdx, int tIdx, int nIdx,
     std::vector<CordPosition>& vertices, std::vector<CordTexture>& textures, std::vector<CordNormal>& normals)
@@ -74,6 +89,29 @@ void FacesGroup::createVBO_IBO_VAO()
 
 void FacesGroup::createVBO()
 {
+   this->_VertexData.push_back(this->_VertexData[0]); 
+   this->_VertexData.push_back(this->_VertexData[1]); 
+   this->_VertexData.push_back(this->_VertexData[2]); 
+   this->_VertexData.push_back(this->_VertexData[3]); 
+   this->_VertexData.push_back(this->_VertexData[4]); 
+   this->_VertexData.push_back(this->_VertexData[5]); 
+   this->_VertexData.push_back(this->_VertexData[6]); 
+   this->_VertexData.push_back(this->_VertexData[7]);
+
+   this->_VertexIndices.push_back(0);
+
+   this->_VertexData.push_back(this->_VertexData[8]); 
+   this->_VertexData.push_back(this->_VertexData[9]); 
+   this->_VertexData.push_back(this->_VertexData[10]); 
+   this->_VertexData.push_back(this->_VertexData[11]); 
+   this->_VertexData.push_back(this->_VertexData[12]); 
+   this->_VertexData.push_back(this->_VertexData[13]); 
+   this->_VertexData.push_back(this->_VertexData[14]); 
+   this->_VertexData.push_back(this->_VertexData[15]);
+
+   this->_VertexIndices.push_back(1);
+
+
     glGenBuffers(1, &(this->_vbo));
     glBindBuffer(GL_ARRAY_BUFFER, this->_vbo);
     
@@ -114,19 +152,4 @@ void FacesGroup::createVAO()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glBindVertexArray(0) ;
-}
-
-GLuint FacesGroup::getVAO() const
-{
-    return this->_vao ; 
-}
-
-GLuint FacesGroup::getVBO() const
-{
-    return this->_vbo ; 
-}
-
-GLuint FacesGroup::getIBO() const
-{
-    return this->_ibo ; 
 }

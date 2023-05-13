@@ -1,64 +1,29 @@
 #include <vector>
 #include <map>
-#include "FreeflyCamera.hpp"
+
 #include "glimac/sphere_vertices.hpp"
 #include "glm/ext/scalar_constants.hpp"
 #include "glm/gtc/random.hpp"
 #include "glm/gtc/type_ptr.hpp"
+
 #include "p6/p6.h"
 
-#include "IHM.hpp"
-#include "Obstacle.hpp"
+#include "Arpenteur.hpp"
 #include "Boid.hpp"
+#include "Cloud.hpp"
+#include "Content.hpp"
+#include "FacesGroup.hpp"
+#include "FreeflyCamera.hpp"
+#include "IHM.hpp"
+#include "Loader.hpp"
+#include "Obstacle.hpp"
 #include "Object.hpp"
 #include "ObjectProgram.hpp"
-#include "Loader.hpp"
-#include "FacesGroup.hpp"
-#include "Cloud.hpp"
-#include "Arpenteur.hpp"
-#include "Content.hpp"
 #include "Texture.hpp"
+// #include "TrackballCamera.hpp"
 
 
 #include "test.hpp"
-
-
-
-// void add_or_remove_boids(IHM &ihm, ObjectProgram &puitProgram, ObjModel &puit)
-// {
-//     int nb_boids = boids.size();
-//      if (nb_boids<ihm.get_nb_boids()){
-//         for(int i=0 ; i< ihm.get_nb_boids()-nb_boids ; i++){
-//             Boid b(puit, puitProgram) ;
-//             boids.push_back(b);
-//         }
-//         nb_boids = ihm.get_nb_boids();
-//     }
-//     else if (nb_boids>ihm.get_nb_boids()){
-//         for(int i=0 ; i< nb_boids-ihm.get_nb_boids() ; i++){
-//             boids.pop_back();
-//         }
-//         nb_boids = ihm.get_nb_boids();
-//     }
-// }
-// void add_or_remove_obstacles(IHM &ihm, ObjectProgram &magicProgram, ObjModel &magic)
-// {
-//     int nb_obstacles = obstacles.size();
-//     if (nb_obstacles<ihm.get_nb_obstacles()){
-//         for(int i=0 ; i< ihm.get_nb_obstacles()-nb_obstacles ; i++){
-//             Obstacle o(magic, magicProgram) ;
-//             obstacles.push_back(o);
-//         }
-//         nb_obstacles = ihm.get_nb_obstacles();
-//     }
-//     else if (nb_obstacles>ihm.get_nb_obstacles()){
-//         for(int i=0 ; i< nb_obstacles-ihm.get_nb_obstacles() ; i++){
-//             obstacles.pop_back();
-//         }
-//         nb_obstacles = ihm.get_nb_obstacles();
-//     }
-// }
-
 
 
 
@@ -74,36 +39,8 @@ int main()
 
     glEnable(GL_DEPTH_TEST) ;
 
-        img::Image wood = p6::load_image_buffer("./assets/textures/wood.png") ;   
-        img::Image brick = p6::load_image_buffer("./assets/textures/red_brick_draw.png") ;   
-        // std::vector<img::Image> textures ; 
-        
-        // GLuint wood_texture;
-        // glGenTextures(1, &wood_texture);
-        // glBindTexture(GL_TEXTURE_2D);
-        // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, wood.width(), wood.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, wood.data());
-        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        // glBindTexture(GL_TEXTURE_2D, 0);
-
-        // GLuint     brick_texture;
-        // glGenTextures(1, &brick_texture);
-        // glBindTexture(GL_TEXTURE_2D, brick_texture);
-        // glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, brick.width(), brick.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, brick.data());
-        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        // glBindTexture(GL_TEXTURE_2D, 0);
-
-        // wood = p6::load_image_buffer("./assets/textures/stele.png") ;   
-
-        // textures.push_back(p6::load_image_buffer("./assets/textures/wood.png"));
-        // textures.push_back(p6::load_image_buffer("./assets/textures/red_brick_draw.png"));
-        // textures.push_back(p6::load_image_buffer("./assets/textures/stele.png"));
-        // textures.push_back(p6::load_image_buffer("./assets/textures/rock.png"));
-
-        ObjectProgram magicProgram ; 
-        ObjectProgram puitProgram ; 
-
+    ObjectProgram magicProgram ; 
+    ObjectProgram puitProgram ; 
 
     std::vector<Boid> boids;
     std::vector<Obstacle> obstacles;
@@ -119,7 +56,8 @@ int main()
 
     IHM ihm ;
     Loader loader ; 
-int nb_slot = 0;
+    int nb_slot = 0;
+
     std::vector<FacesGroup> puit = loader.LoadFromFile("./assets/models/puit.obj", materialMap, nb_slot);
     std::vector<FacesGroup> magic = loader.LoadFromFile("./assets/models/magique.obj", materialMap, nb_slot);
     std::vector<FacesGroup> content = loader.LoadFromFile("./assets/models/content.obj", materialMap, nb_slot);
@@ -136,11 +74,14 @@ int nb_slot = 0;
     std::vector<FacesGroup> rail = loader.LoadFromFile("./assets/models/rail.obj", materialMap, nb_slot);
     std::vector<FacesGroup> barel = loader.LoadFromFile("./assets/models/barel.obj", materialMap, nb_slot);
     std::vector<FacesGroup> cloud = loader.LoadFromFile("./assets/models/cloud1.obj", materialMap, nb_slot);
-    // std::vector<FacesGroup> panneau = loader.LoadFromFile("./assets/models/panneau.obj", materialMap, nb_slot);
+    std::vector<FacesGroup> panneau = loader.LoadFromFile("./assets/models/panneau.obj", materialMap, nb_slot);
+    std::vector<FacesGroup> sphere = loader.LoadFromFile("./assets/models/sphere.obj", materialMap, nb_slot);
 
+
+    Vec magicPos = Vec(12.0, 0.0, -12.0); 
     
      for(int i=0 ; i<ihm.get_nb_boids() ; i++){
-         Boid b(rock1, puitProgram) ;
+         Boid b(sphere, puitProgram, magicPos) ;
          boids.push_back(b);
      }
 
@@ -170,8 +111,8 @@ int nb_slot = 0;
     obstacles.push_back(Obstacle(rail, magicProgram, Vec(-18.0, 0.0, 18.0))) ;
     obstacles.push_back(Obstacle(rocks, magicProgram, Vec(-4.0, 0.0, 4.0))) ;
     obstacles.push_back(Obstacle(barel, magicProgram, Vec(-4.0, 0.0, 0.0))) ;
-    obstacles.push_back(Obstacle(magic, magicProgram, Vec(4.0, 0.0, -15.0))) ;
-    // obstacles.push_back(Obstacle(panneau, magicProgram)) ;
+    obstacles.push_back(Obstacle(magic, magicProgram, magicPos)) ;
+    obstacles.push_back(Obstacle(panneau, magicProgram, Vec(-10.0, 0.0, 13.0))) ;
 
 
     for(int i=0 ; i<3 ; i++){
@@ -236,8 +177,8 @@ glDisable(GL_CULL_FACE) ;
 
         ihm.draw();
 
-    //    add_or_remove_boids(ihm, puitProgram, puit) ;
-    //    add_or_remove_obstacles(ihm, magicProgram, magic) ;
+        // ihm.add_or_remove_boids(boids, puitProgram, puit, magicPos) ;
+        // ihm.add_or_remove_obsZtacles(obstacles, puitProgram, magic) ;
 
     };
 

@@ -4,7 +4,7 @@
 
 struct ObjectProgram
 {
-    p6::Shader m_Program;
+    p6::Shader _Program;
 
     GLint      uMVPMatrix;
     GLint      uMVMatrix;
@@ -16,25 +16,24 @@ struct ObjectProgram
     GLint uKs;
     GLint uShininess;
 
-    //GLint uLightPos_vs;
+    GLint uLightPos_vs;
     GLint uLightDir_vs;
     GLint uLightIntensity;
 
-    // ObstaclesProgram() : m_Program(p6::load_shader("shaders/3D.vs.glsl", "shaders/pointlight.fs.glsl"))
-    ObjectProgram() : m_Program(p6::load_shader("shaders/3D.vs.glsl", "shaders/directionallight.fs.glsl"))
+    ObjectProgram() : _Program(p6::load_shader("shaders/3D.vs.glsl", "shaders/texture.fs.glsl"))
     {
-        uMVPMatrix    = glGetUniformLocation(m_Program.id(), "uMVPMatrix");
-        uMVMatrix     = glGetUniformLocation(m_Program.id(), "uMVMatrix");
-        uNormalMatrix = glGetUniformLocation(m_Program.id(), "uNormalMatrix");
+        uMVPMatrix    = glGetUniformLocation(_Program.id(), "uMVPMatrix");
+        uMVMatrix     = glGetUniformLocation(_Program.id(), "uMVMatrix");
+        uNormalMatrix = glGetUniformLocation(_Program.id(), "uNormalMatrix");
         
-        uTexture = glGetUniformLocation(m_Program.id(), "uTexture");
+        uTexture = glGetUniformLocation(_Program.id(), "uTexture");
 
-        uKd        = glGetUniformLocation(m_Program.id(), "uKd");
-        uKs        = glGetUniformLocation(m_Program.id(), "uKs");
-        uShininess = glGetUniformLocation(m_Program.id(), "uShininess");
+        uKd        = glGetUniformLocation(_Program.id(), "uKd");
+        uKs        = glGetUniformLocation(_Program.id(), "uKs");
+        uShininess = glGetUniformLocation(_Program.id(), "uShininess");
 
-        //uLightPos_vs    = glGetUniformLocation(m_Program.id(), "uLightPos_vs");
-        uLightDir_vs    = glGetUniformLocation(m_Program.id(), "uLightDir_vs");
-        uLightIntensity = glGetUniformLocation(m_Program.id(), "uLightIntensity");
+        uLightPos_vs    = glGetUniformLocation(_Program.id(), "uLightPos_vs");
+        uLightDir_vs    = glGetUniformLocation(_Program.id(), "uLightDir_vs");
+        uLightIntensity = glGetUniformLocation(_Program.id(), "uLightIntensity");
     }
 };

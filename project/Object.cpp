@@ -27,21 +27,20 @@ Vec Object::get_position() const
 
 void Object::draw(const FreeflyCamera &ViewMatrix, const int window_width, const int window_height, std::map<std::string, Material>& materialMap)
 {  
-    this->_program.m_Program.use() ; 
+    this->_program._Program.use() ; 
 
     glm::mat4 MVMatrix = ViewMatrix.getViewMatrix();
     MVMatrix = glm::scale(MVMatrix, glm::vec3(this->_scale));
     MVMatrix = glm::translate(MVMatrix, glm::vec3(this->_position));
-
-    // std::cout<< this->texture << "\n"; 
     
     glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), (float)window_width / (float)window_height, 0.1f, 100.f);
     glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
 
     glm::mat4 VLightMatrix = ViewMatrix.getViewMatrix();
     //glm::mat4 MLightMatrix = glm::rotate(glm::mat4(1), ctx.time(), glm::vec3(0,1,0));
-    // glm::vec3 lightPos = glm::vec3( (MLightMatrix*VLightMatrix)*glm::vec4(1,1,0,1) );
-    //glm::vec3 lightDir = glm::vec3( (MLightMatrix*VLightMatrix)*glm::vec4(1,1,1,0) );
+    //glm::vec3 lightPos = glm::vec3( (MLightMatrix*VLightMatrix)*glm::vec4(1,1,0,1) );
+    glm::vec3 lightPos = glm::vec3( (VLightMatrix)*glm::vec4(1,1,0,1) );
+    // glm::vec3 lightDir = glm::vec3( (MLightMatrix*VLightMatrix)*glm::vec4(1,1,1,0) );
     glm::vec3 lightDir = glm::vec3( (VLightMatrix)*glm::vec4(1,1,1,0) );
 
 
@@ -62,7 +61,7 @@ void Object::draw(const FreeflyCamera &ViewMatrix, const int window_width, const
         glUniform1f(this->_program.uShininess, materialMap[face.getName()].shininess);
         glUniform3fv(this->_program.uKd, 1, glm::value_ptr(materialMap[face.getName()].Kd));
         glUniform3fv(this->_program.uKs, 1, glm::value_ptr(materialMap[face.getName()].Ks));
-        // glUniform3fv(moonProgram.uLightPos_vs, 1, glm::value_ptr(lightPos));
+        glUniform3fv(this->_program.uLightPos_vs, 1, glm::value_ptr(lightPos));
         glUniform3fv(this->_program.uLightDir_vs, 1, glm::value_ptr(lightDir));
         glUniform3fv(this->_program.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.2)));
 

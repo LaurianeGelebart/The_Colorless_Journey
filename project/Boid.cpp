@@ -1,18 +1,21 @@
-#include "IHM.hpp"
 #include "Boid.hpp"
 #include "glm/gtc/random.hpp"
 #include <iostream>
 #include <math.h>
 
+#include "IHM.hpp"
 
-Boid::Boid(std::vector<FacesGroup> facesGroup, ObjectProgram& program)
+
+Boid::Boid(std::vector<FacesGroup> facesGroup, ObjectProgram& program, Vec magicPos)
 :Object(facesGroup, program) 
 {
-    this->_position = Vec(glm::ballRand(2.0)) ;
+    this->_position = Vec(magicPos + Vec(glm::ballRand(2.0)));
     this->_borne_velocity = 0.003;  
+    // std::cout  << this->_position.x << " - " << this->_position.y << " - " << this->_position.z << " \n ";
     float angle = (float)(p6::random::integer(0, 360))*M_PI/180.0; 
     float angleZ = (float)(p6::random::integer(0, 360))*M_PI/180.0; 
     this->_velocity = Vec(cos(angle), sin(angle) ,cos(angleZ)) ;
+    this->_scale = p6::random::number(0.001, 0.002);
 }
 
 Vec Boid::get_velocity() const
@@ -66,22 +69,23 @@ void Boid::collision_boids(const std::vector<Boid>& boids, IHM ihm)
 
 void Boid::collision_bords(IHM ihm, p6::Context& ctx)
 {
-    if (this->_position.x > 2*(ctx.aspect_ratio()-ctx.aspect_ratio()*0.2)){ // TODO dont hardcode the 2: https://julesfouchy.github.io/p6-docs/tutorials/the-coordinate-system
+    float margin = 1; 
+    if (this->_position.x > 2*(ctx.aspect_ratio()-margin)){ // TODO dont hardcode the 2: https://julesfouchy.github.io/p6-docs/tutorials/the-coordinate-system
          this->_velocity.x = this->_velocity.x - ihm.get_turn_factor(); 
     }
-    if (this->_position.x < 2*(-ctx.aspect_ratio()+ctx.aspect_ratio()*0.2 )) {
+    if (this->_position.x < 2*(-ctx.aspect_ratio()+margin)) {
          this->_velocity.x = this->_velocity.x + ihm.get_turn_factor(); 
     }
-    if (this->_position.y > 2*(ctx.aspect_ratio()-ctx.aspect_ratio()*0.2)){
+    if (this->_position.y > 2*(ctx.aspect_ratio()-margin)){
          this->_velocity.y = this->_velocity.y - ihm.get_turn_factor(); 
     } 
-    if (this->_position.y < 2*(-ctx.aspect_ratio()+ctx.aspect_ratio()*0.2)){
+    if (this->_position.y < 2*(-ctx.aspect_ratio()+margin)){
          this->_velocity.y = this->_velocity.y +  ihm.get_turn_factor(); 
     }
-    if (this->_position.z > 2*(ctx.aspect_ratio()-ctx.aspect_ratio()*0.2)){
+    if (this->_position.z > 2*(ctx.aspect_ratio()-margin)){
          this->_velocity.z = this->_velocity.z - ihm.get_turn_factor(); 
     } 
-    if (this->_position.z < 2*(-ctx.aspect_ratio()+ctx.aspect_ratio()*0.2)){
+    if (this->_position.z < 2*(-ctx.aspect_ratio()+margin)){
          this->_velocity.z = this->_velocity.z +  ihm.get_turn_factor(); 
     }
 }
@@ -111,7 +115,7 @@ void Boid::collision_obstacles(const std::vector<Obstacle>& obstacles, IHM ihm)
     limit_speed(ihm); 
 } 
 
-void Boid::bounce(Obstacle obstacle)
+void Boid::bounce(Obstacle &obstacle)
 {
     Vec normal = Vec(this->_position.x - obstacle.get_position().x , this->_position.y - obstacle.get_position().y , this->_position.z - obstacle.get_position().z);
     normal = glm::normalize(normal); 

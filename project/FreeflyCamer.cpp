@@ -3,7 +3,7 @@
 #include <glm/gtc/constants.hpp>
 
 FreeflyCamera::FreeflyCamera() :
-    m_Position(0.f, 0.1, 2.f),
+    m_Position(0.f, 0.1, 1.5),
     m_fPhi(glm::pi<float>()),
     m_fTheta(0.f)
 {
