@@ -73,35 +73,3 @@ int IHM::get_nb_boids() {
 }
 
 
-
-// void IHM::add_or_remove_boids(std::vector<Boid> &boids, ObjectProgram &program, std::vector<FacesGroup> &model, Vec magicPos)
-// {
-//     int nb_boids = boids.size();
-//     if (nb_boids < this->_nb_boids){
-//         for(int i=0 ; i< this->_nb_boids-nb_boids ; i++){
-//             Boid b(model, program, magicPos) ;
-//             boids.push_back(b);
-//         }
-//     }
-//     else if (nb_boids > this->_nb_boids){
-//         for(int i=0 ; i< nb_boids-this->_nb_boids ; i++){
-//             boids.pop_back();
-//         }
-//     }
-// }
-
-// void IHM::add_or_remove_obstacles(std::vector<Obstacle> &obstacles, ObjectProgram &program, std::vector<FacesGroup> &model)
-// {
-//     int nb_obstacles = obstacles.size();
-//     if (nb_obstacles < this->_nb_obstacles){
-//         for(int i=0 ; i< this->_nb_obstacles-nb_obstacles ; i++){
-//             Obstacle o(model, program) ;
-//             obstacles.push_back(o);
-//         }
-//     }
-//     else if (nb_obstacles>this->_nb_obstacles){
-//         for(int i=0 ; i< nb_obstacles-this->_nb_obstacles ; i++){
-//             obstacles.pop_back();
-//         }
-//     }
-// }

@@ -15,8 +15,9 @@ class Arpenteur : public Object
     private :  
         
     public : 
+        // Arpenteur();
         Arpenteur(std::vector<FacesGroup> facesGroup, ObjectProgram& program);
-        Arpenteur(std::vector<FacesGroup> facesGroup, ObjectProgram& program, Vec position);
-
+        
+        // void init(std::vector<FacesGroup> facesGroup, ObjectProgram& program);
         void update_position(const FreeflyCamera &ViewMatrix); 
 }; 

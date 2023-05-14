@@ -17,7 +17,7 @@ Object::Object(std::vector<FacesGroup> facesGroup, ObjectProgram& program)
  :  _facesGroup(facesGroup), _program(program)
 {}
 
-Object::~Object(){}
+// Object::~Object(){}
 
 
 Vec Object::get_position() const
@@ -32,6 +32,8 @@ void Object::draw(const FreeflyCamera &ViewMatrix, const int window_width, const
     glm::mat4 MVMatrix = ViewMatrix.getViewMatrix();
     MVMatrix = glm::scale(MVMatrix, glm::vec3(this->_scale));
     MVMatrix = glm::translate(MVMatrix, glm::vec3(this->_position));
+
+// std::cout << this->_position.x << " - " << this->_position.y << " - " << this->_position.z << "\n";
     
     glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), (float)window_width / (float)window_height, 0.1f, 100.f);
     glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
@@ -65,7 +67,7 @@ void Object::draw(const FreeflyCamera &ViewMatrix, const int window_width, const
         glUniform3fv(this->_program.uLightDir_vs, 1, glm::value_ptr(lightDir));
         glUniform3fv(this->_program.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.2)));
 
-// std::cout << face.getName() << " - " << materialMap[face.getName()].texture._slot << "\n";
+// std::cout << face.getName() << " - " << face.getVertextCount() << "\n";
 
         materialMap[face.getName()].texture.Bind();
 

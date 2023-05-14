@@ -26,7 +26,8 @@ class Object {
 
     public : 
         Object(std::vector<FacesGroup> facesGroup, ObjectProgram& program);
-        ~Object();
+        // Object();
+        // ~Object();
         
         void deleteVAO_VBO();
 

@@ -7,15 +7,18 @@
 Content::Content(std::vector<FacesGroup> facesGroup, ObjectProgram& program)
 :Object(facesGroup, program) 
 {
-    this->_position = Vec(0); 
-    // this->_position.y = -0.2;  
+    this->_position = Vec(0.f); 
     this->_scale = 0.1 ; 
 }
 
-Content::Content(std::vector<FacesGroup> facesGroup, ObjectProgram& program, Vec position)
-:Object(facesGroup, program)
-{
-    this->_position = position; 
-    this->_position.y = -0.2; 
-    this->_scale = 0.1 ; 
-}
+// Content::Content()
+// {
+//     this->_position = Vec(0.f); 
+//     this->_scale = 0.1 ; 
+// }
+
+// void Content::init(std::vector<FacesGroup> facesGroup, ObjectProgram& program)
+// {
+//     this->_facesGroup = facesGroup;
+//     this->_program = program;
+// }

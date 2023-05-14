@@ -6,29 +6,31 @@
 #include "glm/gtc/random.hpp"
     
 
+// Arpenteur::Arpenteur()
+// {
+//     this->_position = Vec(0.f); 
+//     this->_scale = 1 ; 
+// }
+
 Arpenteur::Arpenteur(std::vector<FacesGroup> facesGroup, ObjectProgram& program)
 :Object(facesGroup, program) 
 {
-    this->_position = Vec(glm::ballRand(15.0)); 
-    this->_position.y = p6::random::number(0.4, 0.5) ; 
-    this->_scale = 1 ; 
+    this->_position = Vec(0.f); 
+    this->_scale = 0.1 ; 
 }
 
-Arpenteur::Arpenteur
-(std::vector<FacesGroup> facesGroup, ObjectProgram& program, Vec position)
-:Object(facesGroup, program)
-{
-    this->_position = position; 
-    this->_position.y = 0.0; 
-    this->_scale = 1 ; 
-}
+// void Arpenteur::init(std::vector<FacesGroup> facesGroup, ObjectProgram& program)
+// {
+//     this->_facesGroup = facesGroup;
+//     this->_program = program;
+// }
 
 
 void Arpenteur::update_position(const FreeflyCamera &ViewMatrix)
 {
-    Vec cameraPosition = ViewMatrix.getPosition() ; 
-    Vec cameraDirection = -ViewMatrix.getFront();
-    Vec objectPosition = cameraPosition + cameraDirection * 2.0f; // multiplier par une distance de 2.0f
+    // Vec cameraPosition = ViewMatrix.getPosition() ; 
+    // Vec cameraDirection = -ViewMatrix.getFront();
+    // Vec objectPosition = cameraPosition + cameraDirection * 2.0f; // multiplier par une distance de 2.0f
 
-    this->_position = objectPosition;
+    // this->_position = objectPosition;
 }

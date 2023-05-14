@@ -15,5 +15,8 @@ class Content : public Object
         
     public : 
         Content(std::vector<FacesGroup> facesGroup, ObjectProgram& program);
-        Content(std::vector<FacesGroup> facesGroup, ObjectProgram& program, Vec position);
+        // Content();
+
+        // void init(std::vector<FacesGroup> facesGroup, ObjectProgram& program);
+
 }; 

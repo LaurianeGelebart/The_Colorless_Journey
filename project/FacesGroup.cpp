@@ -89,30 +89,7 @@ void FacesGroup::createVBO_IBO_VAO()
 
 void FacesGroup::createVBO()
 {
-   this->_VertexData.push_back(this->_VertexData[0]); 
-   this->_VertexData.push_back(this->_VertexData[1]); 
-   this->_VertexData.push_back(this->_VertexData[2]); 
-   this->_VertexData.push_back(this->_VertexData[3]); 
-   this->_VertexData.push_back(this->_VertexData[4]); 
-   this->_VertexData.push_back(this->_VertexData[5]); 
-   this->_VertexData.push_back(this->_VertexData[6]); 
-   this->_VertexData.push_back(this->_VertexData[7]);
-
-   this->_VertexIndices.push_back(0);
-
-   this->_VertexData.push_back(this->_VertexData[8]); 
-   this->_VertexData.push_back(this->_VertexData[9]); 
-   this->_VertexData.push_back(this->_VertexData[10]); 
-   this->_VertexData.push_back(this->_VertexData[11]); 
-   this->_VertexData.push_back(this->_VertexData[12]); 
-   this->_VertexData.push_back(this->_VertexData[13]); 
-   this->_VertexData.push_back(this->_VertexData[14]); 
-   this->_VertexData.push_back(this->_VertexData[15]);
-
-   this->_VertexIndices.push_back(1);
-
-
-    glGenBuffers(1, &(this->_vbo));
+     glGenBuffers(1, &(this->_vbo));
     glBindBuffer(GL_ARRAY_BUFFER, this->_vbo);
     
     std::vector<float> vertices = this->_VertexData;
