@@ -10,6 +10,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd ./assets/textures/none.png ./assets/textures/ciel_color.png
 
 newmtl floor
 Ns 250.000000
@@ -19,7 +20,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd ./assets/textures/floor.png
+map_Kd ./assets/textures/floor.png ./assets/textures/floor_color.png
 
 newmtl forêt
 Ns 250.000000
@@ -30,4 +31,4 @@ Kd 0.700000 0.600000 0.600000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd ./assets/textures/bord.png
+map_Kd ./assets/textures/bord.png ./assets/textures/bord_color.png

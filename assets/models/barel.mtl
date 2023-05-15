@@ -9,7 +9,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd  ./assets/textures/wood.png
+map_Kd  ./assets/textures/wood.png ./assets/textures/wood_color.png
 
 newmtl tonneau
 Ns 250.000000
@@ -20,4 +20,4 @@ Kd 1.000000 4.000000 4.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd ./assets/textures/tonneau.png
+map_Kd ./assets/textures/tonneau.png ./assets/textures/tonneau_color.png

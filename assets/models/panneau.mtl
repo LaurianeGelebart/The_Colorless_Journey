@@ -9,7 +9,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd ./assets/textures/wood.png
+map_Kd ./assets/textures/wood.png ./assets/textures/wood_color.png
 
 newmtl direction1
 Ns 250.000000
@@ -19,7 +19,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd ./assets/textures/puits.png
+map_Kd ./assets/textures/puits.png ./assets/textures/puits_color.png
 
 newmtl direction2
 Ns 250.000000
@@ -29,7 +29,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd ./assets/textures/chaumiere.png
+map_Kd ./assets/textures/chaumiere.png ./assets/textures/chaumiere_color.png
 
 newmtl direction3
 Ns 250.000000
@@ -39,4 +39,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd ./assets/textures/stele.png
+map_Kd ./assets/textures/stele.png ./assets/textures/stele_color.png

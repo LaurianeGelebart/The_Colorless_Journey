@@ -10,3 +10,4 @@ Kd 1.000000 0.300000 0.300000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd  ./assets/textures/rock.png ./assets/textures/bord_color.png

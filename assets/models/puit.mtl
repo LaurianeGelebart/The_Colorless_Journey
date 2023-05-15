@@ -10,7 +10,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd ./assets/textures/brick.png
+map_Kd ./assets/textures/brick.png ./assets/textures/brick_color.png
 
 newmtl bois
 Ns 250.000000
@@ -21,7 +21,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd  ./assets/textures/wood.png
+map_Kd  ./assets/textures/wood.png ./assets/textures/wood_color.png
 
 newmtl tour
 Ns 250.000000
@@ -32,6 +32,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Kd  ./assets/textures/wood.png ./assets/textures/wood_color.png
+
 
 newmtl water
 Ns 250.000000
@@ -42,4 +44,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd ./assets/textures/water.png
+map_Kd ./assets/textures/water.png ./assets/textures/water_color.png
