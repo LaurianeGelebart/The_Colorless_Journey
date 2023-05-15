@@ -18,7 +18,7 @@ Arpenteur::Arpenteur(std::vector<FacesGroup> facesGroup, ObjectProgram& program)
     this->_position = Vec(0.f); 
     this->_scale = 0.1 ; 
 }
-
+ 
 // void Arpenteur::init(std::vector<FacesGroup> facesGroup, ObjectProgram& program)
 // {
 //     this->_facesGroup = facesGroup;
@@ -26,11 +26,11 @@ Arpenteur::Arpenteur(std::vector<FacesGroup> facesGroup, ObjectProgram& program)
 // }
 
 
-void Arpenteur::update_position(const FreeflyCamera &ViewMatrix)
+void Arpenteur::update_position(const TrackballCamera &ViewMatrix)
 {
-    // Vec cameraPosition = ViewMatrix.getPosition() ; 
-    // Vec cameraDirection = -ViewMatrix.getFront();
-    // Vec objectPosition = cameraPosition + cameraDirection * 2.0f; // multiplier par une distance de 2.0f
+    Vec cameraPosition = ViewMatrix.getPosition() *10.f; 
+    this->_angle = -ViewMatrix.getAngleY(); 
 
-    // this->_position = objectPosition;
+    this->_position = cameraPosition;
+
 }

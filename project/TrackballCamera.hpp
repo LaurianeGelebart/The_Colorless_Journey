@@ -2,40 +2,41 @@
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
+#include "glm/ext/matrix_transform.hpp"
+#include "glm/gtx/transform.hpp"
 
-namespace glimac {
+#include "Material.hpp"
 
-class TrackballCamera {
-public:
-    TrackballCamera() : m_fDistance(5.f), m_fAngleX(0.f), m_fAngleY(0.f) {}
+static int normalizeAngle(int angle);
 
-    void moveFront(float delta) {
-        this->m_fDistance += delta ;  
-    }
-    void rotateLeft(float degrees){
-        this->m_fAngleX += degrees ; 
-    }
-    void rotateUp(float degrees){
-        this->m_fAngleY += degrees ; 
-    }
-    glm::mat4 getViewMatrix() const {
-        glm::mat4 viewMatrix(1.f);
 
-        viewMatrix = glm::translate(viewMatrix, glm::vec3(0.f, 0.f, -m_fDistance));
-        viewMatrix = glm::rotate(viewMatrix, glm::radians(m_fAngleX), glm::vec3(1.f, 0.f, 0.f));
-        viewMatrix = glm::rotate(viewMatrix, glm::radians(m_fAngleY), glm::vec3(0.f, 1.f, 0.f));
+class TrackballCamera 
+{
 
-        // std::cout << viewMatrix <<std::endl ;
-        return viewMatrix;
-    }
-    
+    private:
+        float _distance = 0.5; 
+        float _angleX = 11.f; 
+        float _angleY = 0.f; 
 
-private:
-    float m_fDistance ; 
-    float m_fAngleX ; 
-    float m_fAngleY ; 
+        Vec _position;
+
+
+        bool checkMovingPosition(Vec position) const;
+        bool checkRotatingAngleX(float angle) const;
+        bool checkRotatingAngleY(float angle) const;
+
+    public:
+        TrackballCamera(); 
+
+        glm::mat4 getViewMatrix() const ;
+        Vec getPosition() const;
+        float getAngleY() const;
+
+        void rotateLeft(float degrees);
+        void rotateUp(float degrees);
+        void moveFront(float delta);
+        void moveLeft(float delta);
+
 
 };
 
-
-}

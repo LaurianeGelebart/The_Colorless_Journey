@@ -5,7 +5,7 @@
 
 #include "p6/p6.h"
 
-#include "FreeflyCamera.hpp"
+#include "TrackballCamera.hpp"
 #include "FacesGroup.hpp"
 #include "ObjectProgram.hpp"
 #include "Material.hpp"
@@ -23,6 +23,7 @@ class Object {
         float _scale  = 0.1 ; 
         std::vector<FacesGroup> _facesGroup; 
         ObjectProgram& _program; 
+        float _angle = 0.f;
 
     public : 
         Object(std::vector<FacesGroup> facesGroup, ObjectProgram& program);
@@ -32,7 +33,7 @@ class Object {
         void deleteVAO_VBO();
 
         Vec get_position() const; 
-        void draw(const FreeflyCamera &ViewMatrix, const int window_width, const int window_height, std::map<std::string, Material>& materialMap); 
+        void draw(const TrackballCamera &ViewMatrix, const int window_width, const int window_height, std::map<std::string, Material>& materialMap); 
 
         // GLuint     brick_texture;
         // GLuint     wood_texture;

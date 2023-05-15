@@ -103,7 +103,7 @@ void GameEnvironment::initClouds()
 
 void GameEnvironment::initArpenteur()
 {
-    this->gaspard.push_back(Arpenteur(this->_barel, this->_textureProgram)) ; 
+    this->gaspard.push_back(Arpenteur(this->_magic, this->_textureProgram)) ; 
 }
 
 void GameEnvironment::initContent()
@@ -139,12 +139,16 @@ void GameEnvironment::render(p6::Context &ctx)
 
 }
 
-void GameEnvironment::cameraManagement(p6::Context &ctx){
-    if (_Z) this->_ViewMatrix.moveFront(0.1);
-    if (_S) this->_ViewMatrix.moveFront(-0.1);
-    if (_Q) this->_ViewMatrix.moveLeft(0.1);
-    if (_D) this->_ViewMatrix.moveLeft(-0.1);
 
+
+void GameEnvironment::movementManagement(p6::Context &ctx)
+{
+    inputManagement(ctx);
+    cameraManagement(ctx);
+}
+
+void GameEnvironment::inputManagement(p6::Context &ctx)
+{
     ctx.key_pressed = [this](const p6::Key& key) {
         if (key.physical == GLFW_KEY_W) this->_Z = true;
         if (key.physical == GLFW_KEY_S) this->_S = true;
@@ -158,15 +162,22 @@ void GameEnvironment::cameraManagement(p6::Context &ctx){
         if (key.physical == GLFW_KEY_A) this->_Q = false;
         if (key.physical == GLFW_KEY_D) this->_D = false;
     };
-
-    glfwSetInputMode(ctx.underlying_glfw_window(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    
-    ctx.mouse_moved = [&](p6::MouseMove data) {
-        (this->_ViewMatrix).rotateLeft(data.delta.x * rotationStrength);
-        (this->_ViewMatrix).rotateUp(-data.delta.y * rotationStrength);
-    };
 }
 
+void GameEnvironment::cameraManagement(p6::Context &ctx)
+{
+    
+    if (_Z) this->_ViewMatrix.moveFront(this->_movementStrength);
+    if (_S) this->_ViewMatrix.moveFront(-this->_movementStrength);
+    if (_Q) this->_ViewMatrix.moveLeft(this->_movementStrength);
+    if (_D) this->_ViewMatrix.moveLeft(-this->_movementStrength);
+
+
+    ctx.mouse_moved = [&](p6::MouseMove data) {
+        (this->_ViewMatrix).rotateLeft(-data.delta.y * this->_rotationStrength);
+        (this->_ViewMatrix).rotateUp(data.delta.x * this->_rotationStrength);
+    };
+}
 
 void GameEnvironment::add_or_remove_boids()
 {

@@ -69,7 +69,7 @@ void Boid::collision_boids(const std::vector<Boid>& boids, IHM ihm)
 
 void Boid::collision_bords(IHM ihm, p6::Context& ctx)
 {
-    float margin = 1; 
+    float margin = 1.f; 
     if (this->_position.x > 2*(ctx.aspect_ratio()-margin)){ // TODO dont hardcode the 2: https://julesfouchy.github.io/p6-docs/tutorials/the-coordinate-system
          this->_velocity.x = this->_velocity.x - ihm.get_turn_factor(); 
     }

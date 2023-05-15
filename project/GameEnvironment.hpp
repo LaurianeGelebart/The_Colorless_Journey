@@ -12,6 +12,7 @@
 #include "Content.hpp"
 #include "FacesGroup.hpp"
 #include "FreeflyCamera.hpp"
+#include "TrackballCamera.hpp"
 #include "IHM.hpp"
 #include "Loader.hpp"
 #include "Obstacle.hpp"
@@ -25,10 +26,10 @@ class GameEnvironment
         ObjectProgram _textureProgram ; 
         // ObjectProgram _puitProgram ; 
 
-        FreeflyCamera _ViewMatrix;
-    float                 movementStrength = 100.f;
-    float                 rotationStrength = 1000.f;
-    
+        TrackballCamera _ViewMatrix;
+        float _movementStrength = 0.1;
+        float _rotationStrength = 100.0;
+
         IHM _ihm ;
         int nb_slot = 0;
 
@@ -73,6 +74,9 @@ class GameEnvironment
         void add_or_remove_obstacles();
         void add_or_remove_boids();
 
+        void cameraManagement(p6::Context &ctx); 
+        void inputManagement(p6::Context &ctx);
+
 
     public : 
         std::vector<Boid> boids;
@@ -84,7 +88,7 @@ class GameEnvironment
 
         void initScene();
         void render(p6::Context &ctx);
-        void cameraManagement(p6::Context &ctx);
+        void movementManagement(p6::Context &ctx);
         void deleteScene();
 
 }; 

@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "FreeflyCamera.hpp"
+#include "TrackballCamera.hpp"
 #include "glm/gtc/type_ptr.hpp"
 
 #include "p6/p6.h"
@@ -25,13 +26,14 @@ Vec Object::get_position() const
     return this->_position ; 
 }
 
-void Object::draw(const FreeflyCamera &ViewMatrix, const int window_width, const int window_height, std::map<std::string, Material>& materialMap)
+void Object::draw(const TrackballCamera &ViewMatrix, const int window_width, const int window_height, std::map<std::string, Material>& materialMap)
 {  
     this->_program._Program.use() ; 
 
     glm::mat4 MVMatrix = ViewMatrix.getViewMatrix();
     MVMatrix = glm::scale(MVMatrix, glm::vec3(this->_scale));
     MVMatrix = glm::translate(MVMatrix, glm::vec3(this->_position));
+    MVMatrix = glm::rotate(MVMatrix, glm::radians(this->_angle), glm::vec3(0.f, 1.f, 0.f));
 
 // std::cout << this->_position.x << " - " << this->_position.y << " - " << this->_position.z << "\n";
     
