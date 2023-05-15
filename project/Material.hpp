@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Texture.hpp"
+#include <vector>
 
 using Vec = glm::vec3 ; 
 
@@ -10,7 +11,7 @@ struct Material{
     Vec Kd = Vec(-1.f);
     float shininess = -1.f;  
     std::string path;
-    Texture texture;
+    std::vector<Texture> texture;
 };
 
 

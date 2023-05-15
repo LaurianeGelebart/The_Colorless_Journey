@@ -24,11 +24,11 @@ static bool StartWith(std::string line, const char* text)
     return true ; 
 }
 
-static void LoadMaterial(const std::string name, std::map<std::string, Material>& materialMap, int& nb_slot)
+static void LoadMaterial(const std::string name, std::map<std::string, Material>& materialMap)
 {
     std::ifstream file(name); 
 
-    std::cout << "material : " << name << " - " << nb_slot <<"\n" ;
+    std::cout << "material : " << name <<"\n" ;
     if (file){
         std::string line; 
         while (std::getline(file, line)){
@@ -67,11 +67,12 @@ static void LoadMaterial(const std::string name, std::map<std::string, Material>
             if (StartWith(line, "map_Kd")){
                 Material& material = materialMap[std::string(mtlName)];
                 if (material.path  == ""){
-                    char path[100]; 
-                    sscanf(line.c_str(), "map_Kd %s", path);
-                    material.path = path ; 
-                    material.texture = Texture(material.path, nb_slot) ;
-                    nb_slot++;
+                    char path1[100]; 
+                    char path2[100]; 
+                    sscanf(line.c_str(), "map_Kd %s %s", path1, path2);
+                    material.texture.push_back( Texture(path1) ) ;
+                    material.texture.push_back( Texture(path2) ) ;
+                    material.path = path1;
                 }
             }
         }
@@ -80,7 +81,7 @@ static void LoadMaterial(const std::string name, std::map<std::string, Material>
 }
 
 
-static std::vector<FacesGroup> Loader(const std::string name, std::map<std::string, Material>& materialMap, int& nb_slot)
+static std::vector<FacesGroup> Loader(const std::string name, std::map<std::string, Material>& materialMap)
 {
     std::vector<CordPosition> vertices; 
     std::vector<CordNormal> normals; 
@@ -98,7 +99,7 @@ static std::vector<FacesGroup> Loader(const std::string name, std::map<std::stri
             if (StartWith(line, "mtllib")){
                 char mtlFileName[100]; 
                 (void)sscanf(line.c_str(), "mtllib %s", mtlFileName);
-                LoadMaterial(mtlFileName, materialMap, nb_slot); 
+                LoadMaterial(mtlFileName, materialMap); 
             }
             if (StartWith(line, "v ")){
                 CordPosition pos ; 

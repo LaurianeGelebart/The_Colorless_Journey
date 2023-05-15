@@ -27,20 +27,22 @@ class GameEnvironment
         // ObjectProgram _puitProgram ; 
 
         TrackballCamera _ViewMatrix;
+        IHM _ihm ;
+
         float _movementStrength = 0.1;
         float _rotationStrength = 100.0;
-
-        IHM _ihm ;
-        int nb_slot = 0;
 
         int window_width = 1920 ; 
         int window_height = 1080 ; 
 
+        bool _color = false; 
 
-    bool _Z = false;
-    bool _S = false;
-    bool _Q = false;
-    bool _D = false;
+        Vec _magicPos = Vec(12.0, 0.0, -12.0); 
+
+        bool _Z = false;
+        bool _S = false;
+        bool _Q = false;
+        bool _D = false;
 
         std::vector<FacesGroup> _puit ;
         std::vector<FacesGroup> _magic ;
@@ -62,8 +64,6 @@ class GameEnvironment
         std::vector<FacesGroup> _sphere ;
 
 
-        Vec _magicPos = Vec(12.0, 0.0, -12.0); 
-
         void initObjectModel();
         void initBoids();
         void initObstacles();
@@ -74,8 +74,8 @@ class GameEnvironment
         void add_or_remove_obstacles();
         void add_or_remove_boids();
 
-        void cameraManagement(p6::Context &ctx); 
-        void inputManagement(p6::Context &ctx);
+        void colorManagement();
+
 
 
     public : 
@@ -88,7 +88,8 @@ class GameEnvironment
 
         void initScene();
         void render(p6::Context &ctx);
-        void movementManagement(p6::Context &ctx);
+        void cameraManagement(p6::Context &ctx); 
+        void inputManagement(p6::Context &ctx);
         void deleteScene();
 
 }; 

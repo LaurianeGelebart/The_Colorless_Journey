@@ -32,8 +32,8 @@ class Object {
         
         void deleteVAO_VBO();
 
-        Vec get_position() const; 
-        void draw(const TrackballCamera &ViewMatrix, const int window_width, const int window_height, std::map<std::string, Material>& materialMap); 
+        Vec getPosition() const; 
+        void draw(const TrackballCamera &ViewMatrix, const int window_width, const int window_height, std::map<std::string, Material>& materialMap, Vec ArpenteurPos, int color); 
 
         // GLuint     brick_texture;
         // GLuint     wood_texture;

@@ -18,6 +18,7 @@ struct ObjectProgram
 
     GLint uLightPos_vs;
     GLint uLightDir_vs;
+    GLint uLightCharacter_vs;
     GLint uLightIntensity;
 
     ObjectProgram() : _Program(p6::load_shader("shaders/3D.vs.glsl", "shaders/texture.fs.glsl"))
@@ -34,6 +35,7 @@ struct ObjectProgram
 
         uLightPos_vs    = glGetUniformLocation(_Program.id(), "uLightPos_vs");
         uLightDir_vs    = glGetUniformLocation(_Program.id(), "uLightDir_vs");
+        uLightCharacter_vs    = glGetUniformLocation(_Program.id(), "uLightCharacter_vs");
         uLightIntensity = glGetUniformLocation(_Program.id(), "uLightIntensity");
     }
 };

@@ -22,7 +22,7 @@ class IHM {
         float _detection_radius = 1.0 ; 
         float _speed = 0.1 ; 
         int _nb_obstacles = 60 ; 
-        int _nb_boids = 40 ; 
+        int _nb_boids = 30 ; 
         
     public : 
         IHM(); 

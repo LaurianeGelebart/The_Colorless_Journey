@@ -2,20 +2,23 @@
 #include "p6/p6.h"
 
 class Texture {
+
 private:
-    // GLuint _rendererID;
-    // unsigned int _slot;
+
+    static int s_nextID;
+    int _slot;
+    GLuint _rendererID;
 
 public:
-    Texture(std::string path, int slot=-1);
+    Texture(std::string path);
     Texture();
 
     void DeleteTexture();
     void Bind() const;
     void UnBind() const;
 
+    GLuint getRendererID() const;
+    int getSlot() const;
 
-    GLuint _rendererID;
-    int _slot;
-
+    std::string name = "hey";
 };

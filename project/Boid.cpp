@@ -15,7 +15,7 @@ Boid::Boid(std::vector<FacesGroup> facesGroup, ObjectProgram& program, Vec magic
     float angle = (float)(p6::random::integer(0, 360))*M_PI/180.0; 
     float angleZ = (float)(p6::random::integer(0, 360))*M_PI/180.0; 
     this->_velocity = Vec(cos(angle), sin(angle) ,cos(angleZ)) ;
-    this->_scale = p6::random::number(0.001, 0.002);
+    this->_scale = p6::random::number(0.01, 0.02);
 }
 
 Vec Boid::get_velocity() const
@@ -42,14 +42,14 @@ void Boid::collision_boids(const std::vector<Boid>& boids, IHM ihm)
     int neighboring_boids = 0 ; 
 
    for (auto boid : boids){ 
-        double distance = glm::distance(boid.get_position(),this->_position);     
+        double distance = glm::distance(boid.getPosition(),this->_position);     
         if(&boid != this){ 
             if (distance < ihm.get_collision_radius() ){ 
-                close += this->_position - boid.get_position();
+                close += this->_position - boid.getPosition();
             }  
             else if(distance < ihm.get_detection_radius() ) {
                 neighboring_boids += 1 ;
-                pos_avg += boid.get_position() ;
+                pos_avg += boid.getPosition() ;
                 dir_avg += boid.get_velocity() ;
             } 
         }
@@ -69,7 +69,7 @@ void Boid::collision_boids(const std::vector<Boid>& boids, IHM ihm)
 
 void Boid::collision_bords(IHM ihm, p6::Context& ctx)
 {
-    float margin = 1.f; 
+    float margin = 3.f; 
     if (this->_position.x > 2*(ctx.aspect_ratio()-margin)){ // TODO dont hardcode the 2: https://julesfouchy.github.io/p6-docs/tutorials/the-coordinate-system
          this->_velocity.x = this->_velocity.x - ihm.get_turn_factor(); 
     }
@@ -79,7 +79,7 @@ void Boid::collision_bords(IHM ihm, p6::Context& ctx)
     if (this->_position.y > 2*(ctx.aspect_ratio()-margin)){
          this->_velocity.y = this->_velocity.y - ihm.get_turn_factor(); 
     } 
-    if (this->_position.y < 2*(-ctx.aspect_ratio()+margin)){
+    if (this->_position.y < 0.0+margin){
          this->_velocity.y = this->_velocity.y +  ihm.get_turn_factor(); 
     }
     if (this->_position.z > 2*(ctx.aspect_ratio()-margin)){
@@ -93,20 +93,20 @@ void Boid::collision_bords(IHM ihm, p6::Context& ctx)
 void Boid::collision_obstacles(const std::vector<Obstacle>& obstacles, IHM ihm)
 {
     for(auto obstacle : obstacles){
-        double distance = glm::distance(obstacle.get_position(), this->_position);
+        double distance = glm::distance(obstacle.getPosition(), this->_position);
 
         if(distance < 2){
         // if(distance < obstacles[i].get_radius()){
-            // if (this->_position.x > obstacles[i].get_position().x){
+            // if (this->_position.x > obstacles[i].getPosition().x){
             //     this->_velocity.x = this->_velocity.x + ihm.get_turn_factor()*10; 
             // }
-            // if (this->_position.x < obstacles[i].get_position().x) {
+            // if (this->_position.x < obstacles[i].getPosition().x) {
             //     this->_velocity.x = this->_velocity.x - ihm.get_turn_factor()*10; 
             // }
-            // if (this->_position.y > obstacles[i].get_position().y){
+            // if (this->_position.y > obstacles[i].getPosition().y){
             //     this->_velocity.y = this->_velocity.y + ihm.get_turn_factor()*10; 
             // } 
-            // if (this->_position.y < obstacles[i].get_position().y){
+            // if (this->_position.y < obstacles[i].getPosition().y){
             //     this->_velocity.y = this->_velocity.y -  ihm.get_turn_factor()*10; 
             // }
             this->bounce(obstacle); 
@@ -117,7 +117,7 @@ void Boid::collision_obstacles(const std::vector<Obstacle>& obstacles, IHM ihm)
 
 void Boid::bounce(Obstacle &obstacle)
 {
-    Vec normal = Vec(this->_position.x - obstacle.get_position().x , this->_position.y - obstacle.get_position().y , this->_position.z - obstacle.get_position().z);
+    Vec normal = Vec(this->_position.x - obstacle.getPosition().x , this->_position.y - obstacle.getPosition().y , this->_position.z - obstacle.getPosition().z);
     normal = glm::normalize(normal); 
    // Vec T = Vec(normal.y , -normal.x, 0.) ; 
     // float vt = glm::dot(this->_velocity, T); 

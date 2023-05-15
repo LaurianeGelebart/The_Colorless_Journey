@@ -30,24 +30,24 @@ void GameEnvironment::deleteScene()
 
 void GameEnvironment::initObjectModel()
 {
-    this->_puit = Loader("./assets/models/puit.obj", materialMap, nb_slot);
-    this->_magic = Loader("./assets/models/magique.obj", materialMap, nb_slot);
-    this->_content = Loader("./assets/models/content.obj", materialMap, nb_slot);
-    this->_fir1 = Loader("./assets/models/fir1.obj", materialMap, nb_slot);
-    this->_fir2 = Loader("./assets/models/fir2.obj", materialMap, nb_slot);
-    this->_fir3 = Loader("./assets/models/fir3.obj", materialMap, nb_slot);
-    this->_mushroom1 = Loader("./assets/models/mushroom1.obj", materialMap, nb_slot);
-    this->_mushroom2 = Loader("./assets/models/mushroom2.obj", materialMap, nb_slot);
-    this->_rock1 = Loader("./assets/models/rock1.obj", materialMap, nb_slot);
-    this->_rock2 = Loader("./assets/models/rock2.obj", materialMap, nb_slot);
-    this->_rock3 = Loader("./assets/models/rock3.obj", materialMap, nb_slot);
-    this->_house = Loader("./assets/models/house.obj", materialMap, nb_slot);
-    this->_rocks = Loader("./assets/models/rocks.obj", materialMap, nb_slot);
-    this->_rail = Loader("./assets/models/rail.obj", materialMap, nb_slot);
-    this->_barel = Loader("./assets/models/barel.obj", materialMap, nb_slot);
-    this->_cloud = Loader("./assets/models/cloud1.obj", materialMap, nb_slot);
-    this->_panneau = Loader("./assets/models/panneau.obj", materialMap, nb_slot);
-    this->_sphere = Loader("./assets/models/sphere.obj", materialMap, nb_slot);
+    this->_puit = Loader("./assets/models/puit.obj", materialMap);
+    this->_magic = Loader("./assets/models/magique.obj", materialMap);
+    this->_content = Loader("./assets/models/content.obj", materialMap);
+    this->_fir1 = Loader("./assets/models/fir1.obj", materialMap);
+    this->_fir2 = Loader("./assets/models/fir2.obj", materialMap);
+    this->_fir3 = Loader("./assets/models/fir3.obj", materialMap);
+    this->_mushroom1 = Loader("./assets/models/mushroom1.obj", materialMap);
+    this->_mushroom2 = Loader("./assets/models/mushroom2.obj", materialMap);
+    this->_rock1 = Loader("./assets/models/rock1.obj", materialMap);
+    this->_rock2 = Loader("./assets/models/rock2.obj", materialMap);
+    this->_rock3 = Loader("./assets/models/rock3.obj", materialMap);
+    this->_house = Loader("./assets/models/house.obj", materialMap);
+    this->_rocks = Loader("./assets/models/rocks.obj", materialMap);
+    this->_rail = Loader("./assets/models/rail.obj", materialMap);
+    this->_barel = Loader("./assets/models/barel.obj", materialMap);
+    this->_cloud = Loader("./assets/models/cloud1.obj", materialMap);
+    this->_panneau = Loader("./assets/models/panneau.obj", materialMap);
+    this->_sphere = Loader("./assets/models/sphere.obj", materialMap);
 
  
 }
@@ -114,22 +114,22 @@ void GameEnvironment::initContent()
 void GameEnvironment::render(p6::Context &ctx)
 {
     for(auto& boid : this->boids){
-        boid.draw(this->_ViewMatrix, window_width, window_height, this->materialMap) ;
+        boid.draw(this->_ViewMatrix, window_width, window_height, this->materialMap, this->gaspard[0].getPosition(), this->_color);
         boid.collision(this->boids, this->obstacles, this->_ihm, ctx) ;
         boid.update_position() ;
     };
 
     for(auto& obstacle : this->obstacles){
-        obstacle.draw(this->_ViewMatrix, window_width, window_height, this->materialMap) ;
+        obstacle.draw(this->_ViewMatrix, window_width, window_height, this->materialMap, this->gaspard[0].getPosition(), this->_color);
     };
 
     for(auto& cloud : this->clouds){
-        cloud.draw(this->_ViewMatrix, window_width, window_height, this->materialMap) ;
+        cloud.draw(this->_ViewMatrix, window_width, window_height, this->materialMap, this->gaspard[0].getPosition(), this->_color);
         cloud.update_position(ctx) ;
     }
 
-    this->box[0].draw(this->_ViewMatrix, window_width, window_height, this->materialMap) ;
-     this->gaspard[0].draw(this->_ViewMatrix, window_width, window_height, this->materialMap) ;
+    this->box[0].draw(this->_ViewMatrix, window_width, window_height, this->materialMap, this->gaspard[0].getPosition(), this->_color);
+    this->gaspard[0].draw(this->_ViewMatrix, window_width, window_height, this->materialMap, this->gaspard[0].getPosition(), this->_color);
     this->gaspard[0].update_position(this->_ViewMatrix); 
 
     this->_ihm.draw();
@@ -141,12 +141,6 @@ void GameEnvironment::render(p6::Context &ctx)
 
 
 
-void GameEnvironment::movementManagement(p6::Context &ctx)
-{
-    inputManagement(ctx);
-    cameraManagement(ctx);
-}
-
 void GameEnvironment::inputManagement(p6::Context &ctx)
 {
     ctx.key_pressed = [this](const p6::Key& key) {
@@ -154,6 +148,7 @@ void GameEnvironment::inputManagement(p6::Context &ctx)
         if (key.physical == GLFW_KEY_S) this->_S = true;
         if (key.physical == GLFW_KEY_A) this->_Q = true;
         if (key.physical == GLFW_KEY_D) this->_D = true;
+        if (key.physical == GLFW_KEY_SPACE) colorManagement();
     };
 
     ctx.key_released = [this](const p6::Key& key) {
@@ -163,6 +158,16 @@ void GameEnvironment::inputManagement(p6::Context &ctx)
         if (key.physical == GLFW_KEY_D) this->_D = false;
     };
 }
+
+void GameEnvironment::colorManagement()
+{
+    double distance = glm::distance(this->gaspard[0].getPosition(), this->_magicPos);
+
+    if(distance < 20) {
+        this->_color = !this->_color;
+    }
+}
+
 
 void GameEnvironment::cameraManagement(p6::Context &ctx)
 {

@@ -10,11 +10,11 @@ void IHM::draw()
     ImGui::Begin("Set params");
 
     float f = this->_detection_radius ; 
-    ImGui::SliderFloat("Detection radius", &f, 0.0f, 3.0f);
+    ImGui::SliderFloat("Detection radius", &f, 0.0f, 10.0f);
     this->_detection_radius = f ; 
 
     float f2 = this->_collision_radius ; 
-    ImGui::SliderFloat("Collision radius", &f2, 0.0f, 1.0f);
+    ImGui::SliderFloat("Collision radius", &f2, 0.0f, 10.0f);
     this->_collision_radius = f2 ; 
 
     float f3 = this->_turn_factor*1000 ; 
@@ -30,7 +30,7 @@ void IHM::draw()
     this->_nb_boids = i1; 
 
     int i2 = this->_nb_obstacles ; 
-    ImGui::SliderInt("Obstacles", &i2, 0, 10);
+    ImGui::SliderInt("Obstacles", &i2, 10, 100);
     this->_nb_obstacles = i2; 
 
     ImGui::End();
