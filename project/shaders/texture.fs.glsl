@@ -57,25 +57,22 @@ vec3 blinnPhongPosCharacter()
     float nDotH = max(0.0, dot(halfVector, vNormal_vs));
     float specular = pow(nDotH, 1.0);
     vec3 diffuse = vec3(0.5) * nDotL;
-    vec3 specularColor = uKs * specular;
+    vec3 specularColor = vec3(1.0 , 0.7 , 0.0 ) * specular;
     float d = distance(vPosition_vs,uLightCharacter_vs);
 
-    return (uLightIntensity / (d * d)) * (diffuse + specularColor);
+    return (0.1 / (d * d)) * (diffuse + specularColor);
 }
 
 void main()
 {
-    //fFragColor = vec3(vNormal_vs); 
-    //fFragColor =  blinnPhongPos();
     //fFragColor = uKd; 
-    //fFragColor = vec3(texture(uTexture, vFragTexture).xyz) ;
-
 
     vec3 lightDir = blinnPhongDir();
+
     vec3 lightPos = blinnPhongPos();
     vec3 lightCharacter = blinnPhongPosCharacter();
     vec3 texture = vec3(texture(uTexture, vFragTexture).xyz) ;
-    fFragColor = lightCharacter * texture ;
-    //fFragColor = lightPos * texture ;
-    //fFragColor = texture * lightDir;
+    
+    //fFragColor = lightCharacter * texture ;
+    fFragColor = texture * (lightPos + lightCharacter) ;
 }

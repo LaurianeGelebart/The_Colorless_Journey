@@ -132,6 +132,8 @@ void GameEnvironment::render(p6::Context &ctx)
     this->gaspard[0].draw(this->_ViewMatrix, window_width, window_height, this->materialMap, this->gaspard[0].getPosition(), this->_color);
     this->gaspard[0].update_position(this->_ViewMatrix); 
 
+    // std::cout << " character " << this->gaspard[0].getPosition().x << " - "  << this->gaspard[0].getPosition().y << " - " << this->gaspard[0].getPosition().z << "\n";
+
     this->_ihm.draw();
 
     add_or_remove_boids() ;
@@ -171,7 +173,6 @@ void GameEnvironment::colorManagement()
 
 void GameEnvironment::cameraManagement(p6::Context &ctx)
 {
-    
     if (_Z) this->_ViewMatrix.moveFront(this->_movementStrength);
     if (_S) this->_ViewMatrix.moveFront(-this->_movementStrength);
     if (_Q) this->_ViewMatrix.moveLeft(this->_movementStrength);

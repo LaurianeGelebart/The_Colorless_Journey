@@ -44,7 +44,9 @@ void Object::draw(const TrackballCamera &ViewMatrix, const int window_width, con
     glm::vec3 lightPos = glm::vec3( (VLightMatrix)*glm::vec4(1,1,0,1) );
     glm::vec3 lightDir = glm::vec3( (VLightMatrix)*glm::vec4(1,1,1,0) );
     
-    glm::mat4 MLightMatrix = glm::translate(glm::mat4(1.0), ViewMatrix.getPosition());
+    std::cout << ArpenteurPos.x/10.f << " - "  << ArpenteurPos.y << " - " << ArpenteurPos.z/10.f << "\n";
+
+    glm::mat4 MLightMatrix = glm::translate(glm::mat4(1.0), glm::vec3(ArpenteurPos.x/10.f , 3.f , ArpenteurPos.z/10.f));
     glm::vec3 lightCharacter = glm::vec3( (MLightMatrix)*glm::vec4(1,1,0,1) );
 
 
