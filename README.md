@@ -1,17 +1,34 @@
-# OpenGL TPs Template
+# The Colorless Journey - A Firefly Story
+Created by Lauriane Gélébart - IMAC2 2023
 
-This template will help you follow the lessons from [this OpenGL class](https://julesfouchy.github.io/Learn--OpenGL/).
+Template from https://julesfouchy.github.io/Learn--OpenGL/
 
-**It works on all platforms (Windows, Linux, MacOS).**
+## The Projet 
+This project is a semester-end assignment for engineering students in the IMAC program at ESIEE Paris, focusing on the subjects of OpenGL, image synthesis, and clean coding in C++.
+The project is individual and serves as a practical application of the concepts learned in the mentioned subjects.
 
-- [Setting up](#setting-up)
-  - [Creating a repository](#creating-a-repository)
-  - [Downloading your repository](#downloading-your-repository)
-  - [Compiling](#compiling)
-- [Coding](#coding)
-  - [Folder structure](#folder-structure)
-  - [Switching exercise](#switching-exercise)
-  - [Adding an exercise folder](#adding-an-exercise-folder)
+The main objective of this project is to develop a Boids visualization application that enables both the observation of boid behavior and interactive navigation within a 3D environment. The project allows for creative freedom in terms of visual design.
+All objects and textures used in the project were created using Blender and Photoshop.
+
+In this project, I have interpreted the concept as creating a paper-themed mode where colors have disappeared. Our protagonist, guided by fellow fireflies, possesses the power to bring back light and restore colors to this universe.
+
+## Project Structure
+
+The project's main content is located in the `projet` directory. This directory contains the following subdirectories:
+
+- `shaders`: Contains the necessary OpenGL shaders used in the project.
+- `programs`: Contains the programs used in the project.
+- `cpp and hpp files`: Includes all the C++ and header files related to the project, including the main file.
+
+In addition to the `projet` directory, the project's root directory contains the following files and directories:
+
+- `Makefile`: The Makefile used for compiling and building the project.
+- `assets`: Contains additional project assets.
+  - `textures`: Stores textures used in the project.
+  - `models`: Stores 3D models used in the project.
+
+Please note that this is a simplified representation of the project structure and may not include all the files or directories present in your specific project.
+
 
 ## Setting up
 
@@ -39,30 +56,3 @@ If that is not already done, [setup your IDE for C++ development](https://julesf
 
 Once that is done, open the project folder in your IDE: it will detect the CMakeLists.txt file automatically and you can just run the project:
 ![image](https://user-images.githubusercontent.com/45451201/217290500-bd09bc81-861f-4da9-b3c6-fef5e28a83f6.png)
-
-You should see this:
-
-![initial-window](https://user-images.githubusercontent.com/45451201/220456307-94cfa377-b153-4af5-8dfa-e08b075e02b9.png)
-
-## Coding
-
-### Folder structure
-
-All your files for the current exercise will go in the folder with the same name (e.g. `TP1_exo1_triangle_blanc`). All the files that you want to reuse in all the exercises will go in `src-common`. All of your assets (textures, 3D models, etc.) will go in the `assets` folder.
-
-### Switching exercise
-
-To switch between the different exercises, simply change the current CMake target:
-![Change CMake Target](https://user-images.githubusercontent.com/45451201/219449536-0ade5391-0f64-404d-958d-067667594686.png)
-
-### Adding an exercise folder
-
-If you want to add a new folder to code in it, simply copy-paste one of the existing exercise folders, rename it however you want, and add it to the bottom of the `CMakeLists.txt`:
-```cmake
-add_exercise(TP1_exo1_triangle_blanc)
-add_exercise(TP1_exo2)
-add_exercise(TP2_exo1)
-add_exercise(TP2_exo2)
-add_exercise(TP2_exo3)
-# ...
-```
