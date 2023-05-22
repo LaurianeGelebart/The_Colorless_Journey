@@ -33,8 +33,14 @@ class GameEnvironment
         TrackballCamera _ViewMatrix;
         IHM _ihm ;
 
+        GLuint _shadowMapFBO ; 
+        GLuint _shadowMap ; 
+
         float _movementStrength = 0.1;
         float _rotationStrength = 100.0;
+
+
+	int shadowMapWidth = 2048, shadowMapHeight = 2048;
 
         int _windowWidth  ; 
         int _windowHeight ; 

@@ -1,0 +1,143 @@
+* [33mcommit cf6f5eb1004fb782fedb46b5ffde17c73c23c039[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+[31m|[m Author: Lauriane <lauriane.gelebart@gmail.com>
+[31m|[m Date:   Mon May 22 23:42:49 2023 +0200
+[31m|[m 
+[31m|[m     Cleaner draw code. Shadows to be done
+[31m|[m 
+* [33mcommit 14620f2601ed174fff636c34d01e96004ec2e6f2[m
+[31m|[m Author: LaurianeGelebart <95913897+LaurianeGelebart@users.noreply.github.com>
+[31m|[m Date:   Mon May 22 15:03:46 2023 +0200
+[31m|[m 
+[31m|[m     Update README.md
+[31m|[m 
+* [33mcommit b10960761170be14d8f06244745767da52c2eaad[m
+[31m|[m Author: LaurianeGelebart <95913897+LaurianeGelebart@users.noreply.github.com>
+[31m|[m Date:   Mon May 22 14:22:27 2023 +0200
+[31m|[m 
+[31m|[m     clouds, lights and boidProgram
+[31m|[m 
+* [33mcommit e875ef7fc8de8d51c117b8d58fd8233b33ae22d3[m
+[31m|[m Author: LaurianeGelebart <95913897+LaurianeGelebart@users.noreply.github.com>
+[31m|[m Date:   Mon May 22 02:05:50 2023 +0200
+[31m|[m 
+[31m|[m     panel obj
+[31m|[m 
+* [33mcommit c2d997cca1397821c88f74831c5d4d9dad161c06[m
+[31m|[m Author: LaurianeGelebart <95913897+LaurianeGelebart@users.noreply.github.com>
+[31m|[m Date:   Mon May 22 02:02:34 2023 +0200
+[31m|[m 
+[31m|[m     InfoPanel almost works (+some other settings)
+[31m|[m 
+* [33mcommit dc2420b2bb496c5e7f506a0cf318b637356d3d38[m
+[31m|[m Author: LaurianeGelebart <95913897+LaurianeGelebart@users.noreply.github.com>
+[31m|[m Date:   Wed May 17 11:38:48 2023 +0200
+[31m|[m 
+[31m|[m     lighting in progress
+[31m|[m 
+* [33mcommit ed6b4296587100a12ac24c370922020ef598a866[m
+[31m|[m Author: LaurianeGelebart <95913897+LaurianeGelebart@users.noreply.github.com>
+[31m|[m Date:   Tue May 16 00:53:14 2023 +0200
+[31m|[m 
+[31m|[m     color feature ✨
+[31m|[m 
+* [33mcommit 415e5c1e8d3ff12c19ef4d0b9a4d737b2364ac68[m
+[31m|[m Author: LaurianeGelebart <95913897+LaurianeGelebart@users.noreply.github.com>
+[31m|[m Date:   Tue May 16 00:50:37 2023 +0200
+[31m|[m 
+[31m|[m     New textures
+[31m|[m 
+* [33mcommit ed253a33d94156d9243f0b970cbffe705c0b65d0[m
+[31m|[m Author: LaurianeGelebart <95913897+LaurianeGelebart@users.noreply.github.com>
+[31m|[m Date:   Mon May 15 16:13:01 2023 +0200
+[31m|[m 
+[31m|[m     TrackballCamera
+[31m|[m 
+* [33mcommit 056e5844940491fd5d5bfb593659eb038b664bfa[m
+[31m|[m Author: LaurianeGelebart <95913897+LaurianeGelebart@users.noreply.github.com>
+[31m|[m Date:   Sun May 14 13:23:43 2023 +0200
+[31m|[m 
+[31m|[m     GameEnvironment and clean main
+[31m|[m 
+* [33mcommit 225552aa47ad735c01701266d83b128d567605e0[m
+[31m|[m Author: LaurianeGelebart <95913897+LaurianeGelebart@users.noreply.github.com>
+[31m|[m Date:   Sat May 13 15:09:40 2023 +0200
+[31m|[m 
+[31m|[m     Textur works finaly !!
+[31m|[m 
+* [33mcommit 9c2fb8581354ba707a0add22c7b6fc56ea9437be[m
+[31m|[m Author: Lauriane <lauriane.gelebart@gmail.com>
+[31m|[m Date:   Fri May 12 09:37:21 2023 +0200
+[31m|[m 
+[31m|[m     Texture almost works
+[31m|[m 
+* [33mcommit 2de3ac2532a7b95835c26bfdbc3c3e03aa9721b3[m
+[31m|[m Author: Lauriane <lauriane.gelebart@gmail.com>
+[31m|[m Date:   Thu May 11 20:35:01 2023 +0200
+[31m|[m 
+[31m|[m     Texture class doesn't work
+[31m|[m 
+* [33mcommit fc6f0733d32092890496f029a4ea3966d9bc2314[m
+[31m|[m Author: Lauriane <lauriane.gelebart@gmail.com>
+[31m|[m Date:   Mon May 8 11:45:10 2023 +0200
+[31m|[m 
+[31m|[m     objects and textures
+[31m|[m 
+* [33mcommit 53b9cd43a4ad36cfa8f29ba369c5cb3eb3b95e80[m
+[31m|[m Author: Lauriane <lauriane.gelebart@gmail.com>
+[31m|[m Date:   Mon May 8 11:06:57 2023 +0200
+[31m|[m 
+[31m|[m     FacesGroup works !
+[31m|[m 
+* [33mcommit b416b501623398d41cdfc7ae2a93150c24a5b9ac[m
+[31m|[m Author: Lauriane <lauriane.gelebart@gmail.com>
+[31m|[m Date:   Sun May 7 19:54:27 2023 +0200
+[31m|[m 
+[31m|[m     cleaner code
+[31m|[m 
+* [33mcommit 41d38de13b07195308ff4e768e1841e9a1e42aef[m
+[31m|[m Author: Lauriane <lauriane.gelebart@gmail.com>
+[31m|[m Date:   Sun May 7 10:26:42 2023 +0200
+[31m|[m 
+[31m|[m     where is the f*cking problem whith facesGroup
+[31m|[m 
+* [33mcommit 49792c4db216ba6cd880c4245cc58d29cdbe3f39[m
+[31m|[m Author: Lauriane <lauriane.gelebart@gmail.com>
+[31m|[m Date:   Thu May 4 00:24:24 2023 +0200
+[31m|[m 
+[31m|[m     functional obj system V1
+[31m|[m 
+* [33mcommit 8316b3333a28b0bc4e360643e0eaef31757510c7[m
+[31m|[m Author: Lauriane <lauriane.gelebart@gmail.com>
+[31m|[m Date:   Wed May 3 17:06:21 2023 +0200
+[31m|[m 
+[31m|[m     only one boids
+[31m|[m 
+* [33mcommit d6a1e8415f40c19f5279a2d8e84c24801e4aa067[m
+[31m|[m Author: Lauriane <lauriane.gelebart@gmail.com>
+[31m|[m Date:   Tue May 2 22:26:07 2023 +0200
+[31m|[m 
+[31m|[m     segmentation fault... aled
+[31m|[m 
+* [33mcommit 978bea99a633ffdb224e51f853b4567c307229e1[m
+[31m|[m Author: Lauriane <lauriane.gelebart@gmail.com>
+[31m|[m Date:   Thu Apr 27 12:11:15 2023 +0200
+[31m|[m 
+[31m|[m     pumpkin !
+[31m|[m 
+* [33mcommit 02f03522720a784d170ae59b1976203dcd4d1df0[m
+[31m|[m Author: Lauriane <lauriane.gelebart@gmail.com>
+[31m|[m Date:   Tue Apr 25 18:24:28 2023 +0200
+[31m|[m 
+[31m|[m     objmodel in progress
+[31m|[m 
+* [33mcommit 54daede3bed845864e392dc7c31361cf0d1173de[m
+[31m|[m Author: Lauriane <lauriane.gelebart@gmail.com>
+[31m|[m Date:   Tue Apr 25 10:59:02 2023 +0200
+[31m|[m 
+[31m|[m     first commit
+[31m|[m 
+* [33mcommit e12967061156887e26cf8b9d4a0cb2e15f5df5f5[m
+  Author: LaurianeGelebart <95913897+LaurianeGelebart@users.noreply.github.com>
+  Date:   Thu Apr 13 12:37:43 2023 +0200
+  
+      Initial commit

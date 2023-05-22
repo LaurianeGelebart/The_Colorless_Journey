@@ -128,7 +128,7 @@ void Boid::limit_speed(const IHM ihm)
 
 void Boid::draw(const glm::mat4 ViewMatrix, const int windowWidth, const int windowHeight, std::map<std::string, Material>& materialMap, glm::vec3 wandererPos, int color)
 {  
-    this->_boidProgram->_Program.use() ; 
+    // std::cout << this->_boidProgram._Program.id() << "\n";
 
     glm::mat4 MVMatrix = ViewMatrix;
     MVMatrix = glm::translate(MVMatrix, glm::vec3(this->_position));
@@ -137,21 +137,6 @@ void Boid::draw(const glm::mat4 ViewMatrix, const int windowWidth, const int win
 
     glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), (float)windowWidth / (float)windowHeight, 0.1f, 100.f);
     glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
-
-
-// light 
-    glm::mat4 VLightMatrix = ViewMatrix;
-    glm::vec3 lightPos = glm::vec3( (VLightMatrix)*glm::vec4(0,0,0,1) );
-
-
-//shadow part
-    // glm::mat4 orthgonalProjection = glm::ortho(-35.0f, 35.0f, -35.0f, 35.0f, 0.1f, 75.0f);
-	// glm::mat4 lightView = glm::lookAt(20.0f * lightPos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	// glm::mat4 lightProjection = orthgonalProjection * lightView;
-
-	// shadowMapProgram.Activate();
-	// glUniformMatrix4fv(glGetUniformLocation(shadowMapProgram.ID, "lightProjection"), 1, GL_FALSE, glm::value_ptr(lightProjection));
-// ossekour 
 
 
     for(auto& face : this->_models[this->_lod] ){
@@ -165,9 +150,6 @@ void Boid::draw(const glm::mat4 ViewMatrix, const int windowWidth, const int win
         glUniform1f(this->_boidProgram->uShininess, materialMap[face.getName()].shininess);
         glUniform3fv(this->_boidProgram->uKd, 1, glm::value_ptr(this->_color));
         glUniform3fv(this->_boidProgram->uKs, 1, glm::value_ptr(materialMap[face.getName()].Ks));
-        glUniform3fv(this->_boidProgram->uLightPos_vs, 1, glm::value_ptr(lightPos));
-        glUniform3fv(this->_boidProgram->uLightIntensity, 1, glm::value_ptr(glm::vec3(0.1)));
-
 
         glDrawArrays(GL_TRIANGLES, 0, face.getVertextCount());
 

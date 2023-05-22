@@ -74,5 +74,5 @@ void main()
     vec3 texture = vec3(texture(uTexture, vFragTexture).xyz) ;
     
     //fFragColor = lightCharacter * texture ;
-    fFragColor = texture * (lightCharacter + lightPos) ;
+    fFragColor = texture * (lightCharacter + lightPos + lightDir) ;
 }

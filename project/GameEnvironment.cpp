@@ -1,5 +1,6 @@
 #include "p6/p6.h"
 #include "GameEnvironment.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 GameEnvironment::GameEnvironment(int  windowWidth, int  windowHeight)
 : _windowWidth(windowWidth), _windowHeight(windowHeight)
@@ -14,33 +15,31 @@ void GameEnvironment::initScene()
     initWanderer();
     initContent();
     initPanels();
-    // initFBO();
+    initFBO();
 }
 
 void GameEnvironment::initFBO()
 {
-	// Framebuffer for Shadow Map
-	// glGenFramebuffers(1, &shadowMapFBO);
+	glGenFramebuffers(1, &_shadowMapFBO);
 
-	// // Texture for Shadow Map FBO
-	// int shadowMapWidth = 2048, shadowMapHeight = 2048;
-	// glGenTextures(1, &shadowMap);
-	// glBindTexture(GL_TEXTURE_2D, shadowMap);
-	// glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, shadowMapWidth, shadowMapHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-	// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-	// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-	// // Prevents darkness outside the frustrum
-	// float clampColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	// glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, clampColor);
+	// Texture for Shadow Map FBO
+	glGenTextures(1, &_shadowMap);
+	glBindTexture(GL_TEXTURE_2D, _shadowMap);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, shadowMapWidth, shadowMapHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	// Prevents darkness outside the frustrum
+	float clampColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, clampColor);
 
-	// glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFBO);
-	// glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, shadowMap, 0);
-	// // Needed since we don't touch the color buffer
-	// glDrawBuffer(GL_NONE);
-	// glReadBuffer(GL_NONE);
-	// glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, _shadowMapFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _shadowMap, 0);
+	// Needed since we don't touch the color buffer
+	glDrawBuffer(GL_NONE);
+	glReadBuffer(GL_NONE);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void GameEnvironment::deleteScene()
@@ -144,15 +143,45 @@ void GameEnvironment::initPanels()
 void GameEnvironment::render(p6::Context &ctx)
 {
 
-    if (glm::distance(this->gaspard.getPosition(), this->_magicPos) < 0.5 ) {    
-        if( !this->panelsInfo[1].getDisplay() && !this->panelsInfo[1].getHasBeenDislayed() ){
-            this->panelsInfo[1].appears(this->_ViewMatrix);
-            this->_alt = false ;
-            mouseMoveManagement(ctx);
-        }
-    }
+// if (glm::distance(this->gaspard.getPosition(), this->_magicPos) < 0.5 ) {    
+//         if( !this->panelsInfo[1].getDisplay() && !this->panelsInfo[1].getHasBeenDislayed() ){
+//             this->panelsInfo[1].appears(this->_ViewMatrix);
+//             this->_alt = false ;
+//             mouseMoveManagement(ctx);
+//         }
+//     }
+
+
 
     glm::mat4 viewMatrix = this->_ViewMatrix.getViewMatrix();
+
+// ------------------------ BOIDS -----------------------//  
+    
+    this->_boidProgram._Program.use() ;
+    std::cout << this->_boidProgram._Program.id() << "\n";
+
+// light 
+    glm::mat4 VLightMatrix = viewMatrix;
+    glm::vec3 lightPos = glm::vec3( (VLightMatrix)*glm::vec4(0,1.5,0,1) );
+    glm::vec3 lightDir = glm::vec3( (VLightMatrix)*glm::vec4(1,1,1,0) ); 
+
+    glm::mat4 MLightMatrix = glm::translate(glm::mat4(1.0), gaspard.getPosition());
+    glm::vec3 lightCharacter = glm::vec3( (MLightMatrix)*glm::vec4(0,0.5,0,1) );
+
+
+//shadow part
+    // glm::mat4 orthgonalProjection = glm::ortho(-35.0f, 35.0f, -35.0f, 35.0f, 0.1f, 75.0f);
+	// glm::mat4 lightView = glm::lookAt(20.0f * lightPos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	// glm::mat4 lightProjection = orthgonalProjection * lightView;
+
+	// shadowMapProgram.Activate();
+	// glUniformMatrix4fv(glGetUniformLocation(shadowMapProgram.ID, "lightProjection"), 1, GL_FALSE, glm::value_ptr(lightProjection));
+// ossekour 
+
+  
+//    std::cout << face.getName() << " - " << materialMap[face.getName()].texture[color].getSlot() << "\n";
+   glUniform3fv(this->_boidProgram.uLightPos_vs, 1, glm::value_ptr(lightPos));
+    glUniform3fv(this->_boidProgram.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.1)));
 
     for(auto& boid : this->boids){
         boid.checkLOD(this->gaspard.getPosition());
@@ -160,6 +189,17 @@ void GameEnvironment::render(p6::Context &ctx)
         boid.collision(this->boids, this->obstacles, this->_ihm) ;
         boid.update_position() ;
     };
+
+   
+// ------------------------ OBJECT -----------------------//  
+    
+    this->_textureProgram._Program.use() ; 
+
+
+    glUniform3fv(this->_textureProgram.uLightPos_vs, 1, glm::value_ptr(lightPos));
+    glUniform3fv(this->_textureProgram.uLightDir_vs, 1, glm::value_ptr(lightDir));
+    glUniform3fv(this->_textureProgram.uLightCharacter_vs, 1, glm::value_ptr(lightCharacter));
+    glUniform3fv(this->_textureProgram.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.1)));
 
     for(auto& obstacle : this->obstacles){
         obstacle.checkLOD(this->gaspard.getPosition());
@@ -176,9 +216,9 @@ void GameEnvironment::render(p6::Context &ctx)
     this->gaspard.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
     this->gaspard.update_position(this->_ViewMatrix); 
 
-    for(auto& panel : this->panelsInfo){
-        if (panel.getDisplay()) panel.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
-    }
+    // for(auto& panel : this->panelsInfo){
+    //     if (panel.getDisplay()) panel.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
+    // }
     // std::cout << " character " << this->gaspard[0].getPosition().x << " - "  << this->gaspard[0].getPosition().y << " - " << this->gaspard[0].getPosition().z << "\n";
 
     this->_ihm.draw();

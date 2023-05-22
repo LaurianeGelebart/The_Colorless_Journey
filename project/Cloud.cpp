@@ -24,5 +24,5 @@ void Cloud::update_position(p6::Context& ctx)
     this->_position.x = glm::clamp(this->_position.x, -1.5f, 1.5f);
     this->_position.z = glm::clamp(this->_position.z, -1.5f, 1.5f);
 
-    std::cout << "cloud " << this->_position.x << " - " << this->_position.y << " - "<< this->_position.z << "\n";
+    // std::cout << "cloud " << this->_position.x << " - " << this->_position.y << " - "<< this->_position.z << "\n";
 }
