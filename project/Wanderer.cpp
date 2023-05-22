@@ -1,10 +1,9 @@
-#include "Wanderer.hpp"
-#include "ObjectProgram.hpp"
-#include "Object.hpp"
-
 #include <iostream>
 #include "glm/gtc/random.hpp"
     
+#include "Wanderer.hpp"
+#include "programs/ObjectProgram.hpp"
+#include "Object.hpp"
 
 Wanderer::Wanderer()
 {}

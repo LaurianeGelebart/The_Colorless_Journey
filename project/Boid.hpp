@@ -5,6 +5,7 @@
 
 #include "p6/p6.h"
 
+#include "programs/ColorProgram.hpp"
 #include "Object.hpp"
 #include "Obstacle.hpp"
 
@@ -16,10 +17,11 @@ class Boid : public Object
     private : 
         glm::vec3 _velocity ; 
         float _borne_velocity = 0.001;  
+        glm::vec3 _color; 
         glm::vec3 _centerPosition;
         
     public : 
-        Boid(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, ObjectProgram& program, glm::vec3 magicPos);
+        Boid(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, ColorProgram& program, glm::vec3 magicPos);
 
         glm::vec3 get_velocity() const; 
 
@@ -33,4 +35,7 @@ class Boid : public Object
 
         void limit_speed(const IHM ihm) ;
         void move(const p6::Context& ctx); 
+
+        void draw(const glm::mat4 ViewMatrix, const int windowWidth, const int windowHeight, std::map<std::string, Material>& materialMap, glm::vec3 wandererPos, int color); 
+
 }; 

@@ -84,7 +84,7 @@ void GameEnvironment::initObjectModel()
 void GameEnvironment::initBoids()
 {
     for(int i=0 ; i<this->_ihm.getNbBoids() ; i++){
-         Boid b(this->_sphere, this->_sphere, this->_textureProgram, this->_magicPos) ;
+         Boid b(this->_sphere, this->_sphere, this->_boidProgram, this->_magicPos) ;
          this->boids.push_back(b);
     }
 }
@@ -118,7 +118,7 @@ void GameEnvironment::initObstacles()
 
 void GameEnvironment::initClouds()
 {
-    for(int i=0 ; i<3 ; i++){
+    for(int i=0 ; i<5 ; i++){
          Cloud c(this->_cloud, this->_sphere, this->_textureProgram) ;
          this->clouds.push_back(c);
      }    
@@ -264,7 +264,7 @@ void GameEnvironment::addOrRemoveBoids()
 
     if (nbBoids < this->_ihm.getNbBoids()){
         for(int i=0 ; i< this->_ihm.getNbBoids()-nbBoids ; i++){
-            Boid b(this->_sphere, this->_sphere, this->_textureProgram, this->_magicPos) ;
+            Boid b(this->_sphere, this->_sphere, this->_boidProgram, this->_magicPos) ;
             this->boids.push_back(b);
         }
     }

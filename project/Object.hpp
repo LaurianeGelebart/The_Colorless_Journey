@@ -5,10 +5,11 @@
 
 #include "p6/p6.h"
 
+#include "programs/ColorProgram.hpp"
 #include "FacesGroup.hpp"
-#include "ObjectProgram.hpp"
-#include "PanelProgram.hpp"
-#include "ShadowMapProgram.hpp"
+#include "programs/ObjectProgram.hpp"
+#include "programs/PanelProgram.hpp"
+#include "programs/ShadowMapProgram.hpp"
 
 
 class Object 
@@ -22,6 +23,7 @@ class Object
         std::vector<std::vector<FacesGroup>> _models; 
         ObjectProgram* _program; 
         PanelProgram* _panelProgram; 
+        ColorProgram* _boidProgram;
         // ShadowMapProgram& _shadowMapProgram;
         float _angleY = 0.f;
         int _lod = 0; 
@@ -30,6 +32,7 @@ class Object
     public : 
         Object(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, ObjectProgram& program);
         Object(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, PanelProgram& program);
+        Object(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, ColorProgram& program);
         Object();
         // ~Object();
         

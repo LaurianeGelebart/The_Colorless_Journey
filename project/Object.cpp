@@ -29,6 +29,13 @@ Object::Object(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, 
     _models.push_back(lodModel);
 }
 
+Object::Object(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, ColorProgram& program)
+ : _boidProgram(&program)
+{
+    _models.push_back(model);
+    _models.push_back(lodModel);
+}
+
 Object::Object(){}
 
 // Object::~Object(){}
@@ -55,11 +62,11 @@ void Object::draw(const glm::mat4 ViewMatrix, const int windowWidth, const int w
 
 // light 
     glm::mat4 VLightMatrix = ViewMatrix;
-    glm::vec3 lightPos = glm::vec3( (VLightMatrix)*glm::vec4(1,1,0,1) );
+    glm::vec3 lightPos = glm::vec3( (VLightMatrix)*glm::vec4(0,1.5,0,1) );
     glm::vec3 lightDir = glm::vec3( (VLightMatrix)*glm::vec4(1,1,1,0) ); 
     // std::cout << wandererPos.x/10.f << " - "  << wandererPos.y << " - " << wandererPos.z/10.f << "\n";
     glm::mat4 MLightMatrix = glm::translate(glm::mat4(1.0), glm::vec3(wandererPos));
-    glm::vec3 lightCharacter = glm::vec3( (MLightMatrix)*glm::vec4(1,1,0,1) );
+    glm::vec3 lightCharacter = glm::vec3( (MLightMatrix)*glm::vec4(0,0.5,0,1) );
 
 
 //shadow part
@@ -89,7 +96,7 @@ void Object::draw(const glm::mat4 ViewMatrix, const int windowWidth, const int w
         glUniform3fv(this->_program->uLightPos_vs, 1, glm::value_ptr(lightPos));
         glUniform3fv(this->_program->uLightDir_vs, 1, glm::value_ptr(lightDir));
         glUniform3fv(this->_program->uLightCharacter_vs, 1, glm::value_ptr(lightCharacter));
-        glUniform3fv(this->_program->uLightIntensity, 1, glm::value_ptr(glm::vec3(0.2)));
+        glUniform3fv(this->_program->uLightIntensity, 1, glm::value_ptr(glm::vec3(0.1)));
 
 // std::cout << face.getName() << " - " << face.getVertextCount() << "\n";
 

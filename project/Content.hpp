@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "p6/p6.h"
-#include "ObjectProgram.hpp"
+#include "programs/ObjectProgram.hpp"
 #include "Object.hpp"
 
 class Content : public Object 

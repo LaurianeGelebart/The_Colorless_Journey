@@ -6,7 +6,7 @@
 #include "p6/p6.h"
 
 #include "FacesGroup.hpp"
-#include "ObjectProgram.hpp"
+#include "programs/ObjectProgram.hpp"
 
 
 class IHM {
@@ -19,10 +19,10 @@ class IHM {
         float _collisionRadius = 0.015 ; 
         float _detectionRadius = 0.025 ;
         float _turnFactor = 0.00006  ;  
-        float _speed = 0.0005 ; 
+        float _speed = 0.0015 ; 
         float _boidsArea = 0.2 ; 
         int _nbObstacles = 60 ; 
-        int _nbBoids = 30 ; 
+        int _nbBoids = 50 ; 
         
     public : 
         IHM(); 

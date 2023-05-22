@@ -1,12 +1,14 @@
-#include "Boid.hpp"
-#include "glm/gtc/random.hpp"
 #include <iostream>
 #include <math.h>
 
+#include "glm/gtc/type_ptr.hpp"
+#include "glm/gtc/random.hpp"
+
+#include "Boid.hpp"
 #include "IHM.hpp"
 
 
-Boid::Boid(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, ObjectProgram& program, glm::vec3 magicPos)
+Boid::Boid(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, ColorProgram& program, glm::vec3 magicPos)
 :Object(model, lodModel, program) 
 {
     this->_centerPosition = magicPos;
@@ -14,7 +16,8 @@ Boid::Boid(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, Obje
     float angle = (float)(p6::random::integer(0, 360))*M_PI/180.0; 
     float angleZ = (float)(p6::random::integer(0, 360))*M_PI/180.0; 
     this->_velocity = glm::vec3(cos(angle), sin(angle) ,cos(angleZ)) ;
-    this->_scale = p6::random::number(0.005, 0.01);
+    this->_scale = p6::random::number(0.003, 0.006);
+    this->_color = {1.0f, p6::random::number(0.5, 0.8), 0.0} ;
 }
 
 glm::vec3 Boid::get_velocity() const
@@ -24,7 +27,6 @@ glm::vec3 Boid::get_velocity() const
 
 void Boid::update_position() 
 {
-    // std::cout << this->_position.x << " - "<< this->_position.z << "\n";
     this->_position =  this->_position + this->_velocity ;
 }
 
@@ -93,22 +95,7 @@ void Boid::collision_obstacles(const std::vector<Obstacle>& obstacles, const IHM
 {
     for(auto& obstacle : obstacles){
         double distance = glm::distance(obstacle.getPosition(), this->_position);
-
-        // std::cout << "boid " << distance << "\n";
         if(distance < 0.05){
-        // if(distance < obstacles[i].get_radius()){
-            // if (this->_position.x > obstacles[i].getPosition().x){
-            //     this->_velocity.x = this->_velocity.x + ihm.getTurnFactor()*10; 
-            // }
-            // if (this->_position.x < obstacles[i].getPosition().x) {
-            //     this->_velocity.x = this->_velocity.x - ihm.getTurnFactor()*10; 
-            // }
-            // if (this->_position.y > obstacles[i].getPosition().y){
-            //     this->_velocity.y = this->_velocity.y + ihm.getTurnFactor()*10; 
-            // } 
-            // if (this->_position.y < obstacles[i].getPosition().y){
-            //     this->_velocity.y = this->_velocity.y -  ihm.getTurnFactor()*10; 
-            // }
             this->bounce(obstacle); 
         }
     }
@@ -119,24 +106,72 @@ void Boid::bounce(const Obstacle &obstacle)
 {
     glm::vec3 normal = glm::vec3(this->_position.x - obstacle.getPosition().x , this->_position.y - obstacle.getPosition().y , this->_position.z - obstacle.getPosition().z);
     normal = glm::normalize(normal); 
-   // glm::vec3 T = glm::vec3(normal.y , -normal.x, 0.) ; 
-    // float vt = glm::dot(this->_velocity, T); 
-    // float vn = glm::dot(this->_velocity, 2.f*normal); 
-    this->_velocity += normal*0.01f; //( vt*T - vn*normal ); 
+    this->_velocity += normal*0.01f; 
 }
 
 
 void Boid::limit_speed(const IHM ihm)
 {
     float speed = std::sqrt(this->_velocity.x*this->_velocity.x + this->_velocity.y*this->_velocity.y + this->_velocity.z*this->_velocity.z); 
-    // TODO use glm::length
     
-    if(speed < ihm.getSpeed()-this->_borne_velocity) speed = ihm.getSpeed()-this->_borne_velocity ;  
-
+    if(speed < ihm.getSpeed()-this->_borne_velocity){
+        speed = ihm.getSpeed()-this->_borne_velocity ;  
+    }
     if (speed < ihm.getSpeed()-this->_borne_velocity) {
         this->_velocity = (this->_velocity/speed)*(ihm.getSpeed()-this->_borne_velocity) ;       
     }
     if (speed > ihm.getSpeed()+this->_borne_velocity) {
         this->_velocity = (this->_velocity/speed)*(ihm.getSpeed()+this->_borne_velocity) ; 
+    }
+}
+
+
+void Boid::draw(const glm::mat4 ViewMatrix, const int windowWidth, const int windowHeight, std::map<std::string, Material>& materialMap, glm::vec3 wandererPos, int color)
+{  
+    this->_boidProgram->_Program.use() ; 
+
+    glm::mat4 MVMatrix = ViewMatrix;
+    MVMatrix = glm::translate(MVMatrix, glm::vec3(this->_position));
+    MVMatrix = glm::scale(MVMatrix, glm::vec3(this->_scale));
+    MVMatrix = glm::rotate(MVMatrix, glm::radians(this->_angleY), glm::vec3(0.f, 1.f, 0.f));
+
+    glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), (float)windowWidth / (float)windowHeight, 0.1f, 100.f);
+    glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
+
+
+// light 
+    glm::mat4 VLightMatrix = ViewMatrix;
+    glm::vec3 lightPos = glm::vec3( (VLightMatrix)*glm::vec4(0,0,0,1) );
+
+
+//shadow part
+    // glm::mat4 orthgonalProjection = glm::ortho(-35.0f, 35.0f, -35.0f, 35.0f, 0.1f, 75.0f);
+	// glm::mat4 lightView = glm::lookAt(20.0f * lightPos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	// glm::mat4 lightProjection = orthgonalProjection * lightView;
+
+	// shadowMapProgram.Activate();
+	// glUniformMatrix4fv(glGetUniformLocation(shadowMapProgram.ID, "lightProjection"), 1, GL_FALSE, glm::value_ptr(lightProjection));
+// ossekour 
+
+
+    for(auto& face : this->_models[this->_lod] ){
+        GLuint vao = face.getVAO();
+        glBindVertexArray(vao);
+
+        glUniformMatrix4fv(this->_boidProgram->uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
+        glUniformMatrix4fv(this->_boidProgram->uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
+        glUniformMatrix4fv(this->_boidProgram->uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
+           
+        glUniform1f(this->_boidProgram->uShininess, materialMap[face.getName()].shininess);
+        glUniform3fv(this->_boidProgram->uKd, 1, glm::value_ptr(this->_color));
+        glUniform3fv(this->_boidProgram->uKs, 1, glm::value_ptr(materialMap[face.getName()].Ks));
+        glUniform3fv(this->_boidProgram->uLightPos_vs, 1, glm::value_ptr(lightPos));
+        glUniform3fv(this->_boidProgram->uLightIntensity, 1, glm::value_ptr(glm::vec3(0.1)));
+
+
+        glDrawArrays(GL_TRIANGLES, 0, face.getVertextCount());
+
+
+		glBindVertexArray(0) ;
     }
 }

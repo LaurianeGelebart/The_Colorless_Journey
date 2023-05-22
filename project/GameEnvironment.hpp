@@ -9,6 +9,7 @@
 #include "Wanderer.hpp"
 #include "Boid.hpp"
 #include "Cloud.hpp"
+#include "programs/ColorProgram.hpp"
 #include "Content.hpp"
 #include "FacesGroup.hpp"
 #include "FreeflyCamera.hpp"
@@ -17,9 +18,9 @@
 #include "Loader.hpp"
 #include "Obstacle.hpp"
 #include "Object.hpp"
-#include "ObjectProgram.hpp"
+#include "programs/ObjectProgram.hpp"
 #include "PanelInfo.hpp"
-#include "PanelProgram.hpp"
+#include "programs/PanelProgram.hpp"
 #include "Texture.hpp"
 
 class GameEnvironment 
@@ -27,6 +28,7 @@ class GameEnvironment
     private : 
         ObjectProgram _textureProgram ; 
         PanelProgram _panelProgram ; 
+        ColorProgram _boidProgram ; 
 
         TrackballCamera _ViewMatrix;
         IHM _ihm ;

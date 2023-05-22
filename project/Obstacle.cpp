@@ -1,9 +1,9 @@
-#include "Obstacle.hpp"
-#include "ObjectProgram.hpp"
-#include "Object.hpp"
-
 #include <iostream>
 #include "glm/gtc/random.hpp"
+
+#include "Obstacle.hpp"
+#include "programs/ObjectProgram.hpp"
+#include "Object.hpp"
     
 
 Obstacle::Obstacle(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, ObjectProgram& program)

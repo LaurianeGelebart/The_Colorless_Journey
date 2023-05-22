@@ -4,13 +4,13 @@
 #include <vector>
 
 #include "p6/p6.h"
-#include "ObjectProgram.hpp"
+#include "programs/ObjectProgram.hpp"
 #include "Object.hpp"
 
 class Cloud : public Object 
 { 
     private : 
-        float _velocity; 
+        float _velocity;
         
     public : 
         Cloud(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, ObjectProgram& program);

@@ -1,9 +1,8 @@
 #include "IHM.hpp"
 #include <iostream>
 
-IHM::IHM()  // TODO remove it and move default value to .hpp
-{
-}
+IHM::IHM()  
+{}
 
 void IHM::draw() 
 {
@@ -30,7 +29,7 @@ void IHM::draw()
     this->_boidsArea = f5/10; 
 
     int i1 = this->_nbBoids ; 
-    ImGui::SliderInt("Boids", &i1, 0, 100);
+    ImGui::SliderInt("Boids", &i1, 0, 200);
     this->_nbBoids = i1; 
 
     int i2 = this->_nbObstacles ; 

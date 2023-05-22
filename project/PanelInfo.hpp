@@ -5,7 +5,7 @@
 
 #include "p6/p6.h"
 #include "Object.hpp"
-#include "PanelProgram.hpp"
+#include "programs/PanelProgram.hpp"
 #include "TrackballCamera.hpp"
 
 class PanelInfo : public Object 
