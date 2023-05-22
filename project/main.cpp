@@ -8,24 +8,7 @@
 
 #include "p6/p6.h"
 
-// #include "Arpenteur.hpp"
-// #include "Boid.hpp"
-// #include "Cloud.hpp"
-// #include "Content.hpp"
-// #include "FacesGroup.hpp"
-// #include "FreeflyCamera.hpp"
-// #include "IHM.hpp"
-// #include "Loader.hpp"
-// #include "Obstacle.hpp"
-// #include "Object.hpp"
-// #include "ObjectProgram.hpp"
-// #include "Texture.hpp"
-// #include "TrackballCamera.hpp"
-
 #include "GameEnvironment.hpp"
-
-#include "test.hpp"
-
 
 
 /* ---------------------------------------------------------------------------- */
@@ -33,15 +16,15 @@
 /* ---------------------------------------------------------------------------- */
 int main()
 {
-    int  window_width  = 1280;
-    int  window_height = 720;
-    auto ctx = p6::Context{{window_width, window_height, "Project qui se passe super bien"}};
+    int  windowWidth  = 1280;
+    int  windowHeight = 720;
+    auto ctx = p6::Context{{windowWidth, windowHeight, "Project qui se passe super bien"}};
     ctx.maximize_window();
 
     glEnable(GL_DEPTH_TEST) ;
     glDisable(GL_CULL_FACE) ;
 
-    GameEnvironment game; 
+    GameEnvironment game(windowWidth, windowHeight); 
 
     game.initScene();
 
@@ -52,9 +35,11 @@ int main()
         glClearColor(0.7f, 0.6f, 0.6f, 1.f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        game.render(ctx);
         game.inputManagement(ctx);
-        game.cameraManagement(ctx);
+        game.cameraManagement();
+        game.render(ctx);
+        game.addOrRemoveBoids() ;
+        game.addOrRemoveObstacles() ;
 
     };
 

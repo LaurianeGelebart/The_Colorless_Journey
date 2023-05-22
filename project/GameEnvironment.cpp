@@ -1,14 +1,46 @@
 #include "p6/p6.h"
 #include "GameEnvironment.hpp"
 
+GameEnvironment::GameEnvironment(int  windowWidth, int  windowHeight)
+: _windowWidth(windowWidth), _windowHeight(windowHeight)
+{}
+
 void GameEnvironment::initScene()
 {
     initObjectModel();
     initBoids();
     initObstacles();
     initClouds();
-    initArpenteur();
+    initWanderer();
     initContent();
+    initPanels();
+    // initFBO();
+}
+
+void GameEnvironment::initFBO()
+{
+	// Framebuffer for Shadow Map
+	// glGenFramebuffers(1, &shadowMapFBO);
+
+	// // Texture for Shadow Map FBO
+	// int shadowMapWidth = 2048, shadowMapHeight = 2048;
+	// glGenTextures(1, &shadowMap);
+	// glBindTexture(GL_TEXTURE_2D, shadowMap);
+	// glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, shadowMapWidth, shadowMapHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	// glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	// // Prevents darkness outside the frustrum
+	// float clampColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	// glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, clampColor);
+
+	// glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFBO);
+	// glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, shadowMap, 0);
+	// // Needed since we don't touch the color buffer
+	// glDrawBuffer(GL_NONE);
+	// glReadBuffer(GL_NONE);
+	// glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void GameEnvironment::deleteScene()
@@ -22,8 +54,8 @@ void GameEnvironment::deleteScene()
     for(auto& cloud : this->clouds){
         cloud.deleteVAO_VBO() ; 
     }
-    gaspard[0].deleteVAO_VBO() ; 
-    box[0].deleteVAO_VBO() ; 
+    gaspard.deleteVAO_VBO() ; 
+    box.deleteVAO_VBO() ; 
     glfwTerminate();
 }
 
@@ -38,56 +70,47 @@ void GameEnvironment::initObjectModel()
     this->_fir3 = Loader("./assets/models/fir3.obj", materialMap);
     this->_mushroom1 = Loader("./assets/models/mushroom1.obj", materialMap);
     this->_mushroom2 = Loader("./assets/models/mushroom2.obj", materialMap);
-    this->_rock1 = Loader("./assets/models/rock1.obj", materialMap);
-    this->_rock2 = Loader("./assets/models/rock2.obj", materialMap);
-    this->_rock3 = Loader("./assets/models/rock3.obj", materialMap);
     this->_house = Loader("./assets/models/house.obj", materialMap);
     this->_rocks = Loader("./assets/models/rocks.obj", materialMap);
     this->_rail = Loader("./assets/models/rail.obj", materialMap);
     this->_barel = Loader("./assets/models/barel.obj", materialMap);
     this->_cloud = Loader("./assets/models/cloud1.obj", materialMap);
     this->_panneau = Loader("./assets/models/panneau.obj", materialMap);
+    this->_panelColor = Loader("./assets/models/panel_color.obj", materialMap);
+    this->_panelBeginning = Loader("./assets/models/panel_beginning.obj", materialMap);
     this->_sphere = Loader("./assets/models/sphere.obj", materialMap);
-
- 
 }
 
 void GameEnvironment::initBoids()
 {
-    for(int i=0 ; i<this->_ihm.get_nb_boids() ; i++){
-         Boid b(this->_sphere, this->_textureProgram, this->_magicPos) ;
+    for(int i=0 ; i<this->_ihm.getNbBoids() ; i++){
+         Boid b(this->_sphere, this->_sphere, this->_textureProgram, this->_magicPos) ;
          this->boids.push_back(b);
     }
 }
 
 void GameEnvironment::initObstacles()
 {
-    this->obstacles.push_back(Obstacle(this->_house, this->_textureProgram, Vec(-4.0, 0.0, 0.0))) ;
-    this->obstacles.push_back(Obstacle(this->_puit, this->_textureProgram, Vec(3.0, 0.0, 4.0))) ;
-    this->obstacles.push_back(Obstacle(this->_rail, this->_textureProgram, Vec(-18.0, 0.0, 18.0))) ;
-    this->obstacles.push_back(Obstacle(this->_rocks, this->_textureProgram, Vec(-4.0, 0.0, 4.0))) ;
-    this->obstacles.push_back(Obstacle(this->_barel, this->_textureProgram, Vec(-4.0, 0.0, 0.0))) ;
-    this->obstacles.push_back(Obstacle(this->_magic, this->_textureProgram, this->_magicPos)) ;
-    this->obstacles.push_back(Obstacle(this->_panneau, this->_textureProgram, Vec(-10.0, 0.0, 13.0))) ;
+    this->obstacles.push_back(Obstacle(this->_house, this->_sphere, this->_textureProgram, glm::vec3(-1.1, 0.0, -0.0))) ;
+    this->obstacles.push_back(Obstacle(this->_puit, this->_sphere, this->_textureProgram, glm::vec3(1.0, 0.0, 1.1))) ;
+    this->obstacles.push_back(Obstacle(this->_rail, this->_rail, this->_textureProgram, glm::vec3(-1.8, 0.0, 1.8))) ;
+    this->obstacles.push_back(Obstacle(this->_rocks, this->_sphere, this->_textureProgram, glm::vec3(-1.2, 0.0, -1.1))) ;
+    this->obstacles.push_back(Obstacle(this->_barel, this->_sphere, this->_textureProgram, glm::vec3(-0.4, 0.0, 0.0))) ;
+    this->obstacles.push_back(Obstacle(this->_magic, this->_sphere, this->_textureProgram, this->_magicPos)) ;
+    this->obstacles.push_back(Obstacle(this->_panneau, this->_sphere, this->_textureProgram, glm::vec3(0.3, 0.0, 0.3))) ;
 
-    for(int i=6; i < this->_ihm.get_nb_obstacles(); i++){
+    for(int i=this->obstacles.size(); i < this->_ihm.getNbObstacles(); i++){
         float j = p6::random::number(); 
-        if(j < 0.2) {
-            this->obstacles.push_back(Obstacle(this->_fir1, this->_textureProgram));
-        } else if(j < 0.4) {
-            this->obstacles.push_back(Obstacle(this->_fir2, this->_textureProgram));
-        } else if (j < 0.6){
-            this->obstacles.push_back(Obstacle(this->_fir3, this->_textureProgram));
-        } else if(j < 0.65) {
-            this->obstacles.push_back(Obstacle(this->_mushroom1, this->_textureProgram));
-        } else if (j < 0.7){
-            this->obstacles.push_back(Obstacle(this->_mushroom2, this->_textureProgram));
-        }else if (j < 0.8){
-            this->obstacles.push_back(Obstacle(this->_rock1, this->_textureProgram));
-        } else if(j < 0.9) {
-            this->obstacles.push_back(Obstacle(this->_rock2, this->_textureProgram));
+        if(j < 0.25) {
+            this->obstacles.push_back(Obstacle(this->_fir1, this->_sphere, this->_textureProgram));
+        } else if(j < 0.5) {
+            this->obstacles.push_back(Obstacle(this->_fir2, this->_sphere, this->_textureProgram));
+        } else if (j < 0.75){
+            this->obstacles.push_back(Obstacle(this->_fir3, this->_sphere, this->_textureProgram));
+        } else if(j < 0.90) {
+            this->obstacles.push_back(Obstacle(this->_mushroom1, this->_sphere, this->_textureProgram));
         } else {
-            this->obstacles.push_back(Obstacle(this->_rock3, this->_textureProgram));
+            this->obstacles.push_back(Obstacle(this->_mushroom2, this->_sphere, this->_textureProgram));
         }
     }
 
@@ -96,124 +119,174 @@ void GameEnvironment::initObstacles()
 void GameEnvironment::initClouds()
 {
     for(int i=0 ; i<3 ; i++){
-         Cloud c(this->_cloud, this->_textureProgram) ;
+         Cloud c(this->_cloud, this->_sphere, this->_textureProgram) ;
          this->clouds.push_back(c);
      }    
 }
 
-void GameEnvironment::initArpenteur()
+void GameEnvironment::initWanderer()
 {
-    this->gaspard.push_back(Arpenteur(this->_magic, this->_textureProgram)) ; 
+    this->gaspard = Wanderer(this->_magic, this->_sphere, this->_textureProgram);
 }
 
 void GameEnvironment::initContent()
 {
-    this->box.push_back(Content(this->_content, this->_textureProgram)) ;
+    this->box = Content(this->_content, this->_sphere, this->_textureProgram) ;
+}
+
+void GameEnvironment::initPanels()
+{
+    this->panelsInfo.push_back(PanelInfo(this->_panelBeginning, this->_panelColor, this->_panelProgram));
+    this->panelsInfo.push_back(PanelInfo(this->_panelColor, this->_panelBeginning, this->_panelProgram));
+    this->panelsInfo[0].appears(this->_ViewMatrix);
 }
 
 void GameEnvironment::render(p6::Context &ctx)
 {
+
+    if (glm::distance(this->gaspard.getPosition(), this->_magicPos) < 0.5 ) {    
+        if( !this->panelsInfo[1].getDisplay() && !this->panelsInfo[1].getHasBeenDislayed() ){
+            this->panelsInfo[1].appears(this->_ViewMatrix);
+            this->_alt = false ;
+            mouseMoveManagement(ctx);
+        }
+    }
+
+    glm::mat4 viewMatrix = this->_ViewMatrix.getViewMatrix();
+
     for(auto& boid : this->boids){
-        boid.draw(this->_ViewMatrix, window_width, window_height, this->materialMap, this->gaspard[0].getPosition(), this->_color);
-        boid.collision(this->boids, this->obstacles, this->_ihm, ctx) ;
+        boid.checkLOD(this->gaspard.getPosition());
+        boid.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
+        boid.collision(this->boids, this->obstacles, this->_ihm) ;
         boid.update_position() ;
     };
 
     for(auto& obstacle : this->obstacles){
-        obstacle.draw(this->_ViewMatrix, window_width, window_height, this->materialMap, this->gaspard[0].getPosition(), this->_color);
+        obstacle.checkLOD(this->gaspard.getPosition());
+        obstacle.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
     };
 
     for(auto& cloud : this->clouds){
-        cloud.draw(this->_ViewMatrix, window_width, window_height, this->materialMap, this->gaspard[0].getPosition(), this->_color);
+        // cloud.checkLOD(this->gaspard.getPosition());
+        cloud.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
         cloud.update_position(ctx) ;
     }
 
-    this->box[0].draw(this->_ViewMatrix, window_width, window_height, this->materialMap, this->gaspard[0].getPosition(), this->_color);
-    this->gaspard[0].draw(this->_ViewMatrix, window_width, window_height, this->materialMap, this->gaspard[0].getPosition(), this->_color);
-    this->gaspard[0].update_position(this->_ViewMatrix); 
+    this->box.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
+    this->gaspard.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
+    this->gaspard.update_position(this->_ViewMatrix); 
 
+    for(auto& panel : this->panelsInfo){
+        if (panel.getDisplay()) panel.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
+    }
     // std::cout << " character " << this->gaspard[0].getPosition().x << " - "  << this->gaspard[0].getPosition().y << " - " << this->gaspard[0].getPosition().z << "\n";
 
     this->_ihm.draw();
 
-    add_or_remove_boids() ;
-    add_or_remove_obstacles() ;
 
 }
-
 
 
 void GameEnvironment::inputManagement(p6::Context &ctx)
 {
-    ctx.key_pressed = [this](const p6::Key& key) {
-        if (key.physical == GLFW_KEY_W) this->_Z = true;
-        if (key.physical == GLFW_KEY_S) this->_S = true;
-        if (key.physical == GLFW_KEY_A) this->_Q = true;
-        if (key.physical == GLFW_KEY_D) this->_D = true;
-        if (key.physical == GLFW_KEY_SPACE) colorManagement();
-    };
+    bool isMenu = false ; 
+    int nbMenu; 
+    for(size_t i=0 ; i<this->panelsInfo.size(); i++){
+        if (this->panelsInfo[i].getDisplay()) {
+            isMenu = true ; 
+            nbMenu = i ; 
+        }
+    }
+    if(isMenu){
+        ctx.key_pressed = [this, nbMenu](const p6::Key& key) {
+            if (key.physical == GLFW_KEY_ENTER || key.physical == GLFW_KEY_SPACE) {
+                this->panelsInfo[nbMenu].disapears();
+                this->_alt = true ;
+                // mouseMoveManagement(ctx);
+            }
+        };
+    }
+    else {
+        // std::cout << "else ? " << this->_alt << "\n";
+        ctx.key_pressed = [this](const p6::Key& key) {
+            if (key.physical == GLFW_KEY_W) this->_Z = true;
+            if (key.physical == GLFW_KEY_S) this->_S = true;
+            if (key.physical == GLFW_KEY_A) this->_Q = true;
+            if (key.physical == GLFW_KEY_D) this->_D = true;
+            if (key.physical == GLFW_KEY_LEFT_ALT) this->_alt = !this->_alt ;
+            if (key.physical == GLFW_KEY_SPACE) colorManagement();
+        };
+        ctx.key_released = [this](const p6::Key& key) {
+            if (key.physical == GLFW_KEY_W) this->_Z = false;
+            if (key.physical == GLFW_KEY_S) this->_S = false;
+            if (key.physical == GLFW_KEY_A) this->_Q = false;
+            if (key.physical == GLFW_KEY_D) this->_D = false;
+        };
 
-    ctx.key_released = [this](const p6::Key& key) {
-        if (key.physical == GLFW_KEY_W) this->_Z = false;
-        if (key.physical == GLFW_KEY_S) this->_S = false;
-        if (key.physical == GLFW_KEY_A) this->_Q = false;
-        if (key.physical == GLFW_KEY_D) this->_D = false;
-    };
+        mouseMoveManagement(ctx);
+    }
 }
 
 void GameEnvironment::colorManagement()
 {
-    double distance = glm::distance(this->gaspard[0].getPosition(), this->_magicPos);
+    double distance = glm::distance(this->gaspard.getPosition(), this->_magicPos);
 
-    if(distance < 20) {
+    if(distance < 0.5) {
         this->_color = !this->_color;
     }
 }
 
-
-void GameEnvironment::cameraManagement(p6::Context &ctx)
+void GameEnvironment::mouseMoveManagement(p6::Context &ctx)
 {
-    if (_Z) this->_ViewMatrix.moveFront(this->_movementStrength);
-    if (_S) this->_ViewMatrix.moveFront(-this->_movementStrength);
-    if (_Q) this->_ViewMatrix.moveLeft(this->_movementStrength);
-    if (_D) this->_ViewMatrix.moveLeft(-this->_movementStrength);
-
-
-    ctx.mouse_moved = [&](p6::MouseMove data) {
-        (this->_ViewMatrix).rotateLeft(-data.delta.y * this->_rotationStrength);
-        (this->_ViewMatrix).rotateUp(data.delta.x * this->_rotationStrength);
-    };
+    if (this->_alt) {
+        ctx.mouse_moved = [&](p6::MouseMove data) {
+            (this->_ViewMatrix).rotateLeft(-data.delta.y * this->_rotationStrength);
+            (this->_ViewMatrix).rotateUp(data.delta.x * this->_rotationStrength);
+        };
+    } else {
+        ctx.mouse_moved = [&](p6::MouseMove data) {};
+    }
 }
 
-void GameEnvironment::add_or_remove_boids()
-{
-    int nb_boids = this->boids.size();
 
-    if (nb_boids < this->_ihm.get_nb_boids()){
-        for(int i=0 ; i< this->_ihm.get_nb_boids()-nb_boids ; i++){
-            Boid b(this->_sphere, this->_textureProgram, this->_magicPos) ;
+void GameEnvironment::cameraManagement()
+{
+    if (_Z) this->_ViewMatrix.moveFront(this->_movementStrength, this->obstacles);
+    if (_S) this->_ViewMatrix.moveFront(-this->_movementStrength, this->obstacles);
+    if (_Q) this->_ViewMatrix.moveLeft(this->_movementStrength, this->obstacles);
+    if (_D) this->_ViewMatrix.moveLeft(-this->_movementStrength, this->obstacles);
+    
+}
+
+void GameEnvironment::addOrRemoveBoids()
+{
+    int nbBoids = this->boids.size();
+
+    if (nbBoids < this->_ihm.getNbBoids()){
+        for(int i=0 ; i< this->_ihm.getNbBoids()-nbBoids ; i++){
+            Boid b(this->_sphere, this->_sphere, this->_textureProgram, this->_magicPos) ;
             this->boids.push_back(b);
         }
     }
-    else if (nb_boids > this->_ihm.get_nb_boids()){
-        for(int i=0 ; i< nb_boids-this->_ihm.get_nb_boids() ; i++){
+    else if (nbBoids > this->_ihm.getNbBoids()){
+        for(int i=0 ; i< nbBoids-this->_ihm.getNbBoids() ; i++){
             this->boids.pop_back();
         }
     }
 }
 
-void GameEnvironment::add_or_remove_obstacles()
+void GameEnvironment::addOrRemoveObstacles()
 {
-    int nb_obstacles = obstacles.size();
+    int nbObstacles = obstacles.size();
 
-    if (nb_obstacles < this->_ihm.get_nb_obstacles()){
-        for(int i=0 ; i< this->_ihm.get_nb_obstacles() ; i++){
-            Obstacle o(this->_fir1, this->_textureProgram) ;
+    if (nbObstacles < this->_ihm.getNbObstacles()){
+        for(int i=0 ; i< this->_ihm.getNbObstacles() ; i++){
+            Obstacle o(this->_fir1, this->_sphere, this->_textureProgram) ;
             obstacles.push_back(o);
         }
     }
-    else if (nb_obstacles > this->_ihm.get_nb_obstacles()){
-        for(int i=0 ; i< nb_obstacles-this->_ihm.get_nb_obstacles() ; i++){
+    else if (nbObstacles > this->_ihm.getNbObstacles()){
+        for(int i=0 ; i< nbObstacles-this->_ihm.getNbObstacles() ; i++){
             obstacles.pop_back();
         }
     }

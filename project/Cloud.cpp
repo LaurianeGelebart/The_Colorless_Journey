@@ -6,28 +6,19 @@
 #include "glm/gtc/random.hpp"
     
 
-Cloud::Cloud(std::vector<FacesGroup> facesGroup, ObjectProgram& program)
-:Object(facesGroup, program) 
+Cloud::Cloud(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, ObjectProgram& program)
+:Object(model, lodModel, program) 
 {
-    this->_position = Vec(glm::ballRand(15.0)); 
-    this->_position.y = p6::random::number(0.4, 0.5) ; 
-    this->_scale = p6::random::number(0.05, 0.2) ; 
-    this->_velocity = p6::random::number(5, 10) ; 
-}
-
-Cloud::Cloud
-(std::vector<FacesGroup> facesGroup, ObjectProgram& program, Vec position)
-:Object(facesGroup, program)
-{
-    this->_position = position; 
-    this->_position.y = 0.0; 
-    this->_scale = p6::random::number(0.05, 0.2) ; 
-    this->_velocity = p6::random::number(5, 10) ; 
+    this->_position = glm::vec3(glm::ballRand(1.5)); 
+    this->_position.y = p6::random::number(0.15, 0.15) ; 
+    this->_scale = p6::random::number(5.0, 6.0) ; 
+    this->_velocity = p6::random::number(0.5, 1.0) ; 
 }
 
 
 void Cloud::update_position(p6::Context& ctx)
 {
-    this->_position.x = sin(ctx.time()/8.0)*this->_velocity ; 
-    this->_position.z = sin(ctx.time()/5.0) ; 
+    this->_position.x = sin(ctx.time()/0.8)*this->_velocity ; 
+    this->_position.z = sin(ctx.time()/0.5) ; 
+    // std::cout << "cloud " << this->_position.x << " - " << this->_position.y << " - "<< this->_position.z << "\n";
 }

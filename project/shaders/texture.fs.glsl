@@ -60,7 +60,7 @@ vec3 blinnPhongPosCharacter()
     vec3 specularColor = vec3(1.0 , 0.7 , 0.0 ) * specular;
     float d = distance(vPosition_vs,uLightCharacter_vs);
 
-    return (0.1 / (d * d)) * (diffuse + specularColor);
+    return (uLightIntensity / (d * d)) * (diffuse + specularColor);
 }
 
 void main()
@@ -74,5 +74,5 @@ void main()
     vec3 texture = vec3(texture(uTexture, vFragTexture).xyz) ;
     
     //fFragColor = lightCharacter * texture ;
-    fFragColor = texture * (lightPos + lightCharacter) ;
+    fFragColor = texture * (lightCharacter + lightPos) ;
 }

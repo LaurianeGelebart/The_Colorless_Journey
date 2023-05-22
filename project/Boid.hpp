@@ -14,24 +14,23 @@ class Boid : public Object
 {
 
     private : 
-        Vec _velocity ; 
-        float _borne_velocity ;  
-
+        glm::vec3 _velocity ; 
+        float _borne_velocity = 0.001;  
+        glm::vec3 _centerPosition;
         
     public : 
-        Boid(std::vector<FacesGroup> facesGroup, ObjectProgram& program, Vec magicPos);
+        Boid(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, ObjectProgram& program, glm::vec3 magicPos);
 
-        Vec get_velocity() const; 
+        glm::vec3 get_velocity() const; 
 
         void update_position();
 
-        void collision(const std::vector<Boid>& boids, const std::vector<Obstacle>& obstacles, IHM ihm, p6::Context& ctx);  
-        void collision_bords(IHM ihm, p6::Context& ctx); 
-        void bounce(Obstacle& obstacle); 
-        void collision_obstacles(const std::vector<Obstacle>& obstacles, IHM ihm); 
-        void collision_boids(const std::vector<Boid>& boids, IHM ihm);
+        void collision(const std::vector<Boid>& boids, const std::vector<Obstacle>& obstacles, const IHM ihm);  
+        void collision_bords(const IHM ihm); 
+        void bounce(const Obstacle& obstacle); 
+        void collision_obstacles(const std::vector<Obstacle>& obstacles, const IHM ihm); 
+        void collision_boids(const std::vector<Boid>& boids, const IHM ihm);
 
-        void limit_speed(IHM ihm) ;
-        double distance(Vec pos) ;
-        void move(p6::Context& ctx); 
+        void limit_speed(const IHM ihm) ;
+        void move(const p6::Context& ctx); 
 }; 

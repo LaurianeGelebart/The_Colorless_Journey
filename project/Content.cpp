@@ -3,22 +3,12 @@
 #include <iostream>
 #include "glm/gtc/random.hpp"
     
+Content::Content()
+{}
 
-Content::Content(std::vector<FacesGroup> facesGroup, ObjectProgram& program)
-:Object(facesGroup, program) 
+Content::Content(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, ObjectProgram& program)
+:Object(model, lodModel, program) 
 {
-    this->_position = Vec(0.f); 
+    this->_position = glm::vec3(0.f); 
     this->_scale = 0.1 ; 
 }
-
-// Content::Content()
-// {
-//     this->_position = Vec(0.f); 
-//     this->_scale = 0.1 ; 
-// }
-
-// void Content::init(std::vector<FacesGroup> facesGroup, ObjectProgram& program)
-// {
-//     this->_facesGroup = facesGroup;
-//     this->_program = program;
-// }

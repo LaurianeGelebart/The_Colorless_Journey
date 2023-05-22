@@ -7,7 +7,7 @@ int Texture::s_nextID = 0;
 Texture::Texture()
 {
     this->_slot = s_nextID++;
-    img::Image image =  p6::load_image_buffer("./assets/textures/cloud.png") ;   
+    img::Image image =  p6::load_image_buffer("./assets/textures/none.png") ;   
 
     glGenTextures(1, &(this->_rendererID)); 
     glBindTexture(GL_TEXTURE_2D, this->_rendererID);

@@ -6,8 +6,7 @@
 #include "glm/gtx/transform.hpp"
 
 #include "Material.hpp"
-
-static int normalizeAngle(int angle);
+#include "Obstacle.hpp"
 
 
 class TrackballCamera 
@@ -18,10 +17,12 @@ class TrackballCamera
         float _angleX = 11.f; 
         float _angleY = 0.f; 
 
-        Vec _position;
+        glm::vec3 _position;
 
 
-        bool checkMovingPosition(Vec position) const;
+        bool isCollisionBorder(glm::vec3 position) const;
+        bool isCollisionObstacles(glm::vec3 position, std::vector<Obstacle> obstacles) const;
+        bool checkMovingPosition(glm::vec3 position, std::vector<Obstacle> obstacles) const;
         bool checkRotatingAngleX(float angle) const;
         bool checkRotatingAngleY(float angle) const;
 
@@ -29,14 +30,14 @@ class TrackballCamera
         TrackballCamera(); 
 
         glm::mat4 getViewMatrix() const ;
-        Vec getPosition() const;
+        glm::vec3 getPosition() const;
         float getAngleY() const;
+        float getAngleX() const;
 
         void rotateLeft(float degrees);
         void rotateUp(float degrees);
-        void moveFront(float delta);
-        void moveLeft(float delta);
+        void moveFront(float delta, std::vector<Obstacle> obstacles);
+        void moveLeft(float delta, std::vector<Obstacle> obstacles);
 
 
 };
-
