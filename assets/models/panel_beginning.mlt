@@ -1,24 +1,22 @@
-# Blender 3.3.1 MTL File: 'opengl.blend'
+# Blender 3.3.1 MTL File: 'panel _opengl.blend'
 # www.blender.org
 
-newmtl point
+newmtl info_debut
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
-Kd 0.200000 0.600000 0.800000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd ./assets/textures/champ.png ./assets/textures/champ_color1.png
+map_Kd ./assets/textures/info_debut.png ./assets/textures/info_debut.png
 
-newmtl champ2
+newmtl none
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
-Kd 0.200000 0.600000 0.800000
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd ./assets/textures/sapin.png ./assets/textures/champ_color2.png
+map_Kd ./assets/textures/none.png ./assets/textures/none.png

@@ -1,7 +1,7 @@
 # Blender 3.3.1
 # www.blender.org
 mtllib ./assets/models/rail.mtl
-o Cube.001
+o rail
 v 0.493489 0.102292 -13.069695
 v 0.493489 0.070584 -13.069695
 v 0.093201 0.102292 -12.587359
