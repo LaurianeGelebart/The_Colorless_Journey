@@ -9,29 +9,35 @@
 #include "Wanderer.hpp"
 #include "Boid.hpp"
 #include "Cloud.hpp"
-#include "programs/ColorProgram.hpp"
 #include "Content.hpp"
 #include "FacesGroup.hpp"
 #include "FreeflyCamera.hpp"
 #include "TrackballCamera.hpp"
 #include "IHM.hpp"
+#include "InitEnvironment.hpp"
 #include "Loader.hpp"
 #include "Obstacle.hpp"
 #include "Object.hpp"
-#include "programs/ObjectProgram.hpp"
 #include "PanelInfo.hpp"
-#include "programs/PanelProgram.hpp"
 #include "Texture.hpp"
+
+#include "programs/ColorProgram.hpp"
+#include "programs/ObjectProgram.hpp"
+#include "programs/PanelProgram.hpp"
+#include "programs/ShadowMapProgram.hpp"
+
 
 class GameEnvironment 
 {
     private : 
+        InitEnvironment _initGame; 
+
         ObjectProgram _textureProgram ; 
         PanelProgram _panelProgram ; 
         ColorProgram _boidProgram ; 
+        ShadowMapProgram _shadowProgram ; 
 
         TrackballCamera _ViewMatrix;
-        IHM _ihm ;
 
         GLuint _shadowMapFBO ; 
         GLuint _shadowMap ; 
@@ -47,47 +53,20 @@ class GameEnvironment
 
         bool _color = false;  
 
-        glm::vec3 _magicPos = glm::vec3(1.2, 0.0, -1.2); 
+        glm::vec3 _magicPosition = glm::vec3(1.2, 0.0, -1.2); 
+        glm::vec3 _housePosition = glm::vec3(-1.1, 0.0, -0.0); 
+        glm::vec3 _puitsPosition = glm::vec3(1.0, 0.0, 1.0); 
 
         bool _Z = false;
         bool _S = false;
         bool _Q = false;
         bool _D = false;
         bool _alt = true;
-
-        std::vector<FacesGroup> _puit ;
-        std::vector<FacesGroup> _magic ;
-        std::vector<FacesGroup> _content;
-        std::vector<FacesGroup> _fir1 ;
-        std::vector<FacesGroup> _fir2;
-        std::vector<FacesGroup> _fir3 ;
-        std::vector<FacesGroup> _mushroom1;
-        std::vector<FacesGroup> _mushroom2 ;
-        std::vector<FacesGroup> _house ;
-        std::vector<FacesGroup> _rocks ;
-        std::vector<FacesGroup> _rail ;
-        std::vector<FacesGroup> _barel ;
-        std::vector<FacesGroup> _cloud ;
-        std::vector<FacesGroup> _panneau;
-        std::vector<FacesGroup> _sphere ;
-        std::vector<FacesGroup> _panelColor;
-        std::vector<FacesGroup> _panelBeginning ;
-
-
-        void initObjectModel();
-        void initBoids();
-        void initObstacles();
-        void initClouds();
-        void initWanderer();
-        void initContent();
+      
         void initFBO();
-        void initPanels();
 
         void colorManagement();
         void mouseMoveManagement(p6::Context &ctx);
-
-	// unsigned int shadowMapFBO;
-	// unsigned int shadowMap;
 
 
     public : 
@@ -95,9 +74,10 @@ class GameEnvironment
         std::vector<Boid> boids;
         std::vector<Obstacle> obstacles;
         std::vector<Cloud> clouds;
-        std::map<std::string, Material> materialMap;
         Content box ;
         Wanderer gaspard;
+
+        std::map<std::string, Material> materialMap;
 
         GameEnvironment(int  windowWidth, int  windowHeight);
 
@@ -106,7 +86,5 @@ class GameEnvironment
         void cameraManagement(); 
         void inputManagement(p6::Context &ctx);
         void deleteScene();
-        void addOrRemoveObstacles();
-        void addOrRemoveBoids();
 
 }; 

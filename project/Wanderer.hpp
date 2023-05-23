@@ -18,5 +18,6 @@ class Wanderer : public Object
         Wanderer(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, ObjectProgram& program);
 
         void update_position(const TrackballCamera& viewMatrix); 
+        float getAngle() const ;
 
 }; 

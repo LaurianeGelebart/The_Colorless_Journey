@@ -141,7 +141,7 @@ bool TrackballCamera::isCollisionObstacles(glm::vec3 position, std::vector<Obsta
 
 bool TrackballCamera::checkRotatingAngleX(float angle) const
 {
-    if(angle<10 || angle>90) return false  ;
+    if(angle<15 || angle>90) return false  ;
     return true ; 
 }
 

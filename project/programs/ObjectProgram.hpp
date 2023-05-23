@@ -16,6 +16,9 @@ struct ObjectProgram
     GLint uKs;
     GLint uShininess;
 
+    GLint uLightMagic_vs;
+    GLint uLightPuits_vs;
+    GLint uLightHouse_vs;
     GLint uLightPos_vs;
     GLint uLightDir_vs;
     GLint uLightCharacter_vs;
@@ -33,6 +36,9 @@ struct ObjectProgram
         uKs        = glGetUniformLocation(_Program.id(), "uKs");
         uShininess = glGetUniformLocation(_Program.id(), "uShininess");
 
+        uLightHouse_vs    = glGetUniformLocation(_Program.id(), "uLightHouse_vs");
+        uLightPuits_vs    = glGetUniformLocation(_Program.id(), "uLightPuits_vs");
+        uLightMagic_vs    = glGetUniformLocation(_Program.id(), "uLightMagic_vs");
         uLightPos_vs    = glGetUniformLocation(_Program.id(), "uLightPos_vs");
         uLightDir_vs    = glGetUniformLocation(_Program.id(), "uLightDir_vs");
         uLightCharacter_vs    = glGetUniformLocation(_Program.id(), "uLightCharacter_vs");

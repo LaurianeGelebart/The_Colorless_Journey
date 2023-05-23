@@ -38,8 +38,6 @@ int main()
         game.inputManagement(ctx);
         game.cameraManagement();
         game.render(ctx);
-        game.addOrRemoveBoids() ;
-        game.addOrRemoveObstacles() ;
 
     };
 

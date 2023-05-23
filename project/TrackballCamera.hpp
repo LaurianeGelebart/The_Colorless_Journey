@@ -14,10 +14,10 @@ class TrackballCamera
 
     private:
         float _distance = 0.5; 
-        float _angleX = 11.f; 
+        float _angleX = 17.f; 
         float _angleY = 0.f; 
 
-        glm::vec3 _position;
+        glm::vec3 _position = glm::vec3(0.0, 0.0, -0.8);
 
 
         bool isCollisionBorder(glm::vec3 position) const;

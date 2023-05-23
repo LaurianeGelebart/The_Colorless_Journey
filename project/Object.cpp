@@ -49,8 +49,6 @@ glm::vec3 Object::getPosition() const
 void Object::draw(const glm::mat4 ViewMatrix, const int windowWidth, const int windowHeight, std::map<std::string, Material>& materialMap, glm::vec3 wandererPos, int color)
 {  
 
-    std::cout << this->_program->_Program.id() << "\n";
-
     glm::mat4 MVMatrix = ViewMatrix;
     MVMatrix = glm::translate(MVMatrix, glm::vec3(this->_position));
     MVMatrix = glm::scale(MVMatrix, glm::vec3(this->_scale));

@@ -4,17 +4,18 @@
 
 GameEnvironment::GameEnvironment(int  windowWidth, int  windowHeight)
 : _windowWidth(windowWidth), _windowHeight(windowHeight)
-{}
+{
+}
 
 void GameEnvironment::initScene()
 {
-    initObjectModel();
-    initBoids();
-    initObstacles();
-    initClouds();
-    initWanderer();
-    initContent();
-    initPanels();
+    this->_initGame.initObjectModel(this->materialMap);
+    this->_initGame.initBoids(this->boids, this->_boidProgram, this->_magicPosition);
+    this->_initGame.initObstacles(this->obstacles, this->_textureProgram, this->_magicPosition, this->_housePosition, this->_puitsPosition);
+    this->_initGame.initClouds(this->clouds, this->_textureProgram);
+    this->_initGame.initWanderer(this->gaspard, this->_textureProgram);
+    this->_initGame.initContent(this->box, this->_textureProgram);
+    this->_initGame.initPanels(this->panelsInfo, this->_panelProgram, this->_ViewMatrix);
     initFBO();
 }
 
@@ -59,115 +60,64 @@ void GameEnvironment::deleteScene()
 }
 
 
-void GameEnvironment::initObjectModel()
-{
-    this->_puit = Loader("./assets/models/puit.obj", materialMap);
-    this->_magic = Loader("./assets/models/magique.obj", materialMap);
-    this->_content = Loader("./assets/models/content.obj", materialMap);
-    this->_fir1 = Loader("./assets/models/fir1.obj", materialMap);
-    this->_fir2 = Loader("./assets/models/fir2.obj", materialMap);
-    this->_fir3 = Loader("./assets/models/fir3.obj", materialMap);
-    this->_mushroom1 = Loader("./assets/models/mushroom1.obj", materialMap);
-    this->_mushroom2 = Loader("./assets/models/mushroom2.obj", materialMap);
-    this->_house = Loader("./assets/models/house.obj", materialMap);
-    this->_rocks = Loader("./assets/models/rocks.obj", materialMap);
-    this->_rail = Loader("./assets/models/rail.obj", materialMap);
-    this->_barel = Loader("./assets/models/barel.obj", materialMap);
-    this->_cloud = Loader("./assets/models/cloud1.obj", materialMap);
-    this->_panneau = Loader("./assets/models/panneau.obj", materialMap);
-    this->_panelColor = Loader("./assets/models/panel_color.obj", materialMap);
-    this->_panelBeginning = Loader("./assets/models/panel_beginning.obj", materialMap);
-    this->_sphere = Loader("./assets/models/sphere.obj", materialMap);
-}
-
-void GameEnvironment::initBoids()
-{
-    for(int i=0 ; i<this->_ihm.getNbBoids() ; i++){
-         Boid b(this->_sphere, this->_sphere, this->_boidProgram, this->_magicPos) ;
-         this->boids.push_back(b);
-    }
-}
-
-void GameEnvironment::initObstacles()
-{
-    this->obstacles.push_back(Obstacle(this->_house, this->_sphere, this->_textureProgram, glm::vec3(-1.1, 0.0, -0.0))) ;
-    this->obstacles.push_back(Obstacle(this->_puit, this->_sphere, this->_textureProgram, glm::vec3(1.0, 0.0, 1.1))) ;
-    this->obstacles.push_back(Obstacle(this->_rail, this->_rail, this->_textureProgram, glm::vec3(-1.8, 0.0, 1.8))) ;
-    this->obstacles.push_back(Obstacle(this->_rocks, this->_sphere, this->_textureProgram, glm::vec3(-1.2, 0.0, -1.1))) ;
-    this->obstacles.push_back(Obstacle(this->_barel, this->_sphere, this->_textureProgram, glm::vec3(-0.4, 0.0, 0.0))) ;
-    this->obstacles.push_back(Obstacle(this->_magic, this->_sphere, this->_textureProgram, this->_magicPos)) ;
-    this->obstacles.push_back(Obstacle(this->_panneau, this->_sphere, this->_textureProgram, glm::vec3(0.3, 0.0, 0.3))) ;
-
-    for(int i=this->obstacles.size(); i < this->_ihm.getNbObstacles(); i++){
-        float j = p6::random::number(); 
-        if(j < 0.25) {
-            this->obstacles.push_back(Obstacle(this->_fir1, this->_sphere, this->_textureProgram));
-        } else if(j < 0.5) {
-            this->obstacles.push_back(Obstacle(this->_fir2, this->_sphere, this->_textureProgram));
-        } else if (j < 0.75){
-            this->obstacles.push_back(Obstacle(this->_fir3, this->_sphere, this->_textureProgram));
-        } else if(j < 0.90) {
-            this->obstacles.push_back(Obstacle(this->_mushroom1, this->_sphere, this->_textureProgram));
-        } else {
-            this->obstacles.push_back(Obstacle(this->_mushroom2, this->_sphere, this->_textureProgram));
-        }
-    }
-
-  }
-
-void GameEnvironment::initClouds()
-{
-    for(int i=0 ; i<5 ; i++){
-         Cloud c(this->_cloud, this->_sphere, this->_textureProgram) ;
-         this->clouds.push_back(c);
-     }    
-}
-
-void GameEnvironment::initWanderer()
-{
-    this->gaspard = Wanderer(this->_magic, this->_sphere, this->_textureProgram);
-}
-
-void GameEnvironment::initContent()
-{
-    this->box = Content(this->_content, this->_sphere, this->_textureProgram) ;
-}
-
-void GameEnvironment::initPanels()
-{
-    this->panelsInfo.push_back(PanelInfo(this->_panelBeginning, this->_panelColor, this->_panelProgram));
-    this->panelsInfo.push_back(PanelInfo(this->_panelColor, this->_panelBeginning, this->_panelProgram));
-    this->panelsInfo[0].appears(this->_ViewMatrix);
-}
-
 void GameEnvironment::render(p6::Context &ctx)
 {
 
-// if (glm::distance(this->gaspard.getPosition(), this->_magicPos) < 0.5 ) {    
-//         if( !this->panelsInfo[1].getDisplay() && !this->panelsInfo[1].getHasBeenDislayed() ){
-//             this->panelsInfo[1].appears(this->_ViewMatrix);
-//             this->_alt = false ;
-//             mouseMoveManagement(ctx);
-//         }
-//     }
+    this->_initGame.addOrRemoveBoids(this->boids, this->_boidProgram, this->_magicPosition) ;
+    this->_initGame.addOrRemoveObstacles(this->obstacles, this->_textureProgram) ;
 
 
+    if (glm::distance(this->gaspard.getPosition(), this->_magicPosition) < 0.5 ) {    
+            if( !this->panelsInfo[1].getDisplay() && !this->panelsInfo[1].getHasBeenDislayed() ){
+                this->panelsInfo[1].appears(this->_ViewMatrix);
+                this->_alt = false ;
+                mouseMoveManagement(ctx);
+            }
+        }
 
-    glm::mat4 viewMatrix = this->_ViewMatrix.getViewMatrix();
 
-// ------------------------ BOIDS -----------------------//  
-    
-    this->_boidProgram._Program.use() ;
-    std::cout << this->_boidProgram._Program.id() << "\n";
+glm::mat4 viewMatrix = this->_ViewMatrix.getViewMatrix();
 
 // light 
     glm::mat4 VLightMatrix = viewMatrix;
     glm::vec3 lightPos = glm::vec3( (VLightMatrix)*glm::vec4(0,1.5,0,1) );
     glm::vec3 lightDir = glm::vec3( (VLightMatrix)*glm::vec4(1,1,1,0) ); 
 
-    glm::mat4 MLightMatrix = glm::translate(glm::mat4(1.0), gaspard.getPosition());
-    glm::vec3 lightCharacter = glm::vec3( (MLightMatrix)*glm::vec4(0,0.5,0,1) );
+    glm::mat4 MLightMatrix = glm::translate(VLightMatrix, this->_magicPosition);
+    glm::vec3 lightMagic = glm::vec3( (MLightMatrix)*glm::vec4(0,0,0,1) );
 
+    glm::mat4 PLightMatrix = glm::translate(VLightMatrix, this->_puitsPosition);
+    glm::vec3 lightPuits = glm::vec3( (PLightMatrix)*glm::vec4(0,0,0,1) );
+
+    glm::mat4 HLightMatrix = glm::translate(VLightMatrix, this->_housePosition);
+    glm::vec3 lightHouse = glm::vec3( (HLightMatrix)*glm::vec4(0,0,0,1) );
+
+    glm::mat4 CLightMatrix = glm::translate(VLightMatrix, this->gaspard.getPosition());
+    CLightMatrix = glm::scale(CLightMatrix, glm::vec3(0.1));
+    CLightMatrix = glm::rotate(CLightMatrix, glm::radians(this->gaspard.getAngle()), glm::vec3(0.f, 1.f, 0.f));
+    glm::vec3 lightCharacter = glm::vec3( (CLightMatrix)*glm::vec4(0,0,0,1) );
+
+
+    // glViewport(0, 0, shadowMapWidth, shadowMapHeight);
+    // glBindFramebuffer(GL_FRAMEBUFFER, _shadowMapFBO);
+
+    // float near_plane = 1.0f, far_plane = 7.5f;
+    // glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);  
+    // glm::mat4 lightView = glm::lookAt(this->_ViewMatrix.getPosition(), 
+    //                                 glm::vec3( (VLightMatrix)*glm::vec4(1,1,1,0) ), 
+    //                                 glm::vec3( 0.0f, 1.0f,  0.0f));  
+
+    // glm::mat4 lightSpaceMatrix = lightProjection * lightView; 
+
+   
+    // this->_shadowProgram._Program.use() ;
+    // glUniformMatrix4fv(ulightSpaceMatrixLocation, 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+
+    // glViewport(0, 0, shadowMapWidth, shadowMapHeight);
+    // glBindFramebuffer(GL_FRAMEBUFFER, this->_shadowMapFBO);
+    //     glClear(GL_DEPTH_BUFFER_BIT);
+    //     RenderScene(this->_shadowProgram);
+    // glBindFramebuffer(GL_FRAMEBUFFER, 0); 
 
 //shadow part
     // glm::mat4 orthgonalProjection = glm::ortho(-35.0f, 35.0f, -35.0f, 35.0f, 0.1f, 75.0f);
@@ -178,15 +128,19 @@ void GameEnvironment::render(p6::Context &ctx)
 	// glUniformMatrix4fv(glGetUniformLocation(shadowMapProgram.ID, "lightProjection"), 1, GL_FALSE, glm::value_ptr(lightProjection));
 // ossekour 
 
+
+// ------------------------ BOIDS -----------------------//  
+    
+    this->_boidProgram._Program.use() ;
+
   
-//    std::cout << face.getName() << " - " << materialMap[face.getName()].texture[color].getSlot() << "\n";
-   glUniform3fv(this->_boidProgram.uLightPos_vs, 1, glm::value_ptr(lightPos));
+    glUniform3fv(this->_boidProgram.uLightPos_vs, 1, glm::value_ptr(lightMagic));
     glUniform3fv(this->_boidProgram.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.1)));
 
     for(auto& boid : this->boids){
         boid.checkLOD(this->gaspard.getPosition());
         boid.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
-        boid.collision(this->boids, this->obstacles, this->_ihm) ;
+        boid.collision(this->boids, this->obstacles, this->_initGame._ihm) ;
         boid.update_position() ;
     };
 
@@ -195,11 +149,21 @@ void GameEnvironment::render(p6::Context &ctx)
     
     this->_textureProgram._Program.use() ; 
 
-
-    glUniform3fv(this->_textureProgram.uLightPos_vs, 1, glm::value_ptr(lightPos));
-    glUniform3fv(this->_textureProgram.uLightDir_vs, 1, glm::value_ptr(lightDir));
+    glUniform3fv(this->_textureProgram.uLightMagic_vs, 1, glm::value_ptr(lightMagic));
     glUniform3fv(this->_textureProgram.uLightCharacter_vs, 1, glm::value_ptr(lightCharacter));
-    glUniform3fv(this->_textureProgram.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.1)));
+    
+
+    if(this->_color){
+        glUniform3fv(this->_textureProgram.uLightPos_vs, 1, glm::value_ptr(lightPos));
+        glUniform3fv(this->_textureProgram.uLightDir_vs, 1, glm::value_ptr(lightDir));
+        glUniform3fv(this->_textureProgram.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.03)));
+    }
+    else{
+        glUniform3fv(this->_textureProgram.uLightPuits_vs, 1, glm::value_ptr(lightPuits));
+        glUniform3fv(this->_textureProgram.uLightHouse_vs, 1, glm::value_ptr(lightHouse));
+        glUniform3fv(this->_textureProgram.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.01)));
+    }
+    
 
     for(auto& obstacle : this->obstacles){
         obstacle.checkLOD(this->gaspard.getPosition());
@@ -207,7 +171,6 @@ void GameEnvironment::render(p6::Context &ctx)
     };
 
     for(auto& cloud : this->clouds){
-        // cloud.checkLOD(this->gaspard.getPosition());
         cloud.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
         cloud.update_position(ctx) ;
     }
@@ -216,13 +179,13 @@ void GameEnvironment::render(p6::Context &ctx)
     this->gaspard.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
     this->gaspard.update_position(this->_ViewMatrix); 
 
-    // for(auto& panel : this->panelsInfo){
-    //     if (panel.getDisplay()) panel.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
-    // }
-    // std::cout << " character " << this->gaspard[0].getPosition().x << " - "  << this->gaspard[0].getPosition().y << " - " << this->gaspard[0].getPosition().z << "\n";
+    for(auto& panel : this->panelsInfo){
+        if (panel.getDisplay()) panel.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
+    }
 
-    this->_ihm.draw();
+    this->_initGame._ihm.draw();
 
+// glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 }
 
@@ -269,7 +232,7 @@ void GameEnvironment::inputManagement(p6::Context &ctx)
 
 void GameEnvironment::colorManagement()
 {
-    double distance = glm::distance(this->gaspard.getPosition(), this->_magicPos);
+    double distance = glm::distance(this->gaspard.getPosition(), this->_magicPosition);
 
     if(distance < 0.5) {
         this->_color = !this->_color;
@@ -298,36 +261,3 @@ void GameEnvironment::cameraManagement()
     
 }
 
-void GameEnvironment::addOrRemoveBoids()
-{
-    int nbBoids = this->boids.size();
-
-    if (nbBoids < this->_ihm.getNbBoids()){
-        for(int i=0 ; i< this->_ihm.getNbBoids()-nbBoids ; i++){
-            Boid b(this->_sphere, this->_sphere, this->_boidProgram, this->_magicPos) ;
-            this->boids.push_back(b);
-        }
-    }
-    else if (nbBoids > this->_ihm.getNbBoids()){
-        for(int i=0 ; i< nbBoids-this->_ihm.getNbBoids() ; i++){
-            this->boids.pop_back();
-        }
-    }
-}
-
-void GameEnvironment::addOrRemoveObstacles()
-{
-    int nbObstacles = obstacles.size();
-
-    if (nbObstacles < this->_ihm.getNbObstacles()){
-        for(int i=0 ; i< this->_ihm.getNbObstacles() ; i++){
-            Obstacle o(this->_fir1, this->_sphere, this->_textureProgram) ;
-            obstacles.push_back(o);
-        }
-    }
-    else if (nbObstacles > this->_ihm.getNbObstacles()){
-        for(int i=0 ; i< nbObstacles-this->_ihm.getNbObstacles() ; i++){
-            obstacles.pop_back();
-        }
-    }
-}
