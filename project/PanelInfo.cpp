@@ -30,7 +30,7 @@ void PanelInfo::appears(const TrackballCamera& viewMatrix)
     float angle = -viewMatrix.getAngleY();
     float a = sin(glm::radians(angle))*0.25; 
     float b = cos(glm::radians(angle))*0.35; 
-    this->_position = glm::vec3((viewMatrixPosition.x+a) , 0.03, (viewMatrixPosition.z+b)); 
+    this->_position = glm::vec3((viewMatrixPosition.x+a) , 0.08, (viewMatrixPosition.z+b)); 
     this->_angleY = angle;
     this->_angleX = -viewMatrix.getAngleX();
 

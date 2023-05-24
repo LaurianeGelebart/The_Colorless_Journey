@@ -32,6 +32,7 @@ class InitEnvironment
 
         TrackballCamera _ViewMatrix;
 
+        std::vector<FacesGroup> _firefly ;
         std::vector<FacesGroup> _puit ;
         std::vector<FacesGroup> _magic ;
         std::vector<FacesGroup> _content;

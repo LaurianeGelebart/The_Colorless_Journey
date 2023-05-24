@@ -32,7 +32,7 @@ int main()
 /* ------------------ Declare your infinite update loop ----------------------- */
 /* ---------------------------------------------------------------------------- */
     ctx.update = [&]() {
-        glClearColor(0.7f, 0.6f, 0.6f, 1.f);
+        glClearColor(0.f, 0.f, 0.f, 0.f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         game.inputManagement(ctx);

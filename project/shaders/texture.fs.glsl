@@ -63,7 +63,7 @@ vec3 blinnPhongPosCharacter()
     vec3 specularColor = vec3(1.0 , 0.7 , 0.0 ) * specular;
     float d = distance(vPosition_vs,uLightCharacter_vs);
 
-    return (0.01  / (d * d)) * (diffuse + specularColor);
+    return (0.005  / (d * d)) * (diffuse + specularColor);
 }
 
 vec3 blinnPhongPosMagic()

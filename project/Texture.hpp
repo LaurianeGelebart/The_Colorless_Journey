@@ -19,6 +19,4 @@ public:
 
     GLuint getRendererID() const;
     int getSlot() const;
-
-    std::string name = "hey";
 };

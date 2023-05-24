@@ -61,7 +61,6 @@ void Object::draw(const glm::mat4 ViewMatrix, const int windowWidth, const int w
     glUniformMatrix4fv(this->_program->uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
     glUniformMatrix4fv(this->_program->uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
 
-
     for(auto& face : this->_models[this->_lod] ){
         GLuint vao = face.getVAO();
         glBindVertexArray(vao);

@@ -27,6 +27,8 @@ void InitEnvironment::initObjectModel(std::map<std::string, Material>& materialM
     this->_panelColor = Loader("./assets/models/panel_color.obj", materialMap);
     this->_panelBeginning = Loader("./assets/models/panel_beginning.obj", materialMap);
     this->_sphere = Loader("./assets/models/sphere.obj", materialMap);
+    this->_firefly = Loader("./assets/models/firefly.obj", materialMap);
+
 }
 
 void InitEnvironment::initBoids(std::vector<Boid>& boids,  ColorProgram& boidProgram,  glm::vec3 magicPosition)
@@ -76,7 +78,7 @@ void InitEnvironment::initClouds(std::vector<Cloud>& clouds, ObjectProgram& text
 
 void InitEnvironment::initWanderer(Wanderer& gaspard, ObjectProgram& textureProgram)
 {
-    gaspard = Wanderer(this->_magic, this->_magic, textureProgram);
+    gaspard = Wanderer(this->_firefly, this->_firefly, textureProgram);
 }
 
 void InitEnvironment::initContent(Content& box, ObjectProgram& textureProgram)

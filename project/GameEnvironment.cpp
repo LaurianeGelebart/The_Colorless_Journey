@@ -68,12 +68,12 @@ void GameEnvironment::render(p6::Context &ctx)
 
 
     if (glm::distance(this->gaspard.getPosition(), this->_magicPosition) < 0.5 ) {    
-            if( !this->panelsInfo[1].getDisplay() && !this->panelsInfo[1].getHasBeenDislayed() ){
-                this->panelsInfo[1].appears(this->_ViewMatrix);
-                this->_alt = false ;
-                mouseMoveManagement(ctx);
-            }
+        if( !this->panelsInfo[1].getDisplay() && !this->panelsInfo[1].getHasBeenDislayed() ){
+            this->panelsInfo[1].appears(this->_ViewMatrix);
+            this->_alt = false ;
+            mouseMoveManagement(ctx);
         }
+    }
 
 
 glm::mat4 viewMatrix = this->_ViewMatrix.getViewMatrix();
@@ -93,8 +93,6 @@ glm::mat4 viewMatrix = this->_ViewMatrix.getViewMatrix();
     glm::vec3 lightHouse = glm::vec3( (HLightMatrix)*glm::vec4(0,0,0,1) );
 
     glm::mat4 CLightMatrix = glm::translate(VLightMatrix, this->gaspard.getPosition());
-    CLightMatrix = glm::scale(CLightMatrix, glm::vec3(0.1));
-    CLightMatrix = glm::rotate(CLightMatrix, glm::radians(this->gaspard.getAngle()), glm::vec3(0.f, 1.f, 0.f));
     glm::vec3 lightCharacter = glm::vec3( (CLightMatrix)*glm::vec4(0,0,0,1) );
 
 
@@ -132,7 +130,6 @@ glm::mat4 viewMatrix = this->_ViewMatrix.getViewMatrix();
 // ------------------------ BOIDS -----------------------//  
     
     this->_boidProgram._Program.use() ;
-
   
     glUniform3fv(this->_boidProgram.uLightPos_vs, 1, glm::value_ptr(lightMagic));
     glUniform3fv(this->_boidProgram.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.1)));
@@ -156,7 +153,7 @@ glm::mat4 viewMatrix = this->_ViewMatrix.getViewMatrix();
     if(this->_color){
         glUniform3fv(this->_textureProgram.uLightPos_vs, 1, glm::value_ptr(lightPos));
         glUniform3fv(this->_textureProgram.uLightDir_vs, 1, glm::value_ptr(lightDir));
-        glUniform3fv(this->_textureProgram.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.03)));
+        glUniform3fv(this->_textureProgram.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.05)));
     }
     else{
         glUniform3fv(this->_textureProgram.uLightPuits_vs, 1, glm::value_ptr(lightPuits));
@@ -177,7 +174,7 @@ glm::mat4 viewMatrix = this->_ViewMatrix.getViewMatrix();
 
     this->box.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
     this->gaspard.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
-    this->gaspard.update_position(this->_ViewMatrix); 
+    this->gaspard.update_position(this->_ViewMatrix, ctx); 
 
     for(auto& panel : this->panelsInfo){
         if (panel.getDisplay()) panel.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
