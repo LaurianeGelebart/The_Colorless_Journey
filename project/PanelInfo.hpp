@@ -17,7 +17,7 @@ class PanelInfo : public Object
         float _angleX = 0.0f; 
 
     public : 
-        PanelInfo(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, PanelProgram& program);
+        PanelInfo(std::vector<FacesGroup> model, PanelProgram& program);
         PanelInfo();
 
         void appears(const TrackballCamera& viewMatrix); 

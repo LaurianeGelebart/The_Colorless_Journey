@@ -14,27 +14,13 @@
 
 
 
-Object::Object(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, ObjectProgram& program)
- : _program(&program)
-{
-    _models.push_back(model);
-    _models.push_back(lodModel);
-    // ShadowMapProgram
-}
+Object::Object(std::vector<FacesGroup> model, ObjectProgram& program)
+: _program(&program), _model(model)
+{}
 
-Object::Object(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, PanelProgram& program)
- : _panelProgram(&program)
-{
-    _models.push_back(model);
-    _models.push_back(lodModel);
-}
-
-Object::Object(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, ColorProgram& program)
- : _boidProgram(&program)
-{
-    _models.push_back(model);
-    _models.push_back(lodModel);
-}
+Object::Object(std::vector<FacesGroup> model, PanelProgram& program)
+: _panelProgram(&program), _model(model)
+{}
 
 Object::Object(){}
 
@@ -61,7 +47,7 @@ void Object::draw(const glm::mat4 ViewMatrix, const int windowWidth, const int w
     glUniformMatrix4fv(this->_program->uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
     glUniformMatrix4fv(this->_program->uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
 
-    for(auto& face : this->_models[this->_lod] ){
+    for(auto& face : this->_model ){
         GLuint vao = face.getVAO();
         glBindVertexArray(vao);
          
@@ -78,23 +64,15 @@ void Object::draw(const glm::mat4 ViewMatrix, const int windowWidth, const int w
     }
 }
 
-void Object::checkLOD(glm::vec3 gaspardPosition)
-{
-    double distance = glm::distance(gaspardPosition, this->_position);
-    this->_lod = (distance > 1.7) ? 1 : 0;
-}
-
 void Object::deleteVAO_VBO()
 {
-    for (size_t i = 0; i < this->_models.size(); i++) {
-        for (auto& face : this->_models[i]) {
-            GLuint vbo = face.getVBO(); 
-            GLuint ibo = face.getIBO(); 
-            GLuint vao = face.getVAO(); 
-            glDeleteBuffers(0, &vbo);
-            glDeleteBuffers(0, &ibo); 
-            glDeleteVertexArrays(0, &vao);
-        }
+    for (auto& face : this->_model) {
+        GLuint vbo = face.getVBO(); 
+        GLuint ibo = face.getIBO(); 
+        GLuint vao = face.getVAO(); 
+        glDeleteBuffers(0, &vbo);
+        glDeleteBuffers(0, &ibo); 
+        glDeleteVertexArrays(0, &vao);
     }
 }
 

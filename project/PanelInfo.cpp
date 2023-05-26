@@ -7,8 +7,8 @@
 PanelInfo::PanelInfo()
 {}
 
-PanelInfo::PanelInfo(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, PanelProgram& program)
-:Object(model, lodModel, program) 
+PanelInfo::PanelInfo(std::vector<FacesGroup> model, PanelProgram& program)
+:Object(model, program) 
 {
     this->_position = glm::vec3(0.0f, -1.0f, 0.0f); 
     this->_scale = 0.04;
@@ -28,7 +28,7 @@ void PanelInfo::appears(const TrackballCamera& viewMatrix)
 {
     glm::vec3 viewMatrixPosition = viewMatrix.getPosition(); 
     float angle = -viewMatrix.getAngleY();
-    float a = sin(glm::radians(angle))*0.25; 
+    float a = sin(glm::radians(angle))*0.35; 
     float b = cos(glm::radians(angle))*0.35; 
     this->_position = glm::vec3((viewMatrixPosition.x+a) , 0.08, (viewMatrixPosition.z+b)); 
     this->_angleY = angle;
@@ -59,7 +59,7 @@ void PanelInfo::draw(const glm::mat4 ViewMatrix, const int windowWidth, const in
     glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
 
 
-    for(auto& face : this->_models[this->_lod] ){
+    for(auto& face : this->_model ){
         GLuint vao = face.getVAO();
         glBindVertexArray(vao);
 

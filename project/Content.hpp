@@ -12,7 +12,7 @@ class Content : public Object
     private : 
         
     public : 
-        Content(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, ObjectProgram& program);
+        Content(std::vector<FacesGroup> model, ObjectProgram& program);
         Content();
 
 }; 

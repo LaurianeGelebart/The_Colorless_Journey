@@ -50,6 +50,7 @@ class InitEnvironment
         std::vector<FacesGroup> _sphere ;
         std::vector<FacesGroup> _panelColor;
         std::vector<FacesGroup> _panelBeginning ;
+        std::vector<FacesGroup> _sphereLOD ;
 
     public : 
         InitEnvironment();

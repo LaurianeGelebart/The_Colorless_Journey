@@ -6,8 +6,8 @@
 #include "glm/gtc/random.hpp"
     
 
-Cloud::Cloud(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, ObjectProgram& program)
-:Object(model, lodModel, program) 
+Cloud::Cloud(std::vector<FacesGroup> model, ObjectProgram& program)
+:Object(model, program) 
 {
     this->_position = glm::vec3(glm::ballRand(1.5)); 
     this->_position.y = p6::random::number(0.05, 0.1) ; 
@@ -16,7 +16,7 @@ Cloud::Cloud(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, Ob
 }
 
 
-void Cloud::update_position(p6::Context& ctx)
+void Cloud::updatePosition(p6::Context& ctx)
 {
     this->_position.x += 0.001*sin(ctx.time()*0.8)*this->_velocity ; 
     this->_position.z += 0.001*sin(ctx.time()*0.5)*this->_velocity ; 

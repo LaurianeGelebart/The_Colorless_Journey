@@ -9,36 +9,45 @@
 
 
 Boid::Boid(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, ColorProgram& program, glm::vec3 magicPos)
-:Object(model, lodModel, program) 
+: _program(&program)
 {
-    this->_centerPosition = magicPos;
-    this->_position = glm::vec3(magicPos + glm::vec3(glm::ballRand(0.2)));
     float angle = (float)(p6::random::integer(0, 360))*M_PI/180.0; 
     float angleZ = (float)(p6::random::integer(0, 360))*M_PI/180.0; 
     this->_velocity = glm::vec3(cos(angle), sin(angle) ,cos(angleZ)) ;
-    this->_scale = p6::random::number(0.003, 0.006);
+
+    this->_centerPosition = magicPos;
+    this->_position = glm::vec3(magicPos + glm::vec3(glm::ballRand(0.2)));
+   
+    this->_scale = p6::random::number(0.03, 0.06);
     this->_color = {1.0f, p6::random::number(0.5, 0.8), 0.0} ;
+
+    this->_models.push_back(model);
+    this->_models.push_back(lodModel);
 }
 
-glm::vec3 Boid::get_velocity() const
+glm::vec3 Boid::getVelocity() const
 {
     return this->_velocity ; 
 }
 
-void Boid::update_position() 
+void Boid::updatePosition() 
 {
     this->_position =  this->_position + this->_velocity ;
 }
 
+glm::vec3 Boid::getPosition() const
+{
+    return this->_position ; 
+}
 
 void Boid::collision(const std::vector<Boid>& boids, const std::vector<Obstacle>& obstacles, const IHM ihm)
 {
-    collision_boids(boids, ihm); 
-    collision_bords(ihm); 
-    collision_obstacles(obstacles, ihm); 
+    collisionBoids(boids, ihm); 
+    collisionBords(ihm); 
+    collisionObstacles(obstacles, ihm); 
 }
 
-void Boid::collision_boids(const std::vector<Boid>& boids, const IHM ihm)
+void Boid::collisionBoids(const std::vector<Boid>& boids, const IHM ihm)
 {
     glm::vec3 close=glm::vec3(0.f, 0.f, 0.f), pos_avg=glm::vec3(0.f, 0.f, 0.f), dir_avg=glm::vec3(0.f, 0.f, 0.f) ; 
     int neighboring_boids = 0 ; 
@@ -52,7 +61,7 @@ void Boid::collision_boids(const std::vector<Boid>& boids, const IHM ihm)
             else if(distance < ihm.getDetectionRadius() ) {
                 neighboring_boids += 1 ;
                 pos_avg += boid.getPosition() ;
-                dir_avg += boid.get_velocity() ;
+                dir_avg += boid.getVelocity() ;
             } 
         }
    }
@@ -66,10 +75,10 @@ void Boid::collision_boids(const std::vector<Boid>& boids, const IHM ihm)
     }
     this->_velocity += close*ihm.getAvoidFactor();
 
-    limit_speed(ihm); 
+    limitSpeed(ihm); 
 }
 
-void Boid::collision_bords(const IHM ihm)
+void Boid::collisionBords(const IHM ihm)
 {
     if (this->_position.x > this->_centerPosition.x + ihm.getBoidsArea()){ 
          this->_velocity.x = this->_velocity.x - ihm.getTurnFactor(); 
@@ -91,7 +100,7 @@ void Boid::collision_bords(const IHM ihm)
     }
 }
 
-void Boid::collision_obstacles(const std::vector<Obstacle>& obstacles, const IHM ihm)
+void Boid::collisionObstacles(const std::vector<Obstacle>& obstacles, const IHM ihm)
 {
     for(auto& obstacle : obstacles){
         double distance = glm::distance(obstacle.getPosition(), this->_position);
@@ -99,7 +108,7 @@ void Boid::collision_obstacles(const std::vector<Obstacle>& obstacles, const IHM
             this->bounce(obstacle); 
         }
     }
-    limit_speed(ihm); 
+    limitSpeed(ihm); 
 } 
 
 void Boid::bounce(const Obstacle &obstacle) 
@@ -110,7 +119,7 @@ void Boid::bounce(const Obstacle &obstacle)
 }
 
 
-void Boid::limit_speed(const IHM ihm)
+void Boid::limitSpeed(const IHM ihm)
 {
     float speed = std::sqrt(this->_velocity.x*this->_velocity.x + this->_velocity.y*this->_velocity.y + this->_velocity.z*this->_velocity.z); 
     
@@ -128,12 +137,9 @@ void Boid::limit_speed(const IHM ihm)
 
 void Boid::draw(const glm::mat4 ViewMatrix, const int windowWidth, const int windowHeight, std::map<std::string, Material>& materialMap, glm::vec3 wandererPos, int color)
 {  
-    // std::cout << this->_boidProgram._Program.id() << "\n";
-
     glm::mat4 MVMatrix = ViewMatrix;
     MVMatrix = glm::translate(MVMatrix, glm::vec3(this->_position));
     MVMatrix = glm::scale(MVMatrix, glm::vec3(this->_scale));
-    MVMatrix = glm::rotate(MVMatrix, glm::radians(this->_angleY), glm::vec3(0.f, 1.f, 0.f));
 
     glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), (float)windowWidth / (float)windowHeight, 0.1f, 100.f);
     glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
@@ -143,17 +149,37 @@ void Boid::draw(const glm::mat4 ViewMatrix, const int windowWidth, const int win
         GLuint vao = face.getVAO();
         glBindVertexArray(vao);
 
-        glUniformMatrix4fv(this->_boidProgram->uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
-        glUniformMatrix4fv(this->_boidProgram->uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
-        glUniformMatrix4fv(this->_boidProgram->uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
+        glUniformMatrix4fv(this->_program->uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
+        glUniformMatrix4fv(this->_program->uMVPMatrix, 1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
+        glUniformMatrix4fv(this->_program->uMVMatrix, 1, GL_FALSE, glm::value_ptr(MVMatrix));
            
-        glUniform1f(this->_boidProgram->uShininess, materialMap[face.getName()].shininess);
-        glUniform3fv(this->_boidProgram->uKd, 1, glm::value_ptr(this->_color));
-        glUniform3fv(this->_boidProgram->uKs, 1, glm::value_ptr(materialMap[face.getName()].Ks));
+        glUniform1f(this->_program->uShininess, materialMap[face.getName()].shininess);
+        glUniform3fv(this->_program->uKd, 1, glm::value_ptr(this->_color));
+        glUniform3fv(this->_program->uKs, 1, glm::value_ptr(materialMap[face.getName()].Ks));
 
         glDrawArrays(GL_TRIANGLES, 0, face.getVertextCount());
-
 
 		glBindVertexArray(0) ;
     }
 }
+
+void Boid::checkLOD(glm::vec3 gaspardPosition)
+{
+    double distance = glm::distance(gaspardPosition, this->_position);
+    this->_lod = (distance > 0.7) ? 1 : 0;
+}
+
+void Boid::deleteVAO_VBO()
+{
+    for(size_t i=0 ; i<this->_models.size(); i++){
+        for (auto& face : this->_models[i]) {
+            GLuint vbo = face.getVBO(); 
+            GLuint ibo = face.getIBO(); 
+            GLuint vao = face.getVAO(); 
+            glDeleteBuffers(0, &vbo);
+            glDeleteBuffers(0, &ibo); 
+            glDeleteVertexArrays(0, &vao);
+        }
+    }
+}
+

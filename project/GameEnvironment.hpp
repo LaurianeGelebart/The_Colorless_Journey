@@ -42,7 +42,7 @@ class GameEnvironment
         GLuint _shadowMapFBO ; 
         GLuint _shadowMap ; 
 
-        float _movementStrength = 0.1;
+        float _movementStrength = 0.01;
         float _rotationStrength = 100.0;
 
 
@@ -61,12 +61,13 @@ class GameEnvironment
         bool _S = false;
         bool _Q = false;
         bool _D = false;
-        bool _alt = true;
+        bool _alt = false;
       
         void initFBO();
 
         void colorManagement();
         void mouseMoveManagement(p6::Context &ctx);
+        void checkLOD();
 
 
     public : 
@@ -86,5 +87,5 @@ class GameEnvironment
         void cameraManagement(); 
         void inputManagement(p6::Context &ctx);
         void deleteScene();
-
+        void panelManagement(p6::Context &ctx);
 }; 

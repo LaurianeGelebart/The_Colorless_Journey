@@ -59,6 +59,20 @@ void GameEnvironment::deleteScene()
     glfwTerminate();
 }
 
+void GameEnvironment::panelManagement(p6::Context &ctx)
+{
+    if (glm::distance(this->gaspard.getPosition(), this->_magicPosition) < 0.3 ) {    
+        if( !this->panelsInfo[1].getDisplay() && !this->panelsInfo[1].getHasBeenDislayed() ){
+            this->panelsInfo[1].appears(this->_ViewMatrix);
+            this->_alt = false ;
+            this->_Z = false ;
+            this->_Q = false ;
+            this->_S = false ;
+            this->_D = false ;
+            mouseMoveManagement(ctx);
+        }
+    }
+}
 
 void GameEnvironment::render(p6::Context &ctx)
 {
@@ -66,21 +80,11 @@ void GameEnvironment::render(p6::Context &ctx)
     this->_initGame.addOrRemoveBoids(this->boids, this->_boidProgram, this->_magicPosition) ;
     this->_initGame.addOrRemoveObstacles(this->obstacles, this->_textureProgram) ;
 
-
-    if (glm::distance(this->gaspard.getPosition(), this->_magicPosition) < 0.5 ) {    
-        if( !this->panelsInfo[1].getDisplay() && !this->panelsInfo[1].getHasBeenDislayed() ){
-            this->panelsInfo[1].appears(this->_ViewMatrix);
-            this->_alt = false ;
-            mouseMoveManagement(ctx);
-        }
-    }
-
-
-glm::mat4 viewMatrix = this->_ViewMatrix.getViewMatrix();
+    glm::mat4 viewMatrix = this->_ViewMatrix.getViewMatrix();
 
 // light 
     glm::mat4 VLightMatrix = viewMatrix;
-    glm::vec3 lightPos = glm::vec3( (VLightMatrix)*glm::vec4(0,1.5,0,1) );
+    // glm::vec3 lightPos = glm::vec3( (VLightMatrix)*glm::vec4(0,1.5,0,1) );
     glm::vec3 lightDir = glm::vec3( (VLightMatrix)*glm::vec4(1,1,1,0) ); 
 
     glm::mat4 MLightMatrix = glm::translate(VLightMatrix, this->_magicPosition);
@@ -138,7 +142,7 @@ glm::mat4 viewMatrix = this->_ViewMatrix.getViewMatrix();
         boid.checkLOD(this->gaspard.getPosition());
         boid.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
         boid.collision(this->boids, this->obstacles, this->_initGame._ihm) ;
-        boid.update_position() ;
+        boid.updatePosition() ;
     };
 
    
@@ -151,9 +155,9 @@ glm::mat4 viewMatrix = this->_ViewMatrix.getViewMatrix();
     
 
     if(this->_color){
-        glUniform3fv(this->_textureProgram.uLightPos_vs, 1, glm::value_ptr(lightPos));
+        // glUniform3fv(this->_textureProgram.uLightPos_vs, 1, glm::value_ptr(lightPos));
         glUniform3fv(this->_textureProgram.uLightDir_vs, 1, glm::value_ptr(lightDir));
-        glUniform3fv(this->_textureProgram.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.05)));
+        glUniform3fv(this->_textureProgram.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.06)));
     }
     else{
         glUniform3fv(this->_textureProgram.uLightPuits_vs, 1, glm::value_ptr(lightPuits));
@@ -163,18 +167,17 @@ glm::mat4 viewMatrix = this->_ViewMatrix.getViewMatrix();
     
 
     for(auto& obstacle : this->obstacles){
-        obstacle.checkLOD(this->gaspard.getPosition());
         obstacle.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
     };
 
     for(auto& cloud : this->clouds){
         cloud.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
-        cloud.update_position(ctx) ;
+        cloud.updatePosition(ctx) ;
     }
 
     this->box.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
     this->gaspard.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
-    this->gaspard.update_position(this->_ViewMatrix, ctx); 
+    this->gaspard.updatePosition(this->_ViewMatrix, ctx); 
 
     for(auto& panel : this->panelsInfo){
         if (panel.getDisplay()) panel.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
@@ -197,34 +200,35 @@ void GameEnvironment::inputManagement(p6::Context &ctx)
             nbMenu = i ; 
         }
     }
-    if(isMenu){
-        ctx.key_pressed = [this, nbMenu](const p6::Key& key) {
+  
+    ctx.key_pressed = [this, isMenu, nbMenu](const p6::Key& key) {
+        if(isMenu){
             if (key.physical == GLFW_KEY_ENTER || key.physical == GLFW_KEY_SPACE) {
                 this->panelsInfo[nbMenu].disapears();
                 this->_alt = true ;
-                // mouseMoveManagement(ctx);
             }
-        };
-    }
-    else {
-        // std::cout << "else ? " << this->_alt << "\n";
-        ctx.key_pressed = [this](const p6::Key& key) {
+        }
+        else{
             if (key.physical == GLFW_KEY_W) this->_Z = true;
             if (key.physical == GLFW_KEY_S) this->_S = true;
             if (key.physical == GLFW_KEY_A) this->_Q = true;
             if (key.physical == GLFW_KEY_D) this->_D = true;
             if (key.physical == GLFW_KEY_LEFT_ALT) this->_alt = !this->_alt ;
             if (key.physical == GLFW_KEY_SPACE) colorManagement();
-        };
-        ctx.key_released = [this](const p6::Key& key) {
+        }
+    };
+
+    ctx.key_released = [this, isMenu](const p6::Key& key) {
+        if(!isMenu){
             if (key.physical == GLFW_KEY_W) this->_Z = false;
             if (key.physical == GLFW_KEY_S) this->_S = false;
             if (key.physical == GLFW_KEY_A) this->_Q = false;
             if (key.physical == GLFW_KEY_D) this->_D = false;
-        };
+        }
+    };
 
-        mouseMoveManagement(ctx);
-    }
+    mouseMoveManagement(ctx);
+    
 }
 
 void GameEnvironment::colorManagement()
@@ -257,4 +261,3 @@ void GameEnvironment::cameraManagement()
     if (_D) this->_ViewMatrix.moveLeft(-this->_movementStrength, this->obstacles);
     
 }
-

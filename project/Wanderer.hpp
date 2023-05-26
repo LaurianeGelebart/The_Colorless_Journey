@@ -15,9 +15,9 @@ class Wanderer : public Object
 
     public : 
         Wanderer();
-        Wanderer(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, ObjectProgram& program);
+        Wanderer(std::vector<FacesGroup> model, ObjectProgram& program);
 
-        void update_position(const TrackballCamera& viewMatrix, p6::Context& ctx); 
+        void updatePosition(const TrackballCamera& viewMatrix, p6::Context& ctx); 
         float getAngle() const ;
 
 }; 
