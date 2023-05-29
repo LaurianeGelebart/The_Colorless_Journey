@@ -14,12 +14,12 @@ PanelInfo::PanelInfo(std::vector<FacesGroup> model, PanelProgram& program)
     this->_scale = 0.04;
 }
 
-bool PanelInfo::getDisplay()
+bool PanelInfo::getDisplay() const
 {
     return this->_isDisplay; 
 }
 
-bool PanelInfo::getHasBeenDislayed()
+bool PanelInfo::getHasBeenDislayed() const
 {
     return this->_hasBeenDislayed; 
 }

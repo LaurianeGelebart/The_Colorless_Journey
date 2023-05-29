@@ -44,7 +44,7 @@ class Boid
         void collision(const std::vector<Boid>& boids, const std::vector<Obstacle>& obstacles, const IHM ihm);  
         void draw(const glm::mat4 ViewMatrix, const int windowWidth, const int windowHeight, std::map<std::string, Material>& materialMap, glm::vec3 wandererPos, int color); 
         
-        void checkLOD(glm::vec3 gaspardPosition);
+        void checkLOD(glm::vec3 fireflyPosition);
         void deleteVAO_VBO();
 
 }; 

@@ -15,6 +15,7 @@
 #include "TrackballCamera.hpp"
 #include "IHM.hpp"
 #include "InitEnvironment.hpp"
+#include "InputManager.hpp"
 #include "Light.hpp"
 #include "Loader.hpp"
 #include "Obstacle.hpp"
@@ -34,6 +35,7 @@ class GameEnvironment
     private : 
         InitEnvironment _initSystem; 
         Shadow _shadowSystem; 
+        InputManager _inputSystem; 
 
         ObjectProgram _textureProgram ; 
         PanelProgram _panelProgram ; 
@@ -50,46 +52,41 @@ class GameEnvironment
         int _windowWidth  ; 
         int _windowHeight ; 
 
-        bool _color = false;  
+        bool _color = false; 
 
         glm::vec3 _magicPosition = glm::vec3(1.2, 0.0, -1.2); 
         glm::vec3 _housePosition = glm::vec3(-1.1, 0.0, -0.0); 
         glm::vec3 _puitsPosition = glm::vec3(1.0, 0.0, 1.0); 
 
-        bool _Z = false;
-        bool _S = false;
-        bool _Q = false;
-        bool _D = false;
-        bool _alt = false;
+
+        std::vector<PanelInfo> _panelsInfo;
+        std::vector<Boid> _boids;
+        std::vector<Obstacle> _obstacles;
+        std::vector<Cloud> _clouds;
+        Content _box ;
+        Wanderer _firefly;
+
+        std::map<std::string, std::unique_ptr<Light>> _lightsMap;
+        std::map<std::string, Material> _materialMap;
+
       
         void initFBO();
-
-        void colorManagement();
-        void mouseMoveManagement(p6::Context &ctx);
+        
         void checkLOD();
 
         void renderBoids();
         void renderObjects(p6::Context &ctx);
         void renderPanels();
 
+        void inputManagement();
+        void panelManagement();
+        void colorManagement();
+
     public : 
-        std::vector<PanelInfo> panelsInfo;
-        std::vector<Boid> boids;
-        std::vector<Obstacle> obstacles;
-        std::vector<Cloud> clouds;
-        Content box ;
-        Wanderer gaspard;
-
-        std::map<std::string, std::unique_ptr<Light>> _lightsMap;
-
-        std::map<std::string, Material> materialMap;
-
         GameEnvironment(int  windowWidth, int  windowHeight);
 
-        void initScene();
+        void initScene(p6::Context &ctx);
         void render(p6::Context &ctx);
-        void cameraManagement(); 
-        void inputManagement(p6::Context &ctx);
+        void environmentManagement();
         void deleteScene();
-        void panelManagement(p6::Context &ctx);
 }; 

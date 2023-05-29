@@ -28,8 +28,8 @@ class PanelInfo
         void appears(const TrackballCamera& viewMatrix); 
         void disapears();
 
-        bool getDisplay();
-        bool getHasBeenDislayed();
+        bool getDisplay() const;
+        bool getHasBeenDislayed() const;
         void draw(const glm::mat4 ViewMatrix, const int windowWidth, const int windowHeight, std::map<std::string, Material>& materialMap, glm::vec3 wandererPos, int color); 
 
         void deleteVAO_VBO();

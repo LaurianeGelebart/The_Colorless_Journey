@@ -26,7 +26,7 @@ int main()
 
     GameEnvironment game(windowWidth, windowHeight); 
 
-    game.initScene();
+    game.initScene(ctx);
 
 /* ---------------------------------------------------------------------------- */
 /* ------------------ Declare your infinite update loop ----------------------- */
@@ -35,9 +35,7 @@ int main()
         glClearColor(0.f, 0.f, 0.f, 0.f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        game.panelManagement(ctx);
-        game.inputManagement(ctx);
-        game.cameraManagement();
+        game.environmentManagement();
         game.render(ctx);
 
     };

@@ -78,9 +78,9 @@ void InitEnvironment::initClouds(std::vector<Cloud>& clouds, ObjectProgram& text
      }    
 }
 
-void InitEnvironment::initWanderer(Wanderer& gaspard, ObjectProgram& textureProgram)
+void InitEnvironment::initWanderer(Wanderer& firefly, ObjectProgram& textureProgram)
 {
-    gaspard = Wanderer(this->_firefly, textureProgram);
+    firefly = Wanderer(this->_firefly, textureProgram);
 }
 
 void InitEnvironment::initContent(Content& box, ObjectProgram& textureProgram)
@@ -96,13 +96,13 @@ void InitEnvironment::initPanels(std::vector<PanelInfo>& panelsInfo, PanelProgra
     panelsInfo[0].appears(viewMatrix);
 }
 
-void InitEnvironment::initLighting(std::map<std::string, std::unique_ptr<Light>>& lightsMap, glm::vec3 magicPosition, glm::vec3 puitsPosition, glm::vec3 housePosition, glm::vec3 gaspardPosition)
+void InitEnvironment::initLighting(std::map<std::string, std::unique_ptr<Light>>& lightsMap, glm::vec3 magicPosition, glm::vec3 puitsPosition, glm::vec3 housePosition, glm::vec3 fireflyPosition)
 {
     lightsMap["lightDir"] = std::make_unique<DirectionalLight>(glm::vec3(0.f, 1.f, 0.f));
     lightsMap["lightMagic"] = std::make_unique<PointLight>(magicPosition);
     lightsMap["lightPuits"] = std::make_unique<PointLight>(puitsPosition);
     lightsMap["lightHouse"] = std::make_unique<PointLight>(housePosition);
-    lightsMap["lightCharacter"] = std::make_unique<PointLight>(gaspardPosition);
+    lightsMap["lightCharacter"] = std::make_unique<PointLight>(fireflyPosition);
 }
 
 void InitEnvironment::addOrRemoveBoids(std::vector<Boid>& boids,  ColorProgram& boidProgram,  glm::vec3 magicPosition)

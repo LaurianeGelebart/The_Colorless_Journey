@@ -7,85 +7,58 @@ GameEnvironment::GameEnvironment(int  windowWidth, int  windowHeight)
 {
 }
 
-void GameEnvironment::initScene()
+void GameEnvironment::initScene(p6::Context &ctx)
 {
-    this->_initSystem.initObjectModel(this->materialMap);
-    this->_initSystem.initBoids(this->boids, this->_boidProgram, this->_magicPosition);
-    this->_initSystem.initObstacles(this->obstacles, this->_textureProgram, this->_magicPosition, this->_housePosition, this->_puitsPosition);
-    this->_initSystem.initClouds(this->clouds, this->_textureProgram);
-    this->_initSystem.initWanderer(this->gaspard, this->_textureProgram);
-    this->_initSystem.initContent(this->box, this->_textureProgram);
-    this->_initSystem.initPanels(this->panelsInfo, this->_panelProgram, this->_ViewMatrix);
-    this->_initSystem.initLighting(this->_lightsMap, this->_magicPosition, this->_puitsPosition, this->_housePosition, this->gaspard.getPosition());
+    this->_initSystem.initObjectModel(this->_materialMap);
+    this->_initSystem.initBoids(this->_boids, this->_boidProgram, this->_magicPosition);
+    this->_initSystem.initObstacles(this->_obstacles, this->_textureProgram, this->_magicPosition, this->_housePosition, this->_puitsPosition);
+    this->_initSystem.initClouds(this->_clouds, this->_textureProgram);
+    this->_initSystem.initWanderer(this->_firefly, this->_textureProgram);
+    this->_initSystem.initContent(this->_box, this->_textureProgram);
+    this->_initSystem.initPanels(this->_panelsInfo, this->_panelProgram, this->_ViewMatrix);
+    this->_initSystem.initLighting(this->_lightsMap, this->_magicPosition, this->_puitsPosition, this->_housePosition, this->_firefly.getPosition());
     this->_shadowSystem.initFBO();
+
+    this->_inputSystem.InitInput(ctx);
+    this->_inputSystem.InitMouseMove(ctx);
 }
 
 void GameEnvironment::deleteScene()
 {
-    for(auto& obstacle : this->obstacles){
+    for(auto& obstacle : this->_obstacles){
         obstacle.deleteVAO_VBO() ; 
     }
-    for(auto& boid : this->boids){
+    for(auto& boid : this->_boids){
         boid.deleteVAO_VBO() ; 
     }
-    for(auto& cloud : this->clouds){
+    for(auto& cloud : this->_clouds){
         cloud.deleteVAO_VBO() ; 
     }
-    gaspard.deleteVAO_VBO() ; 
-    box.deleteVAO_VBO() ; 
+    this->_firefly.deleteVAO_VBO() ; 
+    this->_box.deleteVAO_VBO() ; 
     glfwTerminate();
-}
-
-void GameEnvironment::panelManagement(p6::Context &ctx)
-{
-    if (glm::distance(this->gaspard.getPosition(), this->_magicPosition) < 0.3 ) {    
-        if( !this->panelsInfo[2].getDisplay() && !this->panelsInfo[2].getHasBeenDislayed() ){
-            this->panelsInfo[2].appears(this->_ViewMatrix);
-            this->_alt = false ;
-            this->_Z = false ;
-            this->_Q = false ;
-            this->_S = false ;
-            this->_D = false ;
-            mouseMoveManagement(ctx);
-        }
-    }
-    if ( this->panelsInfo[0].getHasBeenDislayed() && !this->panelsInfo[0].getDisplay() && 
-         !this->panelsInfo[1].getDisplay() && !this->panelsInfo[1].getHasBeenDislayed() )
-         {
-            this->panelsInfo[1].appears(this->_ViewMatrix);
-            this->_alt = false ;
-            this->_Z = false ;
-            this->_Q = false ;
-            this->_S = false ;
-            this->_D = false ;
-            mouseMoveManagement(ctx);
-        }
 }
 
 void GameEnvironment::render(p6::Context &ctx)
 {
 
-    this->_initSystem.addOrRemoveBoids(this->boids, this->_boidProgram, this->_magicPosition) ;
-    this->_initSystem.addOrRemoveObstacles(this->obstacles, this->_textureProgram) ;
+    this->_initSystem.addOrRemoveBoids(this->_boids, this->_boidProgram, this->_magicPosition) ;
+    this->_initSystem.addOrRemoveObstacles(this->_obstacles, this->_textureProgram) ;
 
     this->_initSystem._ihm.draw();
 
-
-    this->_lightsMap["lightCharacter"]->setPosition(this->gaspard.getPosition());
-
+    this->_lightsMap["lightCharacter"]->setPosition(this->_firefly.getPosition());
     for(auto& light : this->_lightsMap){
         light.second->update(this->_ViewMatrix.getViewMatrix());
     }
 
-    // for(auto& obstacle : this->obstacles){
+    // for(auto& obstacle : this->_obstacles){
     //     this->_shadowSystem.renderShadow(obstacle, this->_ViewMatrix.getPosition(), lightDir);
     // }
     
-    
-    renderBoids(ctx); 
+    renderBoids(); 
     renderObjects(ctx); 
-    renderPanels(ctx); 
-   
+    renderPanels(); 
 }
 
 void GameEnvironment::renderBoids()
@@ -95,10 +68,10 @@ void GameEnvironment::renderBoids()
     glUniform3fv(this->_boidProgram.uLightPos_vs, 1, glm::value_ptr(this->_lightsMap["lightMagic"]->getPosition()));
     glUniform3fv(this->_boidProgram.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.1)));
 
-    for(auto& boid : this->boids){
-        boid.checkLOD(this->gaspard.getPosition());
-        boid.draw(this->_ViewMatrix.getViewMatrix(), this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
-        boid.collision(this->boids, this->obstacles, this->_initSystem._ihm) ;
+    for(auto& boid : this->_boids){
+        boid.checkLOD(this->_firefly.getPosition());
+        boid.draw(this->_ViewMatrix.getViewMatrix(), this->_windowWidth, this->_windowHeight, this->_materialMap, this->_firefly.getPosition(), this->_color);
+        boid.collision(this->_boids, this->_obstacles, this->_initSystem._ihm) ;
         boid.updatePosition() ;
     };
 }
@@ -115,6 +88,7 @@ void GameEnvironment::renderObjects(p6::Context &ctx)
         glUniform3fv(this->_textureProgram.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.06)));
     }
     else{
+        glUniform3fv(this->_textureProgram.uLightDir_vs, 1, glm::value_ptr(glm::vec3(0.f)));
         glUniform3fv(this->_textureProgram.uLightPuits_vs, 1, glm::value_ptr(this->_lightsMap["lightPuits"]->getPosition()));
         glUniform3fv(this->_textureProgram.uLightHouse_vs, 1, glm::value_ptr(this->_lightsMap["lightHouse"]->getPosition()));
         glUniform3fv(this->_textureProgram.uLightIntensity, 1, glm::value_ptr(glm::vec3(0.01)));
@@ -122,94 +96,82 @@ void GameEnvironment::renderObjects(p6::Context &ctx)
 
     glm::mat4 viewMatrix = this->_ViewMatrix.getViewMatrix();
     
-    for(auto& obstacle : this->obstacles){
-        obstacle.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
+    for(auto& obstacle : this->_obstacles){
+        obstacle.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->_materialMap, this->_firefly.getPosition(), this->_color);
     };
 
-    for(auto& cloud : this->clouds){
-        cloud.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
+    for(auto& cloud : this->_clouds){
+        cloud.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->_materialMap, this->_firefly.getPosition(), this->_color);
         cloud.updatePosition(ctx) ;
     }
 
-    this->box.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
-    this->gaspard.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
-    this->gaspard.updatePosition(this->_ViewMatrix, ctx); 
+    this->_box.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->_materialMap, this->_firefly.getPosition(), this->_color);
+    this->_firefly.draw(viewMatrix, this->_windowWidth, this->_windowHeight, this->_materialMap, this->_firefly.getPosition(), this->_color);
+    this->_firefly.updatePosition(this->_ViewMatrix, ctx); 
 }
 
 void GameEnvironment::renderPanels()
 {
-    for(auto& panel : this->panelsInfo){
-        if (panel.getDisplay()) panel.draw(this->_ViewMatrix.getViewMatrix(), this->_windowWidth, this->_windowHeight, this->materialMap, this->gaspard.getPosition(), this->_color);
-    }
-}
-
-void GameEnvironment::inputManagement(p6::Context &ctx)
-{
-    bool isMenu = false ; 
-    int nbMenu; 
-    for(size_t i=0 ; i<this->panelsInfo.size(); i++){
-        if (this->panelsInfo[i].getDisplay()) {
-            isMenu = true ; 
-            nbMenu = i ; 
-        }
-    }
-  
-    ctx.key_pressed = [this, isMenu, nbMenu](const p6::Key& key) {
-        if(isMenu){
-            if (key.physical == GLFW_KEY_ENTER || key.physical == GLFW_KEY_SPACE) {
-                this->panelsInfo[nbMenu].disapears();
-                this->_alt = true ;
-            }
-        }
-        else{
-            if (key.physical == GLFW_KEY_W) this->_Z = true;
-            if (key.physical == GLFW_KEY_S) this->_S = true;
-            if (key.physical == GLFW_KEY_A) this->_Q = true;
-            if (key.physical == GLFW_KEY_D) this->_D = true;
-            if (key.physical == GLFW_KEY_LEFT_ALT) this->_alt = !this->_alt ;
-            if (key.physical == GLFW_KEY_SPACE) colorManagement();
-        }
-    };
-
-    ctx.key_released = [this, isMenu](const p6::Key& key) {
-        if(!isMenu){
-            if (key.physical == GLFW_KEY_W) this->_Z = false;
-            if (key.physical == GLFW_KEY_S) this->_S = false;
-            if (key.physical == GLFW_KEY_A) this->_Q = false;
-            if (key.physical == GLFW_KEY_D) this->_D = false;
-        }
-    };
-
-    mouseMoveManagement(ctx);
-    
-}
-
-void GameEnvironment::mouseMoveManagement(p6::Context &ctx)
-{
-    if (this->_alt) {
-        ctx.mouse_moved = [&](p6::MouseMove data) {
-            (this->_ViewMatrix).rotateLeft(-data.delta.y * this->_rotationStrength);
-            (this->_ViewMatrix).rotateUp(data.delta.x * this->_rotationStrength);
-        };
-    } else {
-        ctx.mouse_moved = [&](p6::MouseMove data) {};
+    for(auto& panel : this->_panelsInfo){
+        if (panel.getDisplay()) panel.draw(this->_ViewMatrix.getViewMatrix(), this->_windowWidth, this->_windowHeight, this->_materialMap, this->_firefly.getPosition(), this->_color);
     }
 }
 
 
-void GameEnvironment::cameraManagement()
+void GameEnvironment::environmentManagement()
 {
-    if (_Z) this->_ViewMatrix.moveFront(this->_movementStrength, this->obstacles);
-    if (_S) this->_ViewMatrix.moveFront(-this->_movementStrength, this->obstacles);
-    if (_Q) this->_ViewMatrix.moveLeft(this->_movementStrength, this->obstacles);
-    if (_D) this->_ViewMatrix.moveLeft(-this->_movementStrength, this->obstacles);
+    panelManagement();
+    colorManagement();
+    inputManagement();
+}
+
+void GameEnvironment::inputManagement()
+{
+    if (this->_inputSystem.getZ()) this->_ViewMatrix.moveFront(this->_movementStrength, this->_obstacles);
+    if (this->_inputSystem.getS()) this->_ViewMatrix.moveFront(-this->_movementStrength, this->_obstacles);
+    if (this->_inputSystem.getQ()) this->_ViewMatrix.moveLeft(this->_movementStrength, this->_obstacles);
+    if (this->_inputSystem.getD()) this->_ViewMatrix.moveLeft(-this->_movementStrength, this->_obstacles);
+
+    if (this->_inputSystem.getSpace()) this->_color = true;
+    else this->_color = false ; 
+
+    if (this->_inputSystem.getAlt() && this->_inputSystem.getIsMouseMoving()){
+        this->_ViewMatrix.rotateLeft(-(this->_inputSystem.getDeltaY()) * this->_rotationStrength);
+        this->_ViewMatrix.rotateUp(this->_inputSystem.getDeltaX() * this->_rotationStrength);
+    }
+
+    this->_inputSystem.setIsMouseMovingToFalse();
 }
 
 void GameEnvironment::colorManagement()
 {
-    double distance = glm::distance(this->gaspard.getPosition(), this->_magicPosition);
-
+    double distance = glm::distance(this->_firefly.getPosition(), this->_magicPosition);
     if(distance < 0.5) {
-        this->_color = !this->_color;
+        this->_inputSystem.setColorPossible(true);
+    }else{
+        this->_inputSystem.setColorPossible(false);
+    }
+}
+
+void GameEnvironment::panelManagement()
+{
+    if (glm::distance(this->_firefly.getPosition(), this->_magicPosition) < 0.3 ) {    
+        if( !this->_panelsInfo[2].getDisplay() && !this->_panelsInfo[2].getHasBeenDislayed() )
+        {
+            this->_panelsInfo[2].appears(this->_ViewMatrix);
+            this->_inputSystem.blockControls();
+        }
+    }
+    if (this->_panelsInfo[0].getHasBeenDislayed() && !this->_panelsInfo[0].getDisplay() && 
+        !this->_panelsInfo[1].getDisplay() && !this->_panelsInfo[1].getHasBeenDislayed() )
+        {
+            this->_panelsInfo[1].appears(this->_ViewMatrix);
+            this->_inputSystem.blockControls();
+    }
+
+    for(auto& panel : this->_panelsInfo){
+        if (panel.getDisplay() ){
+            if (this->_inputSystem.getEnter()) panel.disapears();
+        }
     }
 }

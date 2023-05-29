@@ -163,9 +163,9 @@ void Boid::draw(const glm::mat4 ViewMatrix, const int windowWidth, const int win
     }
 }
 
-void Boid::checkLOD(glm::vec3 gaspardPosition)
+void Boid::checkLOD(glm::vec3 fireflyPosition)
 {
-    double distance = glm::distance(gaspardPosition, this->_position);
+    double distance = glm::distance(fireflyPosition, this->_position);
     this->_lod = (distance > 0.7) ? 1 : 0;
 }
 
