@@ -12,13 +12,14 @@
 #include "Content.hpp"
 #include "FacesGroup.hpp"
 #include "FreeflyCamera.hpp"
-#include "TrackballCamera.hpp"
 #include "IHM.hpp"
+#include "Light.hpp"
 #include "Loader.hpp"
 #include "Obstacle.hpp"
 #include "Object.hpp"
 #include "PanelInfo.hpp"
 #include "Texture.hpp"
+#include "TrackballCamera.hpp"
 
 #include "programs/ColorProgram.hpp"
 #include "programs/ObjectProgram.hpp"
@@ -50,6 +51,7 @@ class InitEnvironment
         std::vector<FacesGroup> _sphere ;
         std::vector<FacesGroup> _panelColor;
         std::vector<FacesGroup> _panelBeginning ;
+        std::vector<FacesGroup> _panelOpen ;
         std::vector<FacesGroup> _sphereLOD ;
 
     public : 
@@ -62,6 +64,7 @@ class InitEnvironment
         void initWanderer(Wanderer& gaspard, ObjectProgram& textureProgram);
         void initContent(Content& box, ObjectProgram& textureProgram);
         void initPanels(std::vector<PanelInfo>& panelsInfo, PanelProgram& panelProgram, const TrackballCamera& viewMatrix);
+        void initLighting(std::map<std::string,std::unique_ptr<Light>>& lightsMap, glm::vec3 magicPosition, glm::vec3 puitsPosition, glm::vec3 housePosition, glm::vec3 gaspardPosition);
 
         void addOrRemoveObstacles(std::vector<Obstacle>& obstacles, ObjectProgram& textureProgram);
         void addOrRemoveBoids(std::vector<Boid>& boids, ColorProgram& boidProgram, glm::vec3 magicPos);

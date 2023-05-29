@@ -3,6 +3,7 @@
 in vec3 vPosition_vs;
 in vec3 vNormal_vs;
 in vec2 vFragTexture;
+in vec4 FragPosLightSpace;
 
 uniform  vec3 uKd;
 uniform vec3 uKs;
@@ -16,11 +17,16 @@ uniform vec3 uLightCharacter_vs;
 uniform vec3 uLightDir_vs; 
 uniform vec3 uLightIntensity;
 
+uniform sampler2D diffuseTexture;
+uniform sampler2D shadowMap;
+
+// uniform vec3 lightPos;
+uniform vec3 viewPos;
+
+
 uniform sampler2D uTexture; 
 
-
 out vec3 fFragColor;
-
 
 vec3 blinnPhongDir()
 {
@@ -111,6 +117,22 @@ vec3 blinnPhongPosPuits()
     return (uLightIntensity / (d * d)) * (diffuse + specularColor);
 }
 
+float ShadowCalculation(vec4 fragPosLightSpace)
+{
+    // perform perspective divide
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    // transform to [0,1] range
+    projCoords = projCoords * 0.5 + 0.5;
+    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+    float closestDepth = texture(shadowMap, projCoords.xy).r; 
+    // get depth of current fragment from light's perspective
+    float currentDepth = projCoords.z;
+    // check whether current frag pos is in shadow
+    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+
+    return shadow;
+}
+
 void main()
 {
     //fFragColor = uKd; 
@@ -124,6 +146,9 @@ void main()
     vec3 lightCharacter = blinnPhongPosCharacter();
     vec3 texture = vec3(texture(uTexture, vFragTexture).xyz) ;
     
-    // fFragColor = texture *(lightCharacter + lightHouse + 0.1*lightPuits + 0.05*lightMagic) ;
+   
+    // float shadow = ShadowCalculation(FragPosLightSpace);       
+    // vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular)) * color;    
+    
     fFragColor = texture *(lightCharacter + lightHouse + 0.1*lightPuits + 0.05*lightMagic + lightPos + lightDir) ;
 }

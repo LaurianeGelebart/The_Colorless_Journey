@@ -8,7 +8,7 @@ PanelInfo::PanelInfo()
 {}
 
 PanelInfo::PanelInfo(std::vector<FacesGroup> model, PanelProgram& program)
-:Object(model, program) 
+: _panelProgram(&program), _model(model)
 {
     this->_position = glm::vec3(0.0f, -1.0f, 0.0f); 
     this->_scale = 0.04;
@@ -36,7 +36,6 @@ void PanelInfo::appears(const TrackballCamera& viewMatrix)
 
     this->_isDisplay = true; 
     this->_hasBeenDislayed = true; 
-
 }
 
 void PanelInfo::disapears()
@@ -72,7 +71,18 @@ void PanelInfo::draw(const glm::mat4 ViewMatrix, const int windowWidth, const in
         glDrawArrays(GL_TRIANGLES, 0, face.getVertextCount());
         materialMap[face.getName()].texture[color].UnBind();
 
-
 		glBindVertexArray(0) ;
+    }
+}
+
+void PanelInfo::deleteVAO_VBO()
+{
+    for (auto& face : this->_model) {
+        GLuint vbo = face.getVBO(); 
+        GLuint ibo = face.getIBO(); 
+        GLuint vao = face.getVAO(); 
+        glDeleteBuffers(0, &vbo);
+        glDeleteBuffers(0, &ibo); 
+        glDeleteVertexArrays(0, &vao);
     }
 }

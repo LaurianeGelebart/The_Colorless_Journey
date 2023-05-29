@@ -5,38 +5,33 @@
 
 #include "p6/p6.h"
 
-#include "programs/ColorProgram.hpp"
 #include "FacesGroup.hpp"
 #include "programs/ObjectProgram.hpp"
-#include "programs/PanelProgram.hpp"
-#include "programs/ShadowMapProgram.hpp"
 
 
-class Object 
-{
+class Object {
 
     private : 
 
     protected : 
+        ObjectProgram* _program; 
+        std::vector<FacesGroup> _model; 
         glm::vec3 _position ; 
         float _scale  = 0.1 ; 
-        std::vector<FacesGroup> _model; 
-        ObjectProgram* _program; 
-        PanelProgram* _panelProgram; 
-        // ShadowMapProgram& _shadowMapProgram;
         float _angleY = 0.f;
-        int _lod = 0; 
+        
+        Object(std::vector<FacesGroup> model, ObjectProgram& program);
 
 
     public : 
-        Object(std::vector<FacesGroup> model, ObjectProgram& program);
-        Object(std::vector<FacesGroup> model, PanelProgram& program);
         Object();
-        // ~Object();
         
         void deleteVAO_VBO();
 
         glm::vec3 getPosition() const; 
+        float getAngleY() const; 
+        float getScale() const; 
+        std::vector<FacesGroup>& getModel(); 
         void draw(const glm::mat4 ViewMatrix, const int windowWidth, const int windowHeight, std::map<std::string, Material>& materialMap, glm::vec3 wandererPos, int color); 
 
-    }; 
+};

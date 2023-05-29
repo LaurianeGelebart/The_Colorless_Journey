@@ -15,10 +15,12 @@
 #include "TrackballCamera.hpp"
 #include "IHM.hpp"
 #include "InitEnvironment.hpp"
+#include "Light.hpp"
 #include "Loader.hpp"
 #include "Obstacle.hpp"
 #include "Object.hpp"
 #include "PanelInfo.hpp"
+#include "Shadow.hpp"
 #include "Texture.hpp"
 
 #include "programs/ColorProgram.hpp"
@@ -30,12 +32,12 @@
 class GameEnvironment 
 {
     private : 
-        InitEnvironment _initGame; 
+        InitEnvironment _initSystem; 
+        Shadow _shadowSystem; 
 
         ObjectProgram _textureProgram ; 
         PanelProgram _panelProgram ; 
         ColorProgram _boidProgram ; 
-        ShadowMapProgram _shadowProgram ; 
 
         TrackballCamera _ViewMatrix;
 
@@ -44,9 +46,6 @@ class GameEnvironment
 
         float _movementStrength = 0.01;
         float _rotationStrength = 100.0;
-
-
-	int shadowMapWidth = 2048, shadowMapHeight = 2048;
 
         int _windowWidth  ; 
         int _windowHeight ; 
@@ -69,6 +68,9 @@ class GameEnvironment
         void mouseMoveManagement(p6::Context &ctx);
         void checkLOD();
 
+        void renderBoids();
+        void renderObjects(p6::Context &ctx);
+        void renderPanels();
 
     public : 
         std::vector<PanelInfo> panelsInfo;
@@ -77,6 +79,8 @@ class GameEnvironment
         std::vector<Cloud> clouds;
         Content box ;
         Wanderer gaspard;
+
+        std::map<std::string, std::unique_ptr<Light>> _lightsMap;
 
         std::map<std::string, Material> materialMap;
 

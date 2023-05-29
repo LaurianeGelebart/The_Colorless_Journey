@@ -1,6 +1,4 @@
 #include "Texture.hpp"
-// #include "vender/stb_image/stb_image.hpp"
-
 
 int Texture::s_nextID = 0; 
 

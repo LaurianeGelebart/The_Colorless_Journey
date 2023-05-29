@@ -18,13 +18,7 @@ Object::Object(std::vector<FacesGroup> model, ObjectProgram& program)
 : _program(&program), _model(model)
 {}
 
-Object::Object(std::vector<FacesGroup> model, PanelProgram& program)
-: _panelProgram(&program), _model(model)
-{}
-
 Object::Object(){}
-
-// Object::~Object(){}
 
 
 glm::vec3 Object::getPosition() const
@@ -32,9 +26,23 @@ glm::vec3 Object::getPosition() const
     return this->_position ; 
 }
 
+float Object::getAngleY() const
+{
+    return this->_angleY ; 
+}
+
+float Object::getScale() const
+{
+    return this->_scale ; 
+}
+
+std::vector<FacesGroup>& Object::getModel() 
+{
+    return this->_model; 
+}
+
 void Object::draw(const glm::mat4 ViewMatrix, const int windowWidth, const int windowHeight, std::map<std::string, Material>& materialMap, glm::vec3 wandererPos, int color)
 {  
-
     glm::mat4 MVMatrix = ViewMatrix;
     MVMatrix = glm::translate(MVMatrix, glm::vec3(this->_position));
     MVMatrix = glm::scale(MVMatrix, glm::vec3(this->_scale));

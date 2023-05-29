@@ -22,25 +22,12 @@ struct ShadowMapProgram
     // GLint uLightIntensity;
 
     GLint uLightSpaceMatrix;
+    GLint uDepthMap;
     GLint uModel;
 
     ShadowMapProgram() : _Program(p6::load_shader("./shaders/shadowMap.vs.glsl", "./shaders/shadowMap.fs.glsl"))
     {
-        // uMVPMatrix    = glGetUniformLocation(_Program.id(), "uMVPMatrix");
-        // uMVMatrix     = glGetUniformLocation(_Program.id(), "uMVMatrix");
-        // uNormalMatrix = glGetUniformLocation(_Program.id(), "uNormalMatrix");
-        
-        // uTexture = glGetUniformLocation(_Program.id(), "uTexture");
-
-        // uKd        = glGetUniformLocation(_Program.id(), "uKd");
-        // uKs        = glGetUniformLocation(_Program.id(), "uKs");
-        // uShininess = glGetUniformLocation(_Program.id(), "uShininess");
-
-        // uLightPos_vs    = glGetUniformLocation(_Program.id(), "uLightPos_vs");
-        // uLightDir_vs    = glGetUniformLocation(_Program.id(), "uLightDir_vs");
-        // uLightCharacter_vs    = glGetUniformLocation(_Program.id(), "uLightCharacter_vs");
-        // uLightIntensity = glGetUniformLocation(_Program.id(), "uLightIntensity");
-    
+        uDepthMap = glGetUniformLocation(_Program.id(), "udepthMap");
         uLightSpaceMatrix = glGetUniformLocation(_Program.id(), "uLightSpaceMatrix");
         uModel = glGetUniformLocation(_Program.id(), "uModel");
     
