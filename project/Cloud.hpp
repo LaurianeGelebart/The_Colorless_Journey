@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cstdlib>
 #include <vector>
 #include "Object.hpp"
 #include "p6/p6.h"
@@ -11,8 +10,7 @@ private:
     float _velocity;
 
 public:
-    Cloud(std::vector<ModelPart> model, ObjectProgram& program);
-    Cloud(std::vector<ModelPart> model, ObjectProgram& program, glm::vec3 position);
+    Cloud(const std::vector<ModelPart>& model, ObjectProgram& program);
 
-    void updatePosition(p6::Context& ctx);
+    void updatePosition(const p6::Context& ctx);
 };

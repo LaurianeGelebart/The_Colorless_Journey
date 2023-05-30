@@ -1,17 +1,10 @@
 #include "Wanderer.hpp"
-#include <iostream>
-#include "Object.hpp"
-#include "glm/gtc/random.hpp"
-#include "programs/ObjectProgram.hpp"
 
-Wanderer::Wanderer()
-{}
+Wanderer::Wanderer() = default;
 
-Wanderer::Wanderer(std::vector<ModelPart> model, ObjectProgram& program)
+Wanderer::Wanderer(const std::vector<ModelPart>& model, ObjectProgram& program)
     : Object(model, program)
-{
-    this->_scale = 0.1;
-}
+{}
 
 void Wanderer::updatePosition(const TrackballCamera& viewMatrix, p6::Context& ctx)
 {
@@ -20,7 +13,7 @@ void Wanderer::updatePosition(const TrackballCamera& viewMatrix, p6::Context& ct
     this->_position = glm::vec3(viewMatrix.getPosition().x, positionY, viewMatrix.getPosition().z);
 }
 
-float Wanderer::getAngle() const
+auto Wanderer::getAngle() const -> float
 {
     return this->_angleY;
 }

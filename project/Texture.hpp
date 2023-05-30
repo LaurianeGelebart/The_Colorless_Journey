@@ -8,13 +8,13 @@ private:
     GLuint     _rendererID;
 
 public:
-    Texture(std::string path);
+    explicit Texture(const std::string& path);
     Texture();
 
     void DeleteTexture();
     void Bind() const;
     void UnBind() const;
 
-    GLuint getRendererID() const;
-    int    getSlot() const;
+    auto getRendererID() const -> GLuint;
+    auto getSlot() const -> int;
 };

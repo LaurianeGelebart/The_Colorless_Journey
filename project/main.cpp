@@ -1,10 +1,4 @@
-#include <map>
-#include <vector>
 #include "GameEnvironment.hpp"
-#include "glimac/sphere_vertices.hpp"
-#include "glm/ext/scalar_constants.hpp"
-#include "glm/gtc/random.hpp"
-#include "glm/gtc/type_ptr.hpp"
 #include "p6/p6.h"
 
 /* ---------------------------------------------------------------------------- */

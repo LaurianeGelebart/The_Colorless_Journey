@@ -1,49 +1,43 @@
-#include <cstdlib>
-#include <fstream>
-#include <iostream>
-#include <vector>
-#include "Loader.hpp"
-#include "Material.hpp"
-#include "p6/p6.h"
+#include "ModelPart.hpp"
 
-ModelPart::ModelPart(std::string name)
+ModelPart::ModelPart(const std::string& name)
     : _name(name) {}
 
-ModelPart::ModelPart() {}
+ModelPart::ModelPart() = default;
 
 ModelPart::~ModelPart() {}
 
-std::vector<float> ModelPart::getVertextData() const
+auto ModelPart::getVertextData() const -> std::vector<float>
 {
-    return this->_VertexData;
+    return this->_vertexData;
 }
 
-int ModelPart::getVertextCount() const
+auto ModelPart::getVertextCount() const -> int
 {
-    return this->_VertexData.size() / 8;
+    return this->_vertexData.size() / 8;
 }
 
-std::string ModelPart::getName() const
+auto ModelPart::getName() const -> std::string
 {
     return this->_name;
 }
 
-GLuint ModelPart::getVAO() const
+auto ModelPart::getVAO() const -> GLuint
 {
     return this->_vao;
 }
 
-GLuint ModelPart::getVBO() const
+auto ModelPart::getVBO() const -> GLuint
 {
     return this->_vbo;
 }
 
-GLuint ModelPart::getIBO() const
+auto ModelPart::getIBO() const -> GLuint
 {
     return this->_ibo;
 }
 
-void ModelPart::setVertexData(int vIdx, int tIdx, int nIdx, std::vector<CordPosition>& vertices, std::vector<CordTexture>& textures, std::vector<CordNormal>& normals)
+void ModelPart::setVertexData(int vIdx, int tIdx, int nIdx, const std::vector<CordPosition>& vertices, const std::vector<CordTexture>& textures, const std::vector<CordNormal>& normals)
 {
     if (vIdx < 1 || vIdx > vertices.size())
     {
@@ -58,24 +52,21 @@ void ModelPart::setVertexData(int vIdx, int tIdx, int nIdx, std::vector<CordPosi
     }
 
     CordPosition p = vertices[vIdx - 1];
-    // std::cout << "tab vertices : " << vertices[vIdx-1].x << "\n";
 
     CordTexture t = textures[tIdx - 1];
-    // std::cout << "tab textures : " << textures[tIdx-1].x << "\n";
 
     CordNormal n = normals[nIdx - 1];
-    // std::cout << "tab normals : " << normals[nIdx-1].x << "\n\n";
 
-    this->_VertexData.push_back(p.x);
-    this->_VertexData.push_back(p.y);
-    this->_VertexData.push_back(p.z);
-    this->_VertexData.push_back(t.x);
-    this->_VertexData.push_back(t.y);
-    this->_VertexData.push_back(n.x);
-    this->_VertexData.push_back(n.y);
-    this->_VertexData.push_back(n.z);
+    this->_vertexData.push_back(p.x);
+    this->_vertexData.push_back(p.y);
+    this->_vertexData.push_back(p.z);
+    this->_vertexData.push_back(t.x);
+    this->_vertexData.push_back(t.y);
+    this->_vertexData.push_back(n.x);
+    this->_vertexData.push_back(n.y);
+    this->_vertexData.push_back(n.z);
 
-    this->_VertexIndices.push_back(vIdx);
+    this->_vertexIndices.push_back(vIdx);
 }
 
 void ModelPart::createVBO_IBO_VAO()
@@ -90,9 +81,9 @@ void ModelPart::createVBO()
     glGenBuffers(1, &(this->_vbo));
     glBindBuffer(GL_ARRAY_BUFFER, this->_vbo);
 
-    std::vector<float> vertices = this->_VertexData;
+    std::vector<float> vertices = this->_vertexData;
 
-    glBufferData(GL_ARRAY_BUFFER, this->_VertexData.size() * sizeof(GLfloat), &(this->_VertexData[0]), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, this->_vertexData.size() * sizeof(GLfloat), this->_vertexData.data(), GL_STATIC_DRAW);
 }
 
 void ModelPart::createIBO()
@@ -100,7 +91,7 @@ void ModelPart::createIBO()
     glGenBuffers(1, &(this->_ibo));
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->_ibo);
 
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->_VertexIndices.size() * sizeof(int), this->_VertexIndices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->_vertexIndices.size() * sizeof(int), this->_vertexIndices.data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
@@ -121,9 +112,9 @@ void ModelPart::createVAO()
 
     glBindBuffer(GL_ARRAY_BUFFER, this->_vbo);
 
-    glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), 0);                           //(const GLvoid*)offsetof(glimac::ShapeVertex, position));
-    glVertexAttribPointer(VERTEX_ATTR_NORMAL, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));    //(const GLvoid*)offsetof(glimac::ShapeVertex, normal));
-    glVertexAttribPointer(VERTEX_ATTR_TEXCOORDS, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float))); //(const GLvoid*)offsetof(glimac::ShapeVertex, texCoords));
+    glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), 0);
+    glVertexAttribPointer(VERTEX_ATTR_NORMAL, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
+    glVertexAttribPointer(VERTEX_ATTR_TEXCOORDS, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glBindVertexArray(0);

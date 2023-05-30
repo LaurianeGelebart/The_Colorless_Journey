@@ -3,8 +3,8 @@
 int Texture::s_nextID = 0;
 
 Texture::Texture()
+    : _slot(s_nextID++)
 {
-    this->_slot      = s_nextID++;
     img::Image image = p6::load_image_buffer("./assets/textures/none.png");
 
     glGenTextures(1, &(this->_rendererID));
@@ -15,9 +15,9 @@ Texture::Texture()
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-Texture::Texture(std::string path)
+Texture::Texture(const std::string& path)
+    : _slot(s_nextID++)
 {
-    this->_slot      = s_nextID++;
     img::Image image = p6::load_image_buffer(path);
 
     glGenTextures(1, &(this->_rendererID));
@@ -51,12 +51,12 @@ void Texture::UnBind() const
     }
 }
 
-int Texture::getSlot() const
+auto Texture::getSlot() const -> int
 {
     return this->_slot;
 }
 
-GLuint Texture::getRendererID() const
+auto Texture::getRendererID() const -> GLuint
 {
     return this->_rendererID;
 }

@@ -1,16 +1,16 @@
 #include "TrackballCamera.hpp"
+#include "glm/ext/matrix_transform.hpp"
+#include "glm/gtx/transform.hpp"
 
-static int normalizeAngle(int angle)
-{
-    if (angle < 0)
-        angle = 360 - (-angle) % 360;
-    else
-        angle = angle % 360;
-}
+static auto normalizeAngle(int angle) -> int;
+static auto checkRotatingAngleX(float angle) -> bool;
+static auto isCollisionBorder(glm::vec3 position) -> bool;
+static auto checkMovingPosition(const glm::vec3& position, const std::vector<Obstacle>& obstacles) -> bool;
+static auto isCollisionObstacles(const glm::vec3& position, const std::vector<Obstacle>& obstacles) -> bool;
 
-TrackballCamera::TrackballCamera() {}
+TrackballCamera::TrackballCamera() = default;
 
-void TrackballCamera::moveFront(float delta, std::vector<Obstacle> obstacles)
+void TrackballCamera::moveFront(float delta, const std::vector<Obstacle>& obstacles)
 {
     float x = 0.f;
     float z = 0.f;
@@ -44,7 +44,7 @@ void TrackballCamera::moveFront(float delta, std::vector<Obstacle> obstacles)
         this->_position = newPosition;
 }
 
-void TrackballCamera::moveLeft(float delta, std::vector<Obstacle> obstacles)
+void TrackballCamera::moveLeft(float delta, const std::vector<Obstacle>& obstacles)
 {
     float x = 0.f;
     float z = 0.f;
@@ -88,26 +88,25 @@ void TrackballCamera::rotateLeft(float degrees)
 void TrackballCamera::rotateUp(float degrees)
 {
     float newAngle = this->_angleY + degrees;
-    if (checkRotatingAngleY(newAngle))
-        this->_angleY = newAngle;
+    this->_angleY  = newAngle;
 }
 
-glm::vec3 TrackballCamera::getPosition() const
+auto TrackballCamera::getPosition() const -> glm::vec3
 {
     return -this->_position;
 }
 
-float TrackballCamera::getAngleX() const
+auto TrackballCamera::getAngleX() const -> float
 {
     return this->_angleX;
 }
 
-float TrackballCamera::getAngleY() const
+auto TrackballCamera::getAngleY() const -> float
 {
     return this->_angleY;
 }
 
-glm::mat4 TrackballCamera::getViewMatrix() const
+auto TrackballCamera::getViewMatrix() const -> glm::mat4
 {
     glm::mat4 viewMatrix(1.f);
 
@@ -119,16 +118,20 @@ glm::mat4 TrackballCamera::getViewMatrix() const
     return viewMatrix;
 }
 
-bool TrackballCamera::checkMovingPosition(glm::vec3 position, std::vector<Obstacle> obstacles) const
+static auto normalizeAngle(int angle) -> int
 {
-    if (isCollisionBorder(position))
-        return false;
-    if (isCollisionObstacles(position, obstacles))
-        return false;
-    return true;
+    if (angle < 0)
+        angle = 360 - (-angle) % 360;
+    else
+        angle = angle % 360;
 }
 
-bool TrackballCamera::isCollisionBorder(glm::vec3 position) const
+static auto checkRotatingAngleX(float angle) -> bool
+{
+    return angle >= 15 && angle <= 90;
+}
+
+static auto isCollisionBorder(glm::vec3 position) -> bool
 {
     float margin = 0.3;
     float width  = 2.f;
@@ -145,7 +148,16 @@ bool TrackballCamera::isCollisionBorder(glm::vec3 position) const
     return false;
 }
 
-bool TrackballCamera::isCollisionObstacles(glm::vec3 position, std::vector<Obstacle> obstacles) const
+static auto checkMovingPosition(const glm::vec3& position, const std::vector<Obstacle>& obstacles) -> bool
+{
+    if (isCollisionBorder(position))
+        return false;
+    if (isCollisionObstacles(position, obstacles))
+        return false;
+    return true;
+}
+
+static auto isCollisionObstacles(const glm::vec3& position, const std::vector<Obstacle>& obstacles) -> bool
 {
     // for(auto& obstacle : obstacles) {
     //     float distance = glm::distance(position, obstacle.getPosition());
@@ -153,16 +165,4 @@ bool TrackballCamera::isCollisionObstacles(glm::vec3 position, std::vector<Obsta
     //     if(distance < 0.05) return true ;
     // }
     return false;
-}
-
-bool TrackballCamera::checkRotatingAngleX(float angle) const
-{
-    if (angle < 15 || angle > 90)
-        return false;
-    return true;
-}
-
-bool TrackballCamera::checkRotatingAngleY(float angle) const
-{
-    return true;
 }

@@ -1,44 +1,44 @@
 #include "InputManager.hpp"
 
-InputManager::InputManager() {}
+InputManager::InputManager() = default;
 
-bool InputManager::getEnter()
+auto InputManager::getEnter() const -> bool
 {
     return this->_enter;
 }
-bool InputManager::getSpace()
+auto InputManager::getSpace() const -> bool
 {
     return this->_space;
 }
-bool InputManager::getAlt()
+auto InputManager::getAlt() const -> bool
 {
     return this->_alt;
 }
-bool InputManager::getZ()
+auto InputManager::getZ() const -> bool
 {
     return this->_Z;
 }
-bool InputManager::getQ()
+auto InputManager::getQ() const -> bool
 {
     return this->_Q;
 }
-bool InputManager::getS()
+auto InputManager::getS() const -> bool
 {
     return this->_S;
 }
-bool InputManager::getD()
+auto InputManager::getD() const -> bool
 {
     return this->_D;
 }
-bool InputManager::getIsMouseMoving()
+auto InputManager::getIsMouseMoving() const -> bool
 {
     return this->_isMouseMoving;
 }
-float InputManager::getDeltaY()
+auto InputManager::getDeltaY() const -> float
 {
     return this->_deltaY;
 }
-float InputManager::getDeltaX()
+auto InputManager::getDeltaX() const -> float
 {
     return this->_deltaX;
 }

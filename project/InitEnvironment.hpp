@@ -1,30 +1,25 @@
 #pragma once
 
-#include <cstdlib>
 #include <map>
 #include <vector>
 #include "Boid.hpp"
 #include "Cloud.hpp"
 #include "Content.hpp"
-#include "ModelPart.hpp"
 #include "IHM.hpp"
 #include "Light.hpp"
-#include "Loader.hpp"
+#include "ModelPart.hpp"
 #include "Object.hpp"
 #include "Obstacle.hpp"
 #include "PanelInfo.hpp"
-#include "Texture.hpp"
 #include "TrackballCamera.hpp"
 #include "Wanderer.hpp"
-#include "p6/p6.h"
 #include "programs/ColorProgram.hpp"
 #include "programs/ObjectProgram.hpp"
 #include "programs/PanelProgram.hpp"
-#include "programs/ShadowMapProgram.hpp"
 
 class InitEnvironment {
 private:
-    TrackballCamera _ViewMatrix;
+    TrackballCamera _viewMatrix;
 
     IHM _ihm;
 
@@ -50,7 +45,6 @@ private:
     std::vector<ModelPart> _sphereLOD;
 
     Obstacle randomObject(ObjectProgram& textureProgram);
-
 
 public:
     InitEnvironment();

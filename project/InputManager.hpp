@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cstdlib>
 #include "PanelInfo.hpp"
 #include "p6/p6.h"
 
@@ -24,17 +23,17 @@ private:
 public:
     InputManager();
 
-    bool  getD();
-    bool  getS();
-    bool  getQ();
-    bool  getZ();
-    bool  getSpace();
-    bool  getAlt();
-    bool  getEnter();
-    bool  getColorPossible();
-    bool  getIsMouseMoving();
-    float getDeltaY();
-    float getDeltaX();
+    auto  getD() const -> bool;
+    auto  getS() const -> bool;
+    auto  getQ() const -> bool;
+    auto  getZ() const -> bool;
+    auto  getSpace() const -> bool;
+    auto  getAlt() const -> bool;
+    auto  getEnter() const -> bool;
+    auto  getColorPossible() const -> bool;
+    auto  getIsMouseMoving() const -> bool;
+    auto getDeltaY() const -> float;
+    auto getDeltaX() const -> float;
 
     void setIsMouseMovingToFalse();
     void setColorPossible(bool isOK);

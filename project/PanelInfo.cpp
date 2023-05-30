@@ -1,24 +1,21 @@
 #include "PanelInfo.hpp"
-#include <iostream>
-#include "glm/gtc/random.hpp"
+#include <cmath>
 #include "glm/gtc/type_ptr.hpp"
 
-PanelInfo::PanelInfo()
-{}
+PanelInfo::PanelInfo() = default;
 
-PanelInfo::PanelInfo(std::vector<ModelPart> model, PanelProgram& program)
-    : _panelProgram(&program), _model(model)
+PanelInfo::PanelInfo(const std::vector<ModelPart>& model, PanelProgram& program)
+    : _panelProgram(&program), _model(model), _scale(0.04)
 {
     this->_position = glm::vec3(0.0f, -1.0f, 0.0f);
-    this->_scale    = 0.04;
 }
 
-bool PanelInfo::getDisplay() const
+auto PanelInfo::getDisplay() const -> bool
 {
     return this->_isDisplay;
 }
 
-bool PanelInfo::getHasBeenDislayed() const
+auto PanelInfo::getHasBeenDislayed() const -> bool
 {
     return this->_hasBeenDislayed;
 }
@@ -28,8 +25,8 @@ void PanelInfo::appears(const TrackballCamera& viewMatrix)
     glm::vec3 viewMatrixPosition = viewMatrix.getPosition();
 
     float angle     = -viewMatrix.getAngleY();
-    float a         = sin(glm::radians(angle)) * 0.35;
-    float b         = cos(glm::radians(angle)) * 0.35;
+    float a         = std::sin(glm::radians(angle)) * 0.35;
+    float b         = std::cos(glm::radians(angle)) * 0.35;
     this->_position = glm::vec3((viewMatrixPosition.x + a), 0.08, (viewMatrixPosition.z + b));
     this->_angleY   = angle;
     this->_angleX   = -viewMatrix.getAngleX();
@@ -44,7 +41,7 @@ void PanelInfo::disapears()
     this->_isDisplay  = false;
 }
 
-void PanelInfo::draw(const glm::mat4 ViewMatrix, const int windowWidth, const int windowHeight, std::map<std::string, Material>& materialMap, glm::vec3 wandererPos, int color)
+void PanelInfo::draw(const glm::mat4& ViewMatrix, int windowWidth, int windowHeight, std::map<std::string, Material>& materialMap, int color)
 {
     this->_panelProgram->_Program.use();
 

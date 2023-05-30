@@ -2,10 +2,7 @@
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
-#include "Material.hpp"
 #include "Obstacle.hpp"
-#include "glm/ext/matrix_transform.hpp"
-#include "glm/gtx/transform.hpp"
 
 class TrackballCamera {
 private:
@@ -15,22 +12,16 @@ private:
 
     glm::vec3 _position = glm::vec3(0.0, -0.05, -0.8);
 
-    bool isCollisionBorder(glm::vec3 position) const;
-    bool isCollisionObstacles(glm::vec3 position, std::vector<Obstacle> obstacles) const;
-    bool checkMovingPosition(glm::vec3 position, std::vector<Obstacle> obstacles) const;
-    bool checkRotatingAngleX(float angle) const;
-    bool checkRotatingAngleY(float angle) const;
-
 public:
     TrackballCamera();
 
-    glm::mat4 getViewMatrix() const;
-    glm::vec3 getPosition() const;
-    float     getAngleY() const;
-    float     getAngleX() const;
+    auto getViewMatrix() const -> glm::mat4;
+    auto getPosition() const -> glm::vec3;
+    auto getAngleY() const -> float;
+    auto getAngleX() const -> float;
 
     void rotateLeft(float degrees);
     void rotateUp(float degrees);
-    void moveFront(float delta, std::vector<Obstacle> obstacles);
-    void moveLeft(float delta, std::vector<Obstacle> obstacles);
+    void moveFront(float delta, const std::vector<Obstacle>& obstacles);
+    void moveLeft(float delta, const std::vector<Obstacle>& obstacles);
 };

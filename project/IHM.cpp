@@ -1,18 +1,17 @@
 #include "IHM.hpp"
-#include <iostream>
 
 IHM::IHM()
-{}
+= default;
 
 void IHM::draw()
 {
     ImGui::Begin("Set params");
 
-    float f = this->_detectionRadius * 100;
+    float f = this->_detectionRadius.value * 100;
     ImGui::SliderFloat("Detection radius", &f, 0.0f, 10.0f);
     this->_detectionRadius = f / 100;
 
-    float f2 = this->_collisionRadius * 200;
+    float f2 = this->_collisionRadius.value * 200;
     ImGui::SliderFloat("Collision radius", &f2, 0.0f, 10.0f);
     this->_collisionRadius = f2 / 200;
 
@@ -39,52 +38,52 @@ void IHM::draw()
     ImGui::End();
 }
 
-float IHM::getMatchingFactor() const
+auto IHM::getMatchingFactor() const -> float
 {
     return this->_matchingFactor;
 }
 
-float IHM::getAvoidFactor() const
+auto IHM::getAvoidFactor() const -> float
 {
     return this->_avoidFactor;
 }
 
-float IHM::getCenteringFactor() const
+auto IHM::getCenteringFactor() const -> float
 {
     return this->_centeringFactor;
 }
 
-float IHM::getTurnFactor() const
+auto IHM::getTurnFactor() const -> float
 {
     return this->_turnFactor;
 }
 
-float IHM::getCollisionRadius() const
+auto IHM::getCollisionRadius() const -> float
 {
-    return this->_collisionRadius;
+    return this->_collisionRadius.value;
 }
 
-float IHM::getDetectionRadius() const
+auto IHM::getDetectionRadius() const -> float
 {
-    return this->_detectionRadius;
+    return this->_detectionRadius.value;
 }
 
-float IHM::getSpeed() const
+auto IHM::getSpeed() const -> float
 {
     return this->_speed;
 }
 
-float IHM::getBoidsArea() const
+auto IHM::getBoidsArea() const -> float
 {
     return this->_boidsArea;
 }
 
-int IHM::getNbObstacles() const
+auto IHM::getNbObstacles() const -> int
 {
     return this->_nbObstacles;
 }
 
-int IHM::getNbBoids() const
+auto IHM::getNbBoids() const -> int
 {
     return this->_nbBoids;
 }

@@ -1,11 +1,8 @@
 #include "Content.hpp"
-#include <iostream>
-#include "glm/gtc/random.hpp"
 
-Content::Content()
-{}
+Content::Content() = default;
 
-Content::Content(std::vector<ModelPart> model, ObjectProgram& program)
+Content::Content(const std::vector<ModelPart>& model, ObjectProgram& program)
     : Object(model, program)
 {
     this->_position = glm::vec3(0.f);

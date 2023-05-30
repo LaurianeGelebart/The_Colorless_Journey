@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cstdlib>
 #include <vector>
 #include "Object.hpp"
 #include "TrackballCamera.hpp"
@@ -11,8 +10,8 @@ class Wanderer : public Object {
 private:
 public:
     Wanderer();
-    Wanderer(std::vector<ModelPart> model, ObjectProgram& program);
+    Wanderer(const std::vector<ModelPart>& model, ObjectProgram& program);
 
-    void  updatePosition(const TrackballCamera& viewMatrix, p6::Context& ctx);
-    float getAngle() const;
+    void updatePosition(const TrackballCamera& viewMatrix, p6::Context& ctx);
+    auto getAngle() const -> float;
 };

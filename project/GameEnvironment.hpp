@@ -1,22 +1,17 @@
 #pragma once
 
-#include <cstdlib>
 #include <map>
 #include <vector>
 #include "Boid.hpp"
 #include "Cloud.hpp"
 #include "Content.hpp"
-#include "ModelPart.hpp"
-#include "IHM.hpp"
 #include "InitEnvironment.hpp"
 #include "InputManager.hpp"
 #include "Light.hpp"
-#include "Loader.hpp"
 #include "Object.hpp"
 #include "Obstacle.hpp"
 #include "PanelInfo.hpp"
 #include "Shadow.hpp"
-#include "Texture.hpp"
 #include "TrackballCamera.hpp"
 #include "Wanderer.hpp"
 #include "p6/p6.h"
@@ -35,7 +30,7 @@ private:
     PanelProgram  _panelProgram;
     ColorProgram  _boidProgram;
 
-    TrackballCamera _ViewMatrix;
+    TrackballCamera _viewMatrix;
 
     // GLuint _shadowMapFBO ;
     // GLuint _shadowMap ;

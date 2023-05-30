@@ -1,5 +1,5 @@
 #include "InitEnvironment.hpp"
-#include "glm/gtc/type_ptr.hpp"
+#include "Loader.cpp"
 #include "p6/p6.h"
 
 InitEnvironment::InitEnvironment()
@@ -45,45 +45,43 @@ void InitEnvironment::initBoids(std::vector<Boid>& boids, ColorProgram& boidProg
 
 void InitEnvironment::initObstacles(std::vector<Obstacle>& obstacles, ObjectProgram& textureProgram, glm::vec3 magicPosition, glm::vec3 housePosition, glm::vec3 puitsPosition)
 {
-    obstacles.push_back(Obstacle(this->_house, textureProgram, housePosition));
-    obstacles.push_back(Obstacle(this->_puit, textureProgram, puitsPosition));
-    obstacles.push_back(Obstacle(this->_rail, textureProgram, glm::vec3(-1.8, 0.0, 1.8)));
-    obstacles.push_back(Obstacle(this->_rocks, textureProgram, glm::vec3(-1.2, 0.0, -1.6)));
-    obstacles.push_back(Obstacle(this->_rocks, textureProgram, glm::vec3(-1.2, 0.0, 1.0)));
-    obstacles.push_back(Obstacle(this->_barel, textureProgram, glm::vec3(-0.4, 0.0, 0.0)));
-    obstacles.push_back(Obstacle(this->_barel, textureProgram, glm::vec3(-0.6, 0.0, -0.7)));
-    obstacles.push_back(Obstacle(this->_magic, textureProgram, magicPosition));
-    obstacles.push_back(Obstacle(this->_panneau, textureProgram, glm::vec3(0.3, 0.0, 0.3)));
+    obstacles.emplace_back(this->_house, textureProgram, housePosition);
+    obstacles.emplace_back(this->_puit, textureProgram, puitsPosition);
+    obstacles.emplace_back(this->_rail, textureProgram, glm::vec3(-1.8, 0.0, 1.8));
+    obstacles.emplace_back(this->_rocks, textureProgram, glm::vec3(-1.2, 0.0, -1.6));
+    obstacles.emplace_back(this->_rocks, textureProgram, glm::vec3(-1.2, 0.0, 1.0));
+    obstacles.emplace_back(this->_barel, textureProgram, glm::vec3(-0.4, 0.0, 0.0));
+    obstacles.emplace_back(this->_barel, textureProgram, glm::vec3(-0.6, 0.0, -0.7));
+    obstacles.emplace_back(this->_magic, textureProgram, magicPosition);
+    obstacles.emplace_back(this->_panneau, textureProgram, glm::vec3(0.3, 0.0, 0.3));
 
-    for (int i = obstacles.size(); i < this->_ihm.getNbObstacles(); i++)
+    for (size_t i = obstacles.size(); i < this->_ihm.getNbObstacles(); i++)
     {
-       obstacles.push_back(randomObject(textureProgram)); 
+        obstacles.push_back(randomObject(textureProgram));
     }
 }
 
 Obstacle InitEnvironment::randomObject(ObjectProgram& textureProgram)
 {
- float j = p6::random::number();
-        if (j < 0.25)
-        {
-            return Obstacle(this->_fir1, textureProgram);
-        }
-        else if (j < 0.5)
-        {
-            return Obstacle(this->_fir2, textureProgram);
-        }
-        else if (j < 0.75)
-        {
-            return Obstacle(this->_fir3, textureProgram);
-        }
-        else if (j < 0.90)
-        {
-            return Obstacle(this->_mushroom1, textureProgram);
-        }
-        else
-        {
-            return Obstacle(this->_mushroom2, textureProgram);
-        }
+    float j = p6::random::number();
+    if (j < 0.25)
+    {
+        return Obstacle(this->_fir1, textureProgram);
+    }
+    if (j < 0.5)
+    {
+        return Obstacle(this->_fir2, textureProgram);
+    }
+    if (j < 0.75)
+    {
+        return Obstacle(this->_fir3, textureProgram);
+    }
+    if (j < 0.90)
+    {
+        return Obstacle(this->_mushroom1, textureProgram);
+    }
+    return Obstacle(this->_mushroom2, textureProgram);
+   
 }
 
 void InitEnvironment::initClouds(std::vector<Cloud>& clouds, ObjectProgram& textureProgram)
@@ -107,9 +105,9 @@ void InitEnvironment::initContent(Content& box, ObjectProgram& textureProgram)
 
 void InitEnvironment::initPanels(std::vector<PanelInfo>& panelsInfo, PanelProgram& panelProgram, const TrackballCamera& viewMatrix)
 {
-    panelsInfo.push_back(PanelInfo(this->_panelOpen, panelProgram));
-    panelsInfo.push_back(PanelInfo(this->_panelBeginning, panelProgram));
-    panelsInfo.push_back(PanelInfo(this->_panelColor, panelProgram));
+    panelsInfo.emplace_back(this->_panelOpen, panelProgram);
+    panelsInfo.emplace_back(this->_panelBeginning, panelProgram);
+    panelsInfo.emplace_back(this->_panelColor, panelProgram);
     panelsInfo[0].appears(viewMatrix);
 }
 
@@ -124,7 +122,7 @@ void InitEnvironment::initLighting(std::map<std::string, std::unique_ptr<Light>>
 
 void InitEnvironment::addOrRemoveBoids(std::vector<Boid>& boids, ColorProgram& boidProgram, glm::vec3 magicPosition)
 {
-    int nbBoids = boids.size();
+    size_t nbBoids = boids.size();
 
     if (nbBoids < this->_ihm.getNbBoids())
     {
@@ -145,14 +143,13 @@ void InitEnvironment::addOrRemoveBoids(std::vector<Boid>& boids, ColorProgram& b
 
 void InitEnvironment::addOrRemoveObstacles(std::vector<Obstacle>& obstacles, ObjectProgram& textureProgram)
 {
-    int nbObstacles = obstacles.size();
+    size_t nbObstacles = obstacles.size();
 
     if (nbObstacles < this->_ihm.getNbObstacles())
     {
         for (int i = 0; i < this->_ihm.getNbObstacles(); i++)
         {
-            obstacles.push_back(randomObject(textureProgram)); 
-
+            obstacles.push_back(randomObject(textureProgram));
         }
     }
     else if (nbObstacles > this->_ihm.getNbObstacles())

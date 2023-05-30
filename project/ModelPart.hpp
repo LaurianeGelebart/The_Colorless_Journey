@@ -1,11 +1,12 @@
 #pragma once
+#include <vector>
 #include "Material.hpp"
 
 class ModelPart {
 private:
     std::string        _name;
-    std::vector<float> _VertexData;
-    std::vector<int>   _VertexIndices;
+    std::vector<float> _vertexData;
+    std::vector<int>   _vertexIndices;
     GLuint             _vbo;
     GLuint             _vao;
     GLuint             _ibo;
@@ -15,18 +16,22 @@ private:
     void createIBO();
 
 public:
-    ModelPart(std::string name);
+    explicit ModelPart(const std::string& name);
     ModelPart();
+    ModelPart(const ModelPart&)                    = default;
+    ModelPart(ModelPart&&)                         = delete;
+    auto operator=(const ModelPart&) -> ModelPart& = default;
+    auto operator=(ModelPart&&) -> ModelPart&      = delete;
     ~ModelPart();
 
     void createVBO_IBO_VAO();
 
-    int                getVertextCount() const;
-    std::string        getName() const;
-    GLuint             getVAO() const;
-    GLuint             getVBO() const;
-    GLuint             getIBO() const;
-    std::vector<float> getVertextData() const;
+    auto getVertextCount() const -> int;
+    auto getName() const -> std::string;
+    auto getVAO() const -> GLuint;
+    auto getVBO() const -> GLuint;
+    auto getIBO() const -> GLuint;
+    auto getVertextData() const -> std::vector<float>;
 
-    void setVertexData(int vIdx, int tIdx, int nIdx, std::vector<CordPosition>& vertices, std::vector<CordTexture>& textures, std::vector<CordNormal>& normals);
+    void setVertexData(int vIdx, int tIdx, int nIdx, const std::vector<CordPosition>& vertices, const std::vector<CordTexture>& textures, const std::vector<CordNormal>& normals);
 };
