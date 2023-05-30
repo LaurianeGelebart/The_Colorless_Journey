@@ -2,49 +2,43 @@
 
 #include <cstdlib>
 #include <vector>
-
-#include "p6/p6.h"
-
-#include "programs/ColorProgram.hpp"
-#include "FacesGroup.hpp"
+#include "IHM.hpp"
+#include "ModelPart.hpp"
 #include "Object.hpp"
 #include "Obstacle.hpp"
+#include "p6/p6.h"
+#include "programs/ColorProgram.hpp"
 
-#include "IHM.hpp"
+class Boid {
+private:
+    glm::vec3                           _velocity;
+    float                               _borne_velocity = 0.001;
+    glm::vec3                           _color;
+    glm::vec3                           _centerPosition;
+    ColorProgram*                       _program;
+    std::vector<std::vector<ModelPart>> _models;
+    glm::vec3                           _position;
+    float                               _scale = 0.1;
+    int                                 _lod   = 1;
 
-class Boid 
-{
+    void collisionBords(const IHM ihm);
+    void bounce(const Obstacle& obstacle);
+    void collisionObstacles(const std::vector<Obstacle>& obstacles, const IHM ihm);
+    void collisionBoids(const std::vector<Boid>& boids, const IHM ihm);
 
-    private : 
-        glm::vec3 _velocity ; 
-        float _borne_velocity = 0.001;  
-        glm::vec3 _color; 
-        glm::vec3 _centerPosition;
-        ColorProgram* _program;
-        std::vector<std::vector<FacesGroup>> _models;
-        glm::vec3 _position ; 
-        float _scale  = 0.1 ; 
-        int _lod = 1; 
+    void limitSpeed(const IHM ihm);
+    void move(const p6::Context& ctx);
 
-        void collisionBords(const IHM ihm); 
-        void bounce(const Obstacle& obstacle); 
-        void collisionObstacles(const std::vector<Obstacle>& obstacles, const IHM ihm); 
-        void collisionBoids(const std::vector<Boid>& boids, const IHM ihm);
+public:
+    Boid(std::vector<ModelPart> model, std::vector<ModelPart> lodModel, ColorProgram& program, glm::vec3 magicPos);
 
-        void limitSpeed(const IHM ihm) ;
-        void move(const p6::Context& ctx); 
+    glm::vec3 getPosition() const;
+    glm::vec3 getVelocity() const;
 
-    public : 
-        Boid(std::vector<FacesGroup> model, std::vector<FacesGroup> lodModel, ColorProgram& program, glm::vec3 magicPos);
-        
-        glm::vec3 getPosition() const; 
-        glm::vec3 getVelocity() const; 
+    void updatePosition();
+    void collision(const std::vector<Boid>& boids, const std::vector<Obstacle>& obstacles, const IHM ihm);
+    void draw(const glm::mat4 ViewMatrix, const int windowWidth, const int windowHeight, std::map<std::string, Material>& materialMap, glm::vec3 wandererPos, int color);
 
-        void updatePosition();
-        void collision(const std::vector<Boid>& boids, const std::vector<Obstacle>& obstacles, const IHM ihm);  
-        void draw(const glm::mat4 ViewMatrix, const int windowWidth, const int windowHeight, std::map<std::string, Material>& materialMap, glm::vec3 wandererPos, int color); 
-        
-        void checkLOD(glm::vec3 fireflyPosition);
-        void deleteVAO_VBO();
-
-}; 
+    void checkLOD(glm::vec3 fireflyPosition);
+    void deleteVAO_VBO();
+};

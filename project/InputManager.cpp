@@ -1,6 +1,6 @@
 #include "InputManager.hpp"
 
-InputManager::InputManager(){}
+InputManager::InputManager() {}
 
 bool InputManager::getEnter()
 {
@@ -52,55 +52,70 @@ void InputManager::setIsMouseMovingToFalse()
 }
 void InputManager::blockControls()
 {
-    this->_alt = false ;
-    this->_enter = false ;
-    this->_Z = false ;
-    this->_Q = false ;
-    this->_S = false ;
-    this->_D = false ;
-    this->_isMenu = true ;
+    this->_alt    = false;
+    this->_enter  = false;
+    this->_Z      = false;
+    this->_Q      = false;
+    this->_S      = false;
+    this->_D      = false;
+    this->_isMenu = true;
 }
 
-void InputManager::InitInput(p6::Context &ctx)
-{ 
+void InputManager::InitInput(p6::Context& ctx)
+{
     ctx.key_pressed = [this](const p6::Key& key) {
-        if(this->_isMenu){
-            if (key.physical == GLFW_KEY_ENTER || key.physical == GLFW_KEY_SPACE) {
-                this->_enter = true ; 
-                this->_alt = true ;
-                this->_isMenu = false ;
+        if (this->_isMenu)
+        {
+            if (key.physical == GLFW_KEY_ENTER || key.physical == GLFW_KEY_SPACE)
+            {
+                this->_enter  = true;
+                this->_alt    = true;
+                this->_isMenu = false;
             }
         }
-        else{
-            if (key.physical == GLFW_KEY_W) this->_Z = true;
-            if (key.physical == GLFW_KEY_S) this->_S = true;
-            if (key.physical == GLFW_KEY_A) this->_Q = true;
-            if (key.physical == GLFW_KEY_D) this->_D = true;
-            if (key.physical == GLFW_KEY_LEFT_ALT) this->_alt = !this->_alt ;
-            if (key.physical == GLFW_KEY_SPACE) {
-                if (this->_colorPossible) this->_space = !this->_space;
+        else
+        {
+            if (key.physical == GLFW_KEY_W)
+                this->_Z = true;
+            if (key.physical == GLFW_KEY_S)
+                this->_S = true;
+            if (key.physical == GLFW_KEY_A)
+                this->_Q = true;
+            if (key.physical == GLFW_KEY_D)
+                this->_D = true;
+            if (key.physical == GLFW_KEY_LEFT_ALT)
+                this->_alt = !this->_alt;
+            if (key.physical == GLFW_KEY_SPACE)
+            {
+                if (this->_colorPossible)
+                    this->_space = !this->_space;
             }
         }
     };
 
     ctx.key_released = [this](const p6::Key& key) {
-        if(!this->_isMenu){
-            if (key.physical == GLFW_KEY_W) this->_Z = false;
-            if (key.physical == GLFW_KEY_S) this->_S = false;
-            if (key.physical == GLFW_KEY_A) this->_Q = false;
-            if (key.physical == GLFW_KEY_D) this->_D = false;
+        if (!this->_isMenu)
+        {
+            if (key.physical == GLFW_KEY_W)
+                this->_Z = false;
+            if (key.physical == GLFW_KEY_S)
+                this->_S = false;
+            if (key.physical == GLFW_KEY_A)
+                this->_Q = false;
+            if (key.physical == GLFW_KEY_D)
+                this->_D = false;
         }
     };
-    
 }
 
-void InputManager::InitMouseMove(p6::Context &ctx)
+void InputManager::InitMouseMove(p6::Context& ctx)
 {
     ctx.mouse_moved = [this](p6::MouseMove data) {
-        if (this->_alt) {
-            this->_deltaY = data.delta.y ;
-            this->_deltaX = data.delta.x ;
-            this->_isMouseMoving  = true; 
+        if (this->_alt)
+        {
+            this->_deltaY        = data.delta.y;
+            this->_deltaX        = data.delta.x;
+            this->_isMouseMoving = true;
         }
-    }; 
+    };
 }
