@@ -8,7 +8,7 @@ int main()
 {
     int  windowWidth  = 1280;
     int  windowHeight = 720;
-    auto ctx          = p6::Context{{windowWidth, windowHeight, "Project qui se passe super bien"}};
+    auto ctx          = p6::Context{{windowWidth, windowHeight, "The colorless Journey : A Firelfly Story"}};
     ctx.maximize_window();
 
     glEnable(GL_DEPTH_TEST);

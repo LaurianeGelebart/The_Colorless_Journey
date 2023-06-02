@@ -3,7 +3,6 @@
 #include <cstdlib>
 #include <map>
 #include <vector>
-#include "Loader.cpp"
 #include "Object.hpp"
 #include "p6/p6.h"
 #include "programs/ShadowMapProgram.hpp"

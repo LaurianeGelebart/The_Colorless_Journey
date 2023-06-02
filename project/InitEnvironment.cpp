@@ -1,5 +1,5 @@
 #include "InitEnvironment.hpp"
-#include "Loader.cpp"
+#include "Loader.hpp"
 #include "p6/p6.h"
 
 InitEnvironment::InitEnvironment()
@@ -55,7 +55,7 @@ void InitEnvironment::initObstacles(std::vector<Obstacle>& obstacles, ObjectProg
     obstacles.emplace_back(this->_magic, textureProgram, magicPosition);
     obstacles.emplace_back(this->_panneau, textureProgram, glm::vec3(0.3, 0.0, 0.3));
 
-    for (size_t i = obstacles.size(); i < this->_ihm.getNbObstacles(); i++)
+    for (int i = static_cast<int>(obstacles.size()); i < this->_ihm.getNbObstacles(); i++)
     {
         obstacles.push_back(randomObject(textureProgram));
     }
@@ -122,11 +122,11 @@ void InitEnvironment::initLighting(std::map<std::string, std::unique_ptr<Light>>
 
 void InitEnvironment::addOrRemoveBoids(std::vector<Boid>& boids, ColorProgram& boidProgram, glm::vec3 magicPosition)
 {
-    size_t nbBoids = boids.size();
+    int nbBoids = static_cast<int>(boids.size());
 
     if (nbBoids < this->_ihm.getNbBoids())
     {
-        for (size_t i = 0; i < this->_ihm.getNbBoids() - nbBoids; i++)
+        for (int i = 0; i < this->_ihm.getNbBoids() - nbBoids; i++)
         {
             Boid b(this->_sphere, this->_sphereLOD, boidProgram, magicPosition);
             boids.push_back(b);
@@ -134,7 +134,7 @@ void InitEnvironment::addOrRemoveBoids(std::vector<Boid>& boids, ColorProgram& b
     }
     else if (nbBoids > this->_ihm.getNbBoids())
     {
-        for (size_t i = 0; i < nbBoids - this->_ihm.getNbBoids(); i++)
+        for (int i = 0; i < nbBoids - this->_ihm.getNbBoids(); i++)
         {
             boids.pop_back();
         }
@@ -143,18 +143,18 @@ void InitEnvironment::addOrRemoveBoids(std::vector<Boid>& boids, ColorProgram& b
 
 void InitEnvironment::addOrRemoveObstacles(std::vector<Obstacle>& obstacles, ObjectProgram& textureProgram)
 {
-    size_t nbObstacles = obstacles.size();
+    int nbObstacles = static_cast<int>(obstacles.size());
 
     if (nbObstacles < this->_ihm.getNbObstacles())
     {
-        for (size_t i = 0; i < this->_ihm.getNbObstacles(); i++)
+        for (int i = 0; i < this->_ihm.getNbObstacles(); i++)
         {
             obstacles.push_back(randomObject(textureProgram));
         }
     }
     else if (nbObstacles > this->_ihm.getNbObstacles())
     {
-        for (size_t i = 0; i < nbObstacles - this->_ihm.getNbObstacles(); i++)
+        for (int i = 0; i < nbObstacles - this->_ihm.getNbObstacles(); i++)
         {
             obstacles.pop_back();
         }

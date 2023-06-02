@@ -36,6 +36,7 @@ void Boid::collision(const std::vector<Boid>& boids, const std::vector<Obstacle>
     collisionBoids(boids, ihm);
     collisionBords(ihm);
     collisionObstacles(obstacles, ihm);
+    collisionBox(ihm);
 }
 
 void Boid::collisionBoids(const std::vector<Boid>& boids, const IHM& ihm)
@@ -100,6 +101,7 @@ void Boid::collisionBords(const IHM& ihm)
     {
         this->_velocity.z = this->_velocity.z + ihm.getTurnFactor();
     }
+    limitSpeed(ihm);
 }
 
 void Boid::collisionObstacles(const std::vector<Obstacle>& obstacles, const IHM& ihm)
@@ -107,17 +109,42 @@ void Boid::collisionObstacles(const std::vector<Obstacle>& obstacles, const IHM&
     for (const auto& obstacle : obstacles)
     {
         double distance = glm::distance(obstacle.getPosition(), this->_position);
-        if (distance < 0.05)
+        if (distance < obstacle.get_radius())
         {
-            this->bounce(obstacle);
+            this->bounce(obstacle.getPosition());
         }
     }
     limitSpeed(ihm);
 }
 
-void Boid::bounce(const Obstacle& obstacle)
+void Boid::collisionBox(const IHM& ihm)
 {
-    glm::vec3 normal = glm::vec3(this->_position.x - obstacle.getPosition().x, this->_position.y - obstacle.getPosition().y, this->_position.z - obstacle.getPosition().z);
+    float margin = 0.3;
+    float width  = 2.f;
+    float length = 2.f;
+
+    if (this->_position.x > width - margin)
+    {
+        this->_velocity.x = this->_velocity.x - ihm.getTurnFactor();
+    }
+    if (this->_position.x < -width + margin)
+    {
+        this->_velocity.x = this->_velocity.x + ihm.getTurnFactor();
+    }
+    if (this->_position.z > length - margin)
+    {
+        this->_velocity.z = this->_velocity.z - ihm.getTurnFactor();
+    }
+    if (this->_position.z < -length + margin)
+    {
+        this->_velocity.z = this->_velocity.z + ihm.getTurnFactor();
+    }
+    limitSpeed(ihm);
+}
+
+void Boid::bounce(const glm::vec3& obstaclePosition)
+{
+    glm::vec3 normal = glm::vec3(this->_position.x - obstaclePosition.x, this->_position.y - obstaclePosition.y, this->_position.z - obstaclePosition.z);
     normal           = glm::normalize(normal);
     this->_velocity += normal * 0.01f;
 }

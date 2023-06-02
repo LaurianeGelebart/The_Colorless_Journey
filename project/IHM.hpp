@@ -28,6 +28,6 @@ public:
     auto getDetectionRadius() const -> float;
     auto getSpeed() const -> float;
     auto getBoidsArea() const -> float;
-    auto   getNbObstacles() const -> int;
-    auto   getNbBoids() const -> int;
+    auto getNbObstacles() const -> int;
+    auto getNbBoids() const -> int;
 };

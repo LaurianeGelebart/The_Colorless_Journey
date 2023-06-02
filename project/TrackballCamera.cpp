@@ -121,9 +121,8 @@ auto TrackballCamera::getViewMatrix() const -> glm::mat4
 static auto normalizeAngle(int angle) -> int
 {
     if (angle < 0)
-        angle = 360 - (-angle) % 360;
-    else
-        angle = angle % 360;
+        return angle = 360 - (-angle) % 360;
+    return angle = angle % 360;
 }
 
 static auto checkRotatingAngleX(float angle) -> bool

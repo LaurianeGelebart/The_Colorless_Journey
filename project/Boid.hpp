@@ -19,8 +19,9 @@ private:
     float                               _scale = 0.1;
     int                                 _lod   = 1;
 
+    void collisionBox(const IHM& ihm);
     void collisionBords(const IHM& ihm);
-    void bounce(const Obstacle& obstacle);
+    void bounce(const glm::vec3& obstaclePosition);
     void collisionObstacles(const std::vector<Obstacle>& obstacles, const IHM& ihm);
     void collisionBoids(const std::vector<Boid>& boids, const IHM& ihm);
 
