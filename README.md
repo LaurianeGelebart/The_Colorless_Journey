@@ -3,7 +3,7 @@ Created by Lauriane Gélébart - IMAC2 2023
 
 Template from https://julesfouchy.github.io/Learn--OpenGL/
 
-## The Projet 
+## The Project 
 This project is a semester-end assignment for engineering students in the IMAC program at ESIEE Paris, focusing on the subjects of OpenGL, image synthesis, and clean coding in C++.
 The project is individual and serves as a practical application of the concepts learned in the mentioned subjects.
 
@@ -11,6 +11,10 @@ The main objective of this project is to develop a Boids visualization applicati
 All objects and textures used in the project were created using Blender and Photoshop.
 
 In this project, I have interpreted the concept as creating a paper-themed mode where colors have disappeared. Our protagonist, guided by fellow fireflies, possesses the power to bring back light and restore colors to this universe.
+
+![Capture d’écran du 2023-06-01 19-42-15](https://github.com/LaurianeGelebart/The_Colorless_Journey/assets/95913897/6f014adf-b67a-42f0-8be1-45036d39315d)
+![Capture d’écran du 2023-05-30 18-52-19](https://github.com/LaurianeGelebart/The_Colorless_Journey/assets/95913897/7431c9ab-2dba-477d-81a1-0ed5cf0e3585)
+
 
 ## Project Structure
 
