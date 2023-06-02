@@ -7,8 +7,6 @@ Object::Object(const std::vector<ModelPart>& model, ObjectProgram& program)
     : _program(&program), _model(model)
 {}
 
-Object::Object() = default;
-
 auto Object::getPosition() const -> glm::vec3
 {
     return this->_position;

@@ -24,12 +24,16 @@ void PanelInfo::appears(const TrackballCamera& viewMatrix)
 {
     glm::vec3 viewMatrixPosition = viewMatrix.getPosition();
 
-    float angle     = -viewMatrix.getAngleY();
-    float a         = std::sin(glm::radians(angle)) * 0.35;
-    float b         = std::cos(glm::radians(angle)) * 0.35;
-    this->_position = glm::vec3((viewMatrixPosition.x + a), 0.08, (viewMatrixPosition.z + b));
-    this->_angleY   = angle;
-    this->_angleX   = -viewMatrix.getAngleX();
+    float angleX = -viewMatrix.getAngleX();
+    float angleY = -viewMatrix.getAngleY();
+
+    float z         = std::sin(glm::radians(90 + angleX))*std::cos(glm::radians(angleY)) * 0.35;
+    float y         = std::cos(glm::radians(90 + angleX)) * 0.35;
+    float x         = std::sin(glm::radians(angleY))*std::sin(glm::radians(90 - angleX)) * 0.35;
+    this->_position = glm::vec3((viewMatrixPosition.x + x), (viewMatrixPosition.y + y), (viewMatrixPosition.z + z));
+
+    this->_angleY = angleY;
+    this->_angleX = angleX;
 
     this->_isDisplay       = true;
     this->_hasBeenDislayed = true;

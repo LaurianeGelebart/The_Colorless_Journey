@@ -47,7 +47,7 @@ void InitEnvironment::initObstacles(std::vector<Obstacle>& obstacles, ObjectProg
 {
     obstacles.emplace_back(this->_house, textureProgram, housePosition);
     obstacles.emplace_back(this->_puit, textureProgram, puitsPosition);
-    obstacles.emplace_back(this->_rail, textureProgram, glm::vec3(-1.8, 0.0, 1.8));
+    obstacles.emplace_back(this->_rail, textureProgram, glm::vec3(-1.8, 0.0, 0.5));
     obstacles.emplace_back(this->_rocks, textureProgram, glm::vec3(-1.2, 0.0, -1.6));
     obstacles.emplace_back(this->_rocks, textureProgram, glm::vec3(-1.2, 0.0, 1.0));
     obstacles.emplace_back(this->_barel, textureProgram, glm::vec3(-0.4, 0.0, 0.0));
@@ -126,7 +126,7 @@ void InitEnvironment::addOrRemoveBoids(std::vector<Boid>& boids, ColorProgram& b
 
     if (nbBoids < this->_ihm.getNbBoids())
     {
-        for (int i = 0; i < this->_ihm.getNbBoids() - nbBoids; i++)
+        for (size_t i = 0; i < this->_ihm.getNbBoids() - nbBoids; i++)
         {
             Boid b(this->_sphere, this->_sphereLOD, boidProgram, magicPosition);
             boids.push_back(b);
@@ -134,7 +134,7 @@ void InitEnvironment::addOrRemoveBoids(std::vector<Boid>& boids, ColorProgram& b
     }
     else if (nbBoids > this->_ihm.getNbBoids())
     {
-        for (int i = 0; i < nbBoids - this->_ihm.getNbBoids(); i++)
+        for (size_t i = 0; i < nbBoids - this->_ihm.getNbBoids(); i++)
         {
             boids.pop_back();
         }
@@ -147,14 +147,14 @@ void InitEnvironment::addOrRemoveObstacles(std::vector<Obstacle>& obstacles, Obj
 
     if (nbObstacles < this->_ihm.getNbObstacles())
     {
-        for (int i = 0; i < this->_ihm.getNbObstacles(); i++)
+        for (size_t i = 0; i < this->_ihm.getNbObstacles(); i++)
         {
             obstacles.push_back(randomObject(textureProgram));
         }
     }
     else if (nbObstacles > this->_ihm.getNbObstacles())
     {
-        for (int i = 0; i < nbObstacles - this->_ihm.getNbObstacles(); i++)
+        for (size_t i = 0; i < nbObstacles - this->_ihm.getNbObstacles(); i++)
         {
             obstacles.pop_back();
         }

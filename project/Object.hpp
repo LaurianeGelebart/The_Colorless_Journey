@@ -17,7 +17,7 @@ protected:
     Object(const std::vector<ModelPart>& model, ObjectProgram& program);
 
 public:
-    Object();
+    Object()                                 = default;
     virtual ~Object()                        = default;
     Object(const Object&)                    = default;
     Object(Object&&)                         = delete;

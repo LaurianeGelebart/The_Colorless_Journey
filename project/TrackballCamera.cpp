@@ -161,7 +161,6 @@ static auto isCollisionObstacles(const glm::vec3& position, const std::vector<Ob
 {
     // for(auto& obstacle : obstacles) {
     //     float distance = glm::distance(position, obstacle.getPosition());
-    //     std::cout << distance << "\n";
     //     if(distance < 0.05) return true ;
     // }
     return false;
